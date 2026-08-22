@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Chaos - VSMN Neuro Education</title>
+
+<link rel="stylesheet"
+      href="../css/style.css">
+
+</head>
+
+<body>
+
+<header>
+
+<h1>🌀 Comprendre le chaos</h1>
+
+<p>
+Sensibilité aux conditions initiales dans le modèle VSMN
+</p>
+
+</header>
+
+
+<nav>
+
+<a href="../index.html">Accueil</a>
+
+<a href="neurone.html">Neurone</a>
+
+<a href="vsmn.html">VSMN</a>
+
+<a href="chaos.html">Chaos</a>
+
+<a href="ecg.html">ECG</a>
+
+<a href="eeg.html">EEG</a>
+
+<a href="quiz.html">Quiz</a>
+
+</nav>
+
+
+<main class="container">
+
+
+<section class="card">
+
+<h2>🌀 Qu'est-ce que le chaos ?</h2>
+
+<p>
+Un système chaotique est un système déterministe
+dont l'évolution peut devenir très difficile à prévoir
+à long terme.
+</p>
+
+<p>
+Une propriété importante est la
+<strong>sensibilité aux conditions initiales</strong>.
+</p>
+
+<p>
+Deux trajectoires partant de conditions initiales
+très proches peuvent progressivement se séparer.
+</p>
+
+</section>
+
+
+<section class="card">
+
+<h2>⚙️ Expérience interactive</h2>
+
+<p>
+Nous allons comparer deux conditions initiales
+presque identiques.
+</p>
+
+
+<label>
+
+u₀ :
+
+<input type="number"
+       id="u0"
+       value="0.1"
+       step="0.000001">
+
+</label>
+
+
+<br><br>
+
+
+<label>
+
+Petite perturbation :
+
+<input type="number"
+       id="epsilon"
+       value="0.000001"
+       step="0.000001">
+
+</label>
+
+
+<br><br>
+
+
+<label>
+
+v₀ :
+
+<input type="number"
+       id="v0"
+       value="0.1"
+       step="0.000001">
+
+</label>
+
+
+<br><br>
+
+
+<button class="button"
+        onclick="runChaos()">
+
+▶ LANCER L'EXPÉRIENCE
+
+</button>
+
+</section>
+
+
+<section class="card">
+
+<h2>📈 Comparaison des trajectoires</h2>
+
+<canvas id="chaosChart"
+        width="1000"
+        height="450">
+</canvas>
+
+</section>
+
+
+<section class="card">
+
+<h2>🌀 Portrait de phase</h2>
+
+<canvas id="phaseChart"
+        width="1000"
+        height="450">
+</canvas>
+
+</section>
+
+
+<section class="card">
+
+<h2>📚 Interprétation</h2>
+
+<div id="interpretation">
+
+<p>
+Lancez la simulation pour observer
+l'évolution des deux trajectoires.
+</p>
+
+</div>
+
+</section>
+
+
+</main>
+
+
+<footer>
+
+<p>VSMN Neuro Education</p>
+
+</footer>
+
+
+<script src="../js/vsmn.js"></script>
+
+
+<script>
+
+function runChaos() {
+
+    /*
+     * Paramètres utilisés pour l'expérience.
+     * Ils pourront ensuite être remplacés par
+     * les paramètres exacts de votre publication.
+     */
+
+    const P = {
+
+        alpha: 1,
+        tau: 1,
+        p: 0,
+        q: 0,
+        n: 1,
+        lambda: 1,
+        beta: 1,
+        k: 1,
+
+        u0:
+        Number(document.getElementById("u0").value),
+
+        v0:
+        Number(document.getElementById("v0").value),
+
+        dt: 0.01,
+
+        steps: 5000
+    };
+
+
+    const epsilon =
+        Number(
+            document.getElementById("epsilon").value
+        );
+
+
+    // Première trajectoire
+
+    const A =
+        simulateVSMN(P);
+
+
+    // Deuxième trajectoire
+
+    const P2 = {
+
+        ...P,
+
+        u0: P.u0 + epsilon
+
+    };
+
+
+    const B =
+        simulateVSMN(P2);
+
+
+    drawChaosChart(
+        A.time,
+        A.U,
+        B.U
+    );
+
+
+    drawChaosPhase(
+        A.U,
+        A.V,
+        B.U,
+        B.V
+    );
+
+
+    document.getElementById(
+        "interpretation"
+    ).innerHTML = `
+
+        <p>
+        Les deux simulations commencent avec des
+        conditions initiales très proches :
+        </p>
+
+        <p>
+        <strong>
+        u₀ = ${P.u0}
+        </strong>
+        </p>
+
+        <p>
+        et
+        </p>
+
+        <p>
+        <strong>
+        u₀ = ${(P.u0 + epsilon).toFixed(8)}
+        </strong>
+        </p>
+
+        <p>
+        La différence initiale est :
+        <strong>${epsilon}</strong>.
+        </p>
+
+        <p>
+        Observez maintenant si les deux trajectoires
+        restent proches ou divergent progressivement.
+        </p>
+
+        <p>
+        Cette expérience permet d'illustrer
+        la sensibilité aux conditions initiales.
+        Elle doit être complétée par d'autres
+        indicateurs pour conclure à la présence
+        d'un chaos déterministe.
+        </p>
+
+    `;
+
+}
+
+
+function drawChaosChart(time, A, B) {
+
+    const canvas =
+        document.getElementById("chaosChart");
+
+    const ctx =
+        canvas.getContext("2d");
+
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    const margin = 50;
+
+    const width =
+        canvas.width - 2 * margin;
+
+    const height =
+        canvas.height - 2 * margin;
+
+
+    const values =
+        A.concat(B);
+
+
+    const min =
+        Math.min(...values);
+
+    const max =
+        Math.max(...values);
+
+
+    function X(i) {
+
+        return margin +
+            i / (A.length - 1)
+            * width;
+
+    }
+
+
+    function Y(value) {
+
+        return margin +
+            (max - value)
+            / (max - min || 1)
+            * height;
+
+    }
+
+
+    // Axes
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        margin,
+        margin
+    );
+
+    ctx.lineTo(
+        margin,
+        canvas.height - margin
+    );
+
+    ctx.lineTo(
+        canvas.width - margin,
+        canvas.height - margin
+    );
+
+    ctx.stroke();
+
+
+    // Trajectoire A
+
+    ctx.beginPath();
+
+    for (
+        let i = 0;
+        i < A.length;
+        i++
+    ) {
+
+        if (i === 0) {
+
+            ctx.moveTo(
+                X(i),
+                Y(A[i])
+            );
+
+        } else {
+
+            ctx.lineTo(
+                X(i),
+                Y(A[i])
+            );
+
+        }
+
+    }
+
+    ctx.stroke();
+
+
+    // Trajectoire B
+
+    ctx.beginPath();
+
+    for (
+        let i = 0;
+        i < B.length;
+        i++
+    ) {
+
+        if (i === 0) {
+
+            ctx.moveTo(
+                X(i),
+                Y(B[i])
+            );
+
+        } else {
+
+            ctx.lineTo(
+                X(i),
+                Y(B[i])
+            );
+
+        }
+
+    }
+
+    ctx.stroke();
+
+
+    ctx.font =
+        "16px Arial";
+
+    ctx.fillText(
+        "Temps",
+        canvas.width - 100,
+        canvas.height - 15
+    );
+
+    ctx.fillText(
+        "u(t)",
+        15,
+        25
+    );
+
+}
+
+
+function drawChaosPhase(
+    UA,
+    VA,
+    UB,
+    VB
+) {
+
+    const canvas =
+        document.getElementById(
+            "phaseChart"
+        );
+
+    const ctx =
+        canvas.getContext("2d");
+
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    const margin = 50;
+
+    const width =
+        canvas.width - 2 * margin;
+
+    const height =
+        canvas.height - 2 * margin;
+
+
+    const allU =
+        UA.concat(UB);
+
+    const allV =
+        VA.concat(VB);
+
+
+    const minU =
+        Math.min(...allU);
+
+    const maxU =
+        Math.max(...allU);
+
+    const minV =
+        Math.min(...allV);
+
+    const maxV =
+        Math.max(...allV);
+
+
+    function X(u) {
+
+        return margin +
+            (u - minU)
+            / (maxU - minU || 1)
+            * width;
+
+    }
+
+
+    function Y(v) {
+
+        return canvas.height -
+            margin -
+            (v - minV)
+            / (maxV - minV || 1)
+            * height;
+
+    }
+
+
+    // Première trajectoire
+
+    ctx.beginPath();
+
+    for (
+        let i = 0;
+        i < UA.length;
+        i++
+    ) {
+
+        if (i === 0) {
+
+            ctx.moveTo(
+                X(UA[i]),
+                Y(VA[i])
+            );
+
+        } else {
+
+            ctx.lineTo(
+                X(UA[i]),
+                Y(VA[i])
+            );
+
+        }
+
+    }
+
+    ctx.stroke();
+
+
+    // Deuxième trajectoire
+
+    ctx.beginPath();
+
+    for (
+        let i = 0;
+        i < UB.length;
+        i++
+    ) {
+
+        if (i === 0) {
+
+            ctx.moveTo(
+                X(UB[i]),
+                Y(VB[i])
+            );
+
+        } else {
+
+            ctx.lineTo(
+                X(UB[i]),
+                Y(VB[i])
+            );
+
+        }
+
+    }
+
+    ctx.stroke();
+
+
+    ctx.font =
+        "16px Arial";
+
+
+    ctx.fillText(
+        "u",
+        canvas.width - 30,
+        canvas.height - 15
+    );
+
+
+    ctx.fillText(
+        "v",
+        15,
+        30
+    );
+
+}
+
+</script>
+
+
+</body>
+
+</html>
