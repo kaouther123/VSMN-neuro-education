@@ -1,145 +1,165 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>VSMN Neuro Education</title>
+<meta charset="UTF-8">
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background: #f4f6f8;
-            color: #222;
-        }
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-        header {
-            background: #1f3c88;
-            color: white;
-            padding: 40px;
-            text-align: center;
-        }
+<title>VSMN Neuro Education</title>
 
-        nav {
-            background: #172b5c;
-            padding: 15px;
-            text-align: center;
-        }
+<link rel="stylesheet" href="css/style.css">
 
-        nav a {
-            color: white;
-            margin: 15px;
-            text-decoration: none;
-        }
-
-        main {
-            max-width: 1100px;
-            margin: auto;
-            padding: 40px;
-        }
-
-        .card {
-            background: white;
-            padding: 25px;
-            margin: 20px 0;
-            border-radius: 12px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-        }
-
-        .button {
-            display: inline-block;
-            padding: 12px 20px;
-            background: #1f3c88;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-        }
-    </style>
 </head>
 
 <body>
 
 <header>
-    <h1>VSMN Neuro Education</h1>
 
-    <p>
-        Plateforme interactive pour comprendre
-        la dynamique neuronale et le chaos
-    </p>
+<h1>VSMN Neuro Education</h1>
+
+<p>
+Plateforme éducative interactive sur la dynamique neuronale,
+la non-linéarité et le chaos
+</p>
+
 </header>
 
 <nav>
-    <a href="#neurone">Neurone</a>
-    <a href="#vsmn">VSMN</a>
-    <a href="#chaos">Chaos</a>
-    <a href="#ecg">ECG</a>
-    <a href="#eeg">EEG</a>
-    <a href="#quiz">Quiz</a>
+
+<a href="index.html">Accueil</a>
+
+<a href="pages/neurone.html">
+Neurone
+</a>
+
+<a href="pages/vsmn.html">
+VSMN
+</a>
+
+<a href="pages/chaos.html">
+Chaos
+</a>
+
+<a href="pages/ecg.html">
+ECG
+</a>
+
+<a href="pages/eeg.html">
+EEG
+</a>
+
+<a href="pages/quiz.html">
+Quiz
+</a>
+
 </nav>
 
-<main>
+<main class="container">
 
-    <section id="neurone" class="card">
-        <h2>🧠 Le neurone</h2>
+<section class="card">
 
-        <p>
-            Introduction au fonctionnement et à la
-            dynamique neuronale.
-        </p>
-    </section>
+<h2>🧠 Bienvenue</h2>
 
-    <section id="vsmn" class="card">
-        <h2>📐 Modèle VSMN</h2>
+<p>
+Cette plateforme permet de découvrir progressivement
+la modélisation neuronale, les systèmes non linéaires
+et les comportements chaotiques.
+</p>
 
-        <p>
-            Découverte du modèle neuronal VSMN,
-            de ses variables et de ses paramètres.
-        </p>
+</section>
 
-        <a class="button" href="#">
-            Simuler le modèle
-        </a>
-    </section>
 
-    <section id="chaos" class="card">
-        <h2>🌀 Dynamique chaotique</h2>
+<section class="card">
 
-        <p>
-            Comprendre la non-linéarité,
-            la sensibilité aux conditions initiales
-            et les attracteurs chaotiques.
-        </p>
-    </section>
+<h2>📐 Modélisation neuronale</h2>
 
-    <section id="ecg" class="card">
-        <h2>❤️ Génération ECG</h2>
+<p>
+Découvrez le fonctionnement du neurone et le modèle VSMN.
+</p>
 
-        <p>
-            Génération et visualisation d'un signal
-            ECG synthétique.
-        </p>
-    </section>
+<a class="button"
+   href="pages/neurone.html">
 
-    <section id="eeg" class="card">
-        <h2>🧠 Génération EEG</h2>
+Commencer →
 
-        <p>
-            Génération et visualisation d'un signal
-            EEG synthétique.
-        </p>
-    </section>
+</a>
 
-    <section id="quiz" class="card">
-        <h2>📝 Quiz</h2>
+</section>
 
-        <p>
-            Testez vos connaissances sur les neurones,
-            le VSMN et le chaos.
-        </p>
-    </section>
+
+<section class="card">
+
+<h2>🌀 Dynamique chaotique</h2>
+
+<p>
+Comprendre la non-linéarité, la sensibilité aux conditions
+initiales et les attracteurs chaotiques.
+</p>
+
+<a class="button"
+   href="pages/chaos.html">
+
+Explorer le chaos →
+
+</a>
+
+</section>
+
+
+<section class="card">
+
+<h2>❤️ Signaux biomédicaux</h2>
+
+<p>
+Explorer la génération de signaux ECG et EEG synthétiques
+à partir de modèles dynamiques.
+</p>
+
+<a class="button"
+   href="pages/ecg.html">
+
+Découvrir ECG →
+
+</a>
+
+</section>
+
+
+<section class="card">
+
+<h2>📝 Quiz interactif</h2>
+
+<p>
+Testez vos connaissances sur les neurones,
+le VSMN et le chaos.
+</p>
+
+<a class="button"
+   href="pages/quiz.html">
+
+Commencer le quiz →
+
+</a>
+
+</section>
 
 </main>
 
+<footer>
+
+<p>
+VSMN Neuro Education
+</p>
+
+<p>
+Plateforme éducative scientifique
+</p>
+
+</footer>
+
 </body>
+
 </html>
