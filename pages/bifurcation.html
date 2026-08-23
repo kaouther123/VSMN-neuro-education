@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Diagramme de bifurcation - VSMN</title>
+
+<link rel="stylesheet"
+      href="../css/style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>📊 Diagramme de bifurcation du VSMN</h1>
+
+<p>
+Analyse de la dynamique en fonction d'un paramètre
+</p>
+
+</header>
+
+
+<nav>
+
+<a href="../index.html">Accueil</a>
+
+<a href="neurone.html">Neurone</a>
+
+<a href="vsmn.html">VSMN</a>
+
+<a href="simulation.html">Simulation VSMN</a>
+
+<a href="validation-chaos.html">
+Validation du chaos
+</a>
+
+<a href="lyapunov.html">
+Lyapunov
+</a>
+
+<a href="bifurcation.html">
+Bifurcation
+</a>
+
+<a href="chua.html">Chua</a>
+
+<a href="ecg.html">ECG</a>
+
+<a href="eeg.html">EEG</a>
+
+</nav>
+
+
+<main class="container">
+
+
+<!-- =========================================
+     EXPLICATION
+========================================= -->
+
+<section class="card">
+
+<h2>
+🔬 Principe
+</h2>
+
+<p>
+
+Le diagramme de bifurcation consiste à faire
+varier progressivement un paramètre du modèle
+VSMN et à observer les valeurs atteintes par
+une variable d'état après élimination du
+régime transitoire.
+
+</p>
+
+<p>
+
+Dans cette plateforme, nous faisons varier
+le paramètre <strong>λ</strong>.
+
+</p>
+
+<div style="
+text-align:center;
+font-size:23px;
+padding:20px;
+">
+
+<strong>
+λ → dynamique du système
+</strong>
+
+</div>
+
+<p>
+
+Pour chaque valeur de λ, le système est simulé
+et les dernières valeurs de <strong>u</strong>
+sont représentées.
+
+</p>
+
+</section>
+
+
+<!-- =========================================
+     PARAMETRES
+========================================= -->
+
+<section class="card">
+
+<h2>
+⚙️ Paramètres fixes du VSMN
+</h2>
+
+
+<label>
+
+τ :
+
+<input
+type="number"
+id="tau"
+value="1"
+step="0.1">
+
+</label>
+
+<br><br>
+
+
+<label>
+
+p :
+
+<input
+type="number"
+id="p"
+value="0"
+step="0.1">
+
+</label>
+
+<br><br>
+
+
+<label>
+
+q :
+
+<input
+type="number"
+id="q"
+value="0"
+step="0.1">
+
+</label>
+
+<br><br>
+
+
+<label>
+
+α :
+
+<input
+type="number"
+id="alpha"
+value="1"
+step="0.1">
+
+</label>
+
+<br><br>
+
+
+<label>
+
+β :
+
+<input
+type="number"
+id="beta"
+value="1"
+step="0.1">
+
+</label>
+
+<br><br>
+
+
+<label>
+
+n :
+
+<input
+type="number"
+id="n"
+value="1"
+step="1">
+
+</label>
+
+<br><br>
+
+
+<label>
+
+k :
+
+<select id="k">
+
+<option value="1">+1</option>
+
+<option value="-1">-1</option>
+
+</select>
+
+</label>
+
+</section>
+
+
+<!-- =========================================
+     PARAMETRE VARIABLE
+========================================= -->
+
+<section class="card">
+
+<h2>
+🎚️ Paramètre de bifurcation
+</h2>
+
+
+<p>
+
+Nous faisons varier :
+
+</p>
+
+
+<div style="
+text-align:center;
+font-size:26px;
+padding:15px;
+">
+
+<strong>
+λ
+</strong>
+
+</div>
+
+
+<label>
+
+λ min :
+
+<input
+type="number"
+id="lambdaMin"
+value="0.1"
+step="0.1">
+
+</label>
+
+
+<br><br>
+
+
+<label>
+
+λ max :
+
+<input
+type="number"
+id="lambdaMax"
+value="5"
+step="0.1">
+
+</label>
+
+
+<br><br>
+
+
+<label>
+
+Nombre de valeurs :
+
+<input
+type="number"
+id="lambdaSteps"
+value="250"
+step="10">
+
+</label>
+
+
+<br><br>
+
+
+<button
+class="button"
+onclick="calculateBifurcation()">
+
+▶ CALCULER LE DIAGRAMME
+
+</button>
+
+</section>
+
+
+<!-- =========================================
+     DIAGRAMME
+========================================= -->
+
+<section class="card">
+
+<h2>
+📈 Diagramme de bifurcation
+</h2>
+
+
+<canvas
+id="bifurcationChart"
+width="1000"
+height="550">
+</canvas>
+
+</section>
+
+
+<!-- =========================================
+     INTERPRETATION
+========================================= -->
+
+<section class="card">
+
+<h2>
+🧠 Interprétation
+</h2>
+
+
+<div id="interpretation">
+
+<p>
+
+Lancez le calcul pour afficher
+le diagramme.
+
+</p>
+
+</div>
+
+</section>
+
+
+<!-- =========================================
+     ATTENTION SCIENTIFIQUE
+========================================= -->
+
+<section class="card">
+
+<h2>
+⚠️ Remarque scientifique
+</h2>
+
+<p>
+
+Un diagramme de bifurcation seul ne suffit
+pas à démontrer l'existence du chaos.
+
+</p>
+
+<p>
+
+Il doit être interprété avec d'autres
+indicateurs dynamiques tels que l'exposant
+maximal de Lyapunov, les portraits de phase
+et la sensibilité aux conditions initiales.
+
+</p>
+
+</section>
+
+
+</main>
+
+
+<footer>
+
+<p>
+VSMN Neuro Education
+</p>
+
+</footer>
+
+
+<script>
+
+
+/* =========================================
+   FONCTION NON LINEAIRE
+========================================= */
+
+function f(x) {
+
+return Math.exp(
+-(x*x)/2
+);
+
+}
+
+
+/* =========================================
+   EQUATIONS VSMN
+========================================= */
+
+function derivatives(
+u,
+v,
+par
+) {
+
+
+const f1 =
+f(
+par.beta * v
+);
+
+
+const f2 =
+f(
+par.lambda * (u + par.p)
+);
+
+
+const du =
+-(u + par.p) / par.tau
++
+(u + par.p)
+*
+v
+*
+f1
+*
+f2;
+
+
+const dv =
+-par.alpha * v
++
+par.k
+*
+Math.pow(
+u + par.q,
+par.n
+)
+*
+par.alpha
+*
+f2 * f2;
+
+
+return {
+
+du: du,
+
+dv: dv
+
+};
+
+}
+
+
+/* =========================================
+   RUNGE-KUTTA 4
+========================================= */
+
+function rk4(
+u,
+v,
+dt,
+par
+) {
+
+
+const k1 =
+derivatives(
+u,
+v,
+par
+);
+
+
+const k2 =
+derivatives(
+u + dt*k1.du/2,
+v + dt*k1.dv/2,
+par
+);
+
+
+const k3 =
+derivatives(
+u + dt*k2.du/2,
+v + dt*k2.dv/2,
+par
+);
+
+
+const k4 =
+derivatives(
+u + dt*k3.du,
+v + dt*k3.dv,
+par
+);
+
+
+return {
+
+u:
+u +
+dt/6 *
+(
+k1.du +
+2*k2.du +
+2*k3.du +
+k4.du
+),
+
+v:
+v +
+dt/6 *
+(
+k1.dv +
+2*k2.dv +
+2*k3.dv +
+k4.dv
+)
+
+};
+
+}
+
+
+/* =========================================
+   CALCUL DU DIAGRAMME
+========================================= */
+
+function calculateBifurcation() {
+
+
+const tau =
+Number(
+document.getElementById(
+"tau"
+).value
+);
+
+
+const p =
+Number(
+document.getElementById(
+"p"
+).value
+);
+
+
+const q =
+Number(
+document.getElementById(
+"q"
+).value
+);
+
+
+const alpha =
+Number(
+document.getElementById(
+"alpha"
+).value
+);
+
+
+const beta =
+Number(
+document.getElementById(
+"beta"
+).value
+);
+
+
+const n =
+Number(
+document.getElementById(
+"n"
+).value
+);
+
+
+const k =
+Number(
+document.getElementById(
+"k"
+).value
+);
+
+
+const lambdaMin =
+Number(
+document.getElementById(
+"lambdaMin"
+).value
+);
+
+
+const lambdaMax =
+Number(
+document.getElementById(
+"lambdaMax"
+).value
+);
+
+
+const lambdaSteps =
+Number(
+document.getElementById(
+"lambdaSteps"
+).value
+);
+
+
+const dt =
+0.01;
+
+
+/*
+ * Nombre de pas pour atteindre
+ * le régime permanent/asymptotique.
+ */
+
+const transientSteps =
+5000;
+
+
+/*
+ * Nombre de valeurs conservées
+ * pour construire le diagramme.
+ */
+
+const keepSteps =
+300;
+
+
+const points = [];
+
+
+/* =====================================
+   BALAYAGE DE λ
+===================================== */
+
+for(
+let j = 0;
+j < lambdaSteps;
+j++
+) {
+
+
+const lambda =
+lambdaMin
++
+(
+lambdaMax-lambdaMin
+)
+*
+j
+/
+(lambdaSteps-1);
+
+
+const par = {
+
+tau: tau,
+
+p: p,
+
+q: q,
+
+alpha: alpha,
+
+beta: beta,
+
+lambda: lambda,
+
+n: n,
+
+k: k
+
+};
+
+
+/*
+ * Conditions initiales
+ */
+
+let u = 0.1;
+
+let v = 0.1;
+
+
+/* =================================
+   ELIMINATION DU TRANSITOIRE
+================================= */
+
+for(
+let i=0;
+i<transientSteps;
+i++
+) {
+
+
+const result =
+rk4(
+u,
+v,
+dt,
+par
+);
+
+
+u =
+result.u;
+
+v =
+result.v;
+
+
+/*
+ * Vérification numérique
+ */
+
+if(
+!Number.isFinite(u)
+||
+!Number.isFinite(v)
+) {
+
+break;
+
+}
+
+}
+
+
+/* =================================
+   CONSERVATION DES DERNIÈRES VALEURS
+================================= */
+
+for(
+let i=0;
+i<keepSteps;
+i++
+) {
+
+
+const result =
+rk4(
+u,
+v,
+dt,
+par
+);
+
+
+u =
+result.u;
+
+v =
+result.v;
+
+
+if(
+Number.isFinite(u)
+&&
+Number.isFinite(v)
+) {
+
+
+points.push({
+
+lambda: lambda,
+
+u: u
+
+});
+
+}
+
+}
+
+}
+
+
+/* =====================================
+   AFFICHAGE
+===================================== */
+
+drawBifurcation(
+points,
+lambdaMin,
+lambdaMax
+);
+
+
+/* =====================================
+   TEXTE
+===================================== */
+
+document.getElementById(
+"interpretation"
+).innerHTML = `
+
+<p>
+
+Le paramètre <strong>λ</strong> a été
+progressivement augmenté de
+
+<strong>${lambdaMin}</strong>
+
+à
+
+<strong>${lambdaMax}</strong>.
+
+</p>
+
+<p>
+
+Pour chaque valeur de λ, le système a été
+simulé numériquement après élimination d'une
+phase transitoire.
+
+</p>
+
+<p>
+
+Les valeurs finales de <strong>u</strong>
+sont ensuite représentées afin d'observer
+l'évolution de la dynamique du système.
+
+</p>
+
+<p>
+
+<strong>
+Attention :
+</strong>
+
+l'apparition d'une structure complexe dans
+le diagramme doit être confirmée par les
+autres indicateurs dynamiques.
+
+</p>
+
+`;
+
+}
+
+
+/* =========================================
+   DESSIN DU DIAGRAMME
+========================================= */
+
+function drawBifurcation(
+points,
+lambdaMin,
+lambdaMax
+) {
+
+
+const canvas =
+document.getElementById(
+"bifurcationChart"
+);
+
+
+const ctx =
+canvas.getContext("2d");
+
+
+ctx.clearRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+
+if(
+points.length === 0
+) {
+
+return;
+
+}
+
+
+/* =================================
+   LIMITES
+================================= */
+
+const U =
+points.map(
+p => p.u
+);
+
+
+let minU =
+Math.min(...U);
+
+
+let maxU =
+Math.max(...U);
+
+
+/*
+ * Eviter une échelle nulle
+ */
+
+if(
+Math.abs(maxU-minU)
+< 1e-12
+) {
+
+minU -= 1;
+
+maxU += 1;
+
+}
+
+
+const margin =
+60;
+
+
+const width =
+canvas.width -
+2*margin;
+
+
+const height =
+canvas.height -
+2*margin;
+
+
+/* =================================
+   TRANSFORMATIONS
+================================= */
+
+function X(lambda) {
+
+return margin
++
+(
+lambda-lambdaMin
+)
+/
+(
+lambdaMax-lambdaMin
+)
+*
+width;
+
+}
+
+
+function Y(u) {
+
+return canvas.height -
+margin -
+(
+u-minU
+)
+/
+(
+maxU-minU
+)
+*
+height;
+
+}
+
+
+/* =================================
+   AXES
+================================= */
+
+ctx.beginPath();
+
+ctx.moveTo(
+margin,
+margin
+);
+
+ctx.lineTo(
+margin,
+canvas.height-margin
+);
+
+ctx.lineTo(
+canvas.width-margin,
+canvas.height-margin
+);
+
+ctx.stroke();
+
+
+/* =================================
+   POINTS
+================================= */
+
+for(
+const point of points
+) {
+
+
+const x =
+X(point.lambda);
+
+
+const y =
+Y(point.u);
+
+
+ctx.beginPath();
+
+ctx.arc(
+x,
+y,
+1.2,
+0,
+2*Math.PI
+);
+
+ctx.fill();
+
+}
+
+
+/* =================================
+   LABELS
+================================= */
+
+ctx.font =
+"16px Arial";
+
+
+ctx.fillText(
+"u",
+20,
+margin
+);
+
+
+ctx.fillText(
+"λ",
+canvas.width-30,
+canvas.height-20
+);
+
+
+ctx.fillText(
+"Diagramme de bifurcation VSMN",
+300,
+25
+);
+
+}
+
+</script>
+
+
+</body>
+
+</html>
