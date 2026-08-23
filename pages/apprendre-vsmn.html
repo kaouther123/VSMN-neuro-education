@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Apprendre le VSMN</title>
+
+<link rel="stylesheet"
+      href="../css/style.css">
+
+<style>
+
+.term {
+
+cursor:pointer;
+
+padding:6px 10px;
+
+border-radius:6px;
+
+font-weight:bold;
+
+transition:0.2s;
+
+}
+
+.term:hover {
+
+transform:scale(1.08);
+
+}
+
+.equation {
+
+font-size:24px;
+
+text-align:center;
+
+line-height:2.5;
+
+padding:25px;
+
+overflow-x:auto;
+
+}
+
+.explanation {
+
+min-height:120px;
+
+padding:20px;
+
+margin-top:20px;
+
+border-radius:10px;
+
+}
+
+.learning-grid {
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(180px,1fr));
+
+gap:15px;
+
+margin-top:20px;
+
+}
+
+.learning-card {
+
+padding:18px;
+
+border-radius:10px;
+
+cursor:pointer;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>🎓 Apprendre le modèle VSMN</h1>
+
+<p>
+Comprendre chaque terme du modèle
+de manière interactive
+</p>
+
+</header>
+
+
+<nav>
+
+<a href="../index.html">
+Accueil
+</a>
+
+<a href="neurone.html">
+Neurone
+</a>
+
+<a href="vsmn.html">
+VSMN
+</a>
+
+<a href="simulation.html">
+Simulation
+</a>
+
+<a href="analyse-vsmn.html">
+Analyse complète
+</a>
+
+<a href="quiz.html">
+Quiz
+</a>
+
+</nav>
+
+
+<main class="container">
+
+
+<!-- =====================================
+     INTRODUCTION
+===================================== -->
+
+<section class="card">
+
+<h2>
+🧠 Pourquoi étudier le VSMN ?
+</h2>
+
+<p>
+
+Le VSMN permet de représenter mathématiquement
+la dynamique d'un neurone à travers des
+équations différentielles non linéaires.
+
+</p>
+
+<p>
+
+L'objectif de cette page est de comprendre
+progressivement le rôle de chaque terme
+du modèle.
+
+</p>
+
+</section>
+
+
+<!-- =====================================
+     EQUATION
+===================================== -->
+
+<section class="card">
+
+<h2>
+📐 Équation du modèle
+</h2>
+
+<p>
+
+Cliquez sur un terme pour obtenir
+son explication.
+
+</p>
+
+
+<div class="equation">
+
+
+<div>
+
+<span
+class="term"
+onclick="explain('u')">
+
+u
+
+</span>
+
+˙
+
+=
+
+−
+
+<span
+class="term"
+onclick="explain('tau')">
+
+(u+p)/τ
+
+</span>
+
++
+
+<span
+class="term"
+onclick="explain('nonlinear')">
+
+(u+p)v f(βv)f(λ(u+p))
+
+</span>
+
+</div>
+
+
+<div>
+
+<span
+class="term"
+onclick="explain('v')">
+
+v
+
+</span>
+
+˙
+
+=
+
+−
+
+<span
+class="term"
+onclick="explain('alpha')">
+
+αv
+
+</span>
+
++
+
+<span
+class="term"
+onclick="explain('k')">
+
+k
+
+</span>
+
+<span
+class="term"
+onclick="explain('n')">
+
+(u+q)<sup>n</sup>
+
+</span>
+
+<span
+class="term"
+onclick="explain('alpha')">
+
+α
+
+</span>
+
+<span
+class="term"
+onclick="explain('lambda')">
+
+f²(λ(u+p))
+
+</span>
+
+</div>
+
+</div>
+
+
+<div
+id="explanation"
+class="explanation">
+
+<h3>
+👆 Cliquez sur un terme
+</h3>
+
+<p>
+
+Sélectionnez un élément de l'équation
+pour afficher son explication.
+
+</p>
+
+</div>
+
+</section>
+
+
+<!-- =====================================
+     TERMES
+===================================== -->
+
+<section class="card">
+
+<h2>
+🔎 Explorer les paramètres
+</h2>
+
+
+<div class="learning-grid">
+
+
+<div
+class="learning-card"
+onclick="explain('u')">
+
+<h3>u</h3>
+
+<p>
+Variable d'état
+</p>
+
+</div>
+
+
+<div
+class="learning-card"
+onclick="explain('v')">
+
+<h3>v</h3>
+
+<p>
+Variable d'état
+</p>
+
+</div>
+
+
+<div
+class="learning-card"
+onclick="explain('tau')">
+
+<h3>τ</h3>
+
+<p>
+Constante temporelle
+</p>
+
+</div>
+
+
+<div
+class="learning-card"
+onclick="explain('alpha')">
+
+<h3>α</h3>
+
+<p>
+Paramètre dynamique
+</p>
+
+</div>
+
+
+<div
+class="learning-card"
+onclick="explain('beta')">
+
+<h3>β</h3>
+
+<p>
+Paramètre de la non-linéarité
+</p>
+
+</div>
+
+
+<div
+class="learning-card"
+onclick="explain('p')">
+
+<h3>p</h3>
+
+<p>
+Paramètre de décalage
+</p>
+
+</div>
+
+
+<div
+class="learning-card"
+onclick="explain('q')">
+
+<h3>q</h3>
+
+<p>
+Paramètre de décalage
+</p>
+
+</div>
+
+
+<div
+class="learning-card"
+onclick="explain('lambda')">
+
+<h3>λ</h3>
+
+<p>
+Paramètre de non-linéarité
+</p>
+
+</div>
+
+
+<div
+class="learning-card"
+onclick="explain('n')">
+
+<h3>n</h3>
+
+<p>
+Exposant
+</p>
+
+</div>
+
+
+<div
+class="learning-card"
+onclick="explain('k')">
+
+<h3>k</h3>
+
+<p>
+Coefficient / signe
+</p>
+
+</div>
+
+
+<div
+class="learning-card"
+onclick="explain('nonlinear')">
+
+<h3>f(·)</h3>
+
+<p>
+Fonction non linéaire
+</p>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<!-- =====================================
+     NON LINEARITE
+===================================== -->
+
+<section class="card">
+
+<h2>
+〰️ Où intervient la non-linéarité ?
+</h2>
+
+<p>
+
+La non-linéarité apparaît notamment à travers
+la fonction :
+
+</p>
+
+
+<div class="equation">
+
+<strong>
+f(·)
+</strong>
+
+</div>
+
+
+<p>
+
+et les termes tels que :
+
+</p>
+
+
+<div class="equation">
+
+<strong>
+(u+p)v f(βv)f(λ(u+p))
+</strong>
+
+</div>
+
+
+<p>
+
+C'est cette structure non linéaire qui permet
+au système d'avoir une dynamique plus riche
+qu'un système différentiel linéaire.
+
+</p>
+
+</section>
+
+
+<!-- =====================================
+     CHAOS
+===================================== -->
+
+<section class="card">
+
+<h2>
+🌀 Du modèle au chaos
+</h2>
+
+
+<div style="
+text-align:center;
+font-size:22px;
+padding:20px;
+">
+
+VSMN
+
+↓
+
+Non-linéarité
+
+↓
+
+Dynamique complexe
+
+↓
+
+Sensibilité aux conditions initiales
+
+↓
+
+Attracteur
+
+↓
+
+Possibilité de comportement chaotique
+
+</div>
+
+
+<p>
+
+Le chaos ne doit cependant pas être conclu
+uniquement à partir de l'apparence irrégulière
+d'un signal.
+
+</p>
+
+
+<p>
+
+La plateforme permet donc de compléter
+l'observation par des indicateurs dynamiques
+comme l'exposant de Lyapunov et le diagramme
+de bifurcation.
+
+</p>
+
+</section>
+
+
+<!-- =====================================
+     BOUTON SIMULATION
+===================================== -->
+
+<section class="card">
+
+<h2>
+🚀 Passer à la simulation
+</h2>
+
+
+<p>
+
+Après avoir compris les différents termes,
+vous pouvez modifier les paramètres et
+observer directement leur influence.
+
+</p>
+
+
+<a
+class="button"
+href="simulation.html">
+
+▶ Ouvrir la simulation VSMN
+
+</a>
+
+</section>
+
+
+</main>
+
+
+<footer>
+
+<p>
+VSMN Neuro Education
+</p>
+
+</footer>
+
+
+<script>
+
+
+function explain(term) {
+
+
+const box =
+document.getElementById(
+"explanation"
+);
+
+
+let title = "";
+
+let text = "";
+
+
+/* =====================================
+   u
+===================================== */
+
+if(term === "u") {
+
+title =
+"🟦 Variable u";
+
+text =
+
+"u représente une variable d'état du modèle. "
++
+"Son évolution temporelle est décrite par "
++
+"l'équation différentielle du VSMN.";
+
+}
+
+
+/* =====================================
+   v
+===================================== */
+
+else if(term === "v") {
+
+title =
+"🟩 Variable v";
+
+text =
+
+"v représente la deuxième variable d'état "
++
+"du système. Avec u, elle permet de décrire "
++
+"l'état dynamique du modèle.";
+
+}
+
+
+/* =====================================
+   tau
+===================================== */
+
+else if(term === "tau") {
+
+title =
+"⏱️ τ — Constante temporelle";
+
+text =
+
+"τ contrôle une échelle temporelle de "
++
+"l'évolution de la dynamique. Sa valeur "
++
+"influence donc la vitesse d'évolution "
++
+"du système.";
+
+}
+
+
+/* =====================================
+   alpha
+===================================== */
+
+else if(term === "alpha") {
+
+title =
+"⚙️ α — Paramètre dynamique";
+
+text =
+
+"α intervient dans la dynamique de la "
++
+"variable v. Il contrôle l'intensité "
++
+"de certains termes de l'équation.";
+
+}
+
+
+/* =====================================
+   beta
+===================================== */
+
+else if(term === "beta") {
+
+title =
+"〰️ β — Paramètre de non-linéarité";
+
+text =
+
+"β intervient dans l'argument de la "
++
+"fonction non linéaire f(βv). "
++
+"Il modifie donc la manière dont "
++
+"la non-linéarité intervient dans "
++
+"la dynamique.";
+
+}
+
+
+/* =====================================
+   p
+===================================== */
+
+else if(term === "p") {
+
+title =
+"📌 p — Paramètre de décalage";
+
+text =
+
+"p intervient dans le terme u+p. "
++
+"Il modifie la position de la variable "
++
+"d'état dans la fonction non linéaire.";
+
+}
+
+
+/* =====================================
+   q
+===================================== */
+
+else if(term === "q") {
+
+title =
+"📌 q — Paramètre de décalage";
+
+text =
+
+"q intervient dans le terme u+q. "
++
+"Il influence donc la contribution "
++
+"non linéaire de ce terme.";
+
+}
+
+
+/* =====================================
+   lambda
+===================================== */
+
+else if(term === "lambda") {
+
+title =
+"λ — Paramètre de la non-linéarité";
+
+text =
+
+"λ intervient dans f(λ(u+p)). "
++
+"Il agit directement sur l'argument "
++
+"de la fonction non linéaire et peut "
++
+"modifier fortement la dynamique "
++
+"du système.";
+
+}
+
+
+/* =====================================
+   n
+===================================== */
+
+else if(term === "n") {
+
+title =
+"n — Exposant";
+
+text =
+
+"n intervient dans le terme "
++
+"(u+q)^n. Il modifie la forme de "
++
+"la contribution non linéaire.";
+
+}
+
+
+/* =====================================
+   k
+===================================== */
+
+else if(term === "k") {
+
+title =
+"k — Coefficient";
+
+text =
+
+"k agit comme un coefficient du terme "
++
+"non linéaire de la deuxième équation. "
++
+"Son signe et sa valeur influencent "
++
+"la dynamique du système.";
+
+}
+
+
+/* =====================================
+   NONLINEARITE
+===================================== */
+
+else if(term === "nonlinear") {
+
+title =
+"〰️ Fonction non linéaire";
+
+text =
+
+"La fonction f(.) introduit une relation "
++
+"non linéaire dans le modèle. Contrairement "
++
+"à une relation linéaire, une petite variation "
++
+"de l'état peut produire une évolution "
++
+"complexe du système.";
+
+}
+
+
+/* =====================================
+   AFFICHAGE
+===================================== */
+
+box.innerHTML =
+
+"<h3>"
++
+title
++
+"</h3>"
++
+"<p>"
++
+text
++
+"</p>";
+
+box.scrollIntoView({
+
+behavior:"smooth",
+
+block:"center"
+
+});
+
+}
+
+</script>
+
+
+</body>
+
+</html>
