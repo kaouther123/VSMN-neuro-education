@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>EEG simulé - VSMN Neuro Education</title>
+
+    <link rel="stylesheet"
+          href="../css/style.css">
+
+</head>
+
+
+<body>
+
+<header>
+
+    <h1>🧠 Génération d'un signal EEG</h1>
+
+    <p>
+        Visualisation pédagogique de l'activité cérébrale simulée
+    </p>
+
+</header>
+
+
+<nav>
+
+    <a href="../index.html">Accueil</a>
+    <a href="neurone.html">Neurone</a>
+    <a href="vsmn.html">VSMN</a>
+    <a href="chaos.html">Chaos</a>
+    <a href="chua.html">Chua</a>
+    <a href="ecg.html">ECG</a>
+    <a href="eeg.html">EEG</a>
+    <a href="quiz.html">Quiz</a>
+
+</nav>
+
+
+<main class="container">
+
+
+    <!-- =========================================
+         1. INTRODUCTION
+    ========================================== -->
+
+    <section class="card">
+
+        <h2>🧠 Qu'est-ce qu'un EEG ?</h2>
+
+        <p>
+            L'électroencéphalogramme (EEG) est un signal
+            qui permet d'enregistrer l'activité électrique
+            du cerveau à l'aide d'électrodes.
+        </p>
+
+        <p>
+            Dans cette plateforme, nous utilisons un signal
+            synthétique pour illustrer différentes composantes
+            fréquentielles de l'activité cérébrale.
+        </p>
+
+    </section>
+
+
+    <!-- =========================================
+         2. PARAMÈTRES
+    ========================================== -->
+
+    <section class="card">
+
+        <h2>⚙️ Paramètres du signal EEG</h2>
+
+
+        <label>
+
+            <strong>
+                Fréquence principale :
+            </strong>
+
+            <input
+                type="range"
+                id="frequency"
+                min="1"
+                max="40"
+                value="10"
+                step="1"
+                oninput="updateEEGValues()">
+
+        </label>
+
+
+        <span id="frequencyValue">
+            10 Hz
+        </span>
+
+
+        <br><br>
+
+
+        <label>
+
+            <strong>
+                Amplitude :
+            </strong>
+
+            <input
+                type="range"
+                id="amplitude"
+                min="0.1"
+                max="2"
+                value="1"
+                step="0.1"
+                oninput="updateEEGValues()">
+
+        </label>
+
+
+        <span id="amplitudeValue">
+            1
+        </span>
+
+
+        <br><br>
+
+
+        <label>
+
+            <strong>
+                Niveau de bruit :
+            </strong>
+
+            <input
+                type="range"
+                id="noise"
+                min="0"
+                max="0.5"
+                value="0.05"
+                step="0.01"
+                oninput="updateEEGValues()">
+
+        </label>
+
+
+        <span id="noiseValue">
+            0.05
+        </span>
+
+
+        <br><br>
+
+
+        <button
+            class="button"
+            onclick="generateEEG()">
+
+            ▶ GÉNÉRER EEG
+
+        </button>
+
+    </section>
+
+
+    <!-- =========================================
+         3. SIGNAL EEG
+    ========================================== -->
+
+    <section class="card">
+
+        <h2>📈 Signal EEG simulé</h2>
+
+        <canvas
+            id="eegChart"
+            width="1000"
+            height="450">
+        </canvas>
+
+    </section>
+
+
+    <!-- =========================================
+         4. INTERPRÉTATION
+    ========================================== -->
+
+    <section class="card">
+
+        <h2>📚 Interprétation</h2>
+
+        <div id="eegExplanation">
+
+            <p>
+                Cliquez sur « Générer EEG » pour
+                afficher le signal.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         5. LIEN AVEC LA MODÉLISATION
+    ========================================== -->
+
+    <section class="card">
+
+        <h2>🔗 Lien avec la modélisation neuronale</h2>
+
+        <p>
+
+            La simulation d'un EEG permet d'étudier
+            comment une dynamique neuronale modélisée
+            peut être associée à des signaux observables.
+
+        </p>
+
+        <p>
+
+            L'objectif est de créer un lien entre :
+
+        </p>
+
+
+        <div style="
+            text-align:center;
+            font-size:21px;
+            padding:20px;
+        ">
+
+            <strong>
+                Modèle neuronal
+            </strong>
+
+            <br>
+            ↓
+            <br>
+
+            <strong>
+                Dynamique non linéaire
+            </strong>
+
+            <br>
+            ↓
+            <br>
+
+            <strong>
+                Signal simulé
+            </strong>
+
+            <br>
+            ↓
+            <br>
+
+            <strong>
+                EEG
+            </strong>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<footer>
+
+    <p>
+        VSMN Neuro Education
+    </p>
+
+</footer>
+
+
+<script>
+
+
+/* =========================================
+   MISE À JOUR DES VALEURS
+========================================= */
+
+function updateEEGValues() {
+
+    const frequency =
+        document.getElementById(
+            "frequency"
+        ).value;
+
+
+    const amplitude =
+        document.getElementById(
+            "amplitude"
+        ).value;
+
+
+    const noise =
+        document.getElementById(
+            "noise"
+        ).value;
+
+
+    document.getElementById(
+        "frequencyValue"
+    ).textContent =
+        frequency + " Hz";
+
+
+    document.getElementById(
+        "amplitudeValue"
+    ).textContent =
+        amplitude;
+
+
+    document.getElementById(
+        "noiseValue"
+    ).textContent =
+        noise;
+
+}
+
+
+/* =========================================
+   GÉNÉRATION DU SIGNAL EEG
+========================================= */
+
+function generateEEG() {
+
+    const canvas =
+        document.getElementById(
+            "eegChart"
+        );
+
+    const ctx =
+        canvas.getContext("2d");
+
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    const frequency =
+        Number(
+            document.getElementById(
+                "frequency"
+            ).value
+        );
+
+
+    const amplitude =
+        Number(
+            document.getElementById(
+                "amplitude"
+            ).value
+        );
+
+
+    const noiseLevel =
+        Number(
+            document.getElementById(
+                "noise"
+            ).value
+        );
+
+
+    /*
+     * Paramètres de simulation
+     */
+
+    const duration =
+        10;
+
+
+    const fs =
+        500;
+
+
+    const samples =
+        duration * fs;
+
+
+    const signal = [];
+
+
+    /*
+     * Génération
+     */
+
+    for (
+        let i = 0;
+        i < samples;
+        i++
+    ) {
+
+        const t =
+            i / fs;
+
+
+        /*
+         * Oscillation principale
+         */
+
+        const mainWave =
+            amplitude *
+            Math.sin(
+                2 *
+                Math.PI *
+                frequency *
+                t
+            );
+
+
+        /*
+         * Composante basse fréquence
+         */
+
+        const slowWave =
+            0.25 *
+            amplitude *
+            Math.sin(
+                2 *
+                Math.PI *
+                2 *
+                t
+            );
+
+
+        /*
+         * Composante haute fréquence
+         */
+
+        const fastWave =
+            0.15 *
+            amplitude *
+            Math.sin(
+                2 *
+                Math.PI *
+                25 *
+                t
+            );
+
+
+        /*
+         * Bruit synthétique
+         */
+
+        const noise =
+            noiseLevel *
+            (
+                Math.random() * 2 - 1
+            );
+
+
+        const value =
+            mainWave +
+            slowWave +
+            fastWave +
+            noise;
+
+
+        signal.push(value);
+
+    }
+
+
+    /*
+     * Échelle graphique
+     */
+
+    const margin =
+        50;
+
+
+    const width =
+        canvas.width -
+        2 * margin;
+
+
+    const height =
+        canvas.height -
+        2 * margin;
+
+
+    const min =
+        -1.6 *
+        amplitude;
+
+
+    const max =
+        1.6 *
+        amplitude;
+
+
+    function X(i) {
+
+        return margin +
+            i /
+            (signal.length - 1)
+            *
+            width;
+
+    }
+
+
+    function Y(value) {
+
+        return canvas.height -
+            margin -
+            (
+                value - min
+            )
+            /
+            (
+                max - min
+            )
+            *
+            height;
+
+    }
+
+
+    /*
+     * Axes
+     */
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        margin,
+        margin
+    );
+
+    ctx.lineTo(
+        margin,
+        canvas.height - margin
+    );
+
+    ctx.lineTo(
+        canvas.width - margin,
+        canvas.height - margin
+    );
+
+    ctx.stroke();
+
+
+    /*
+     * Signal
+     */
+
+    ctx.beginPath();
+
+
+    for (
+        let i = 0;
+        i < signal.length;
+        i++
+    ) {
+
+        const x =
+            X(i);
+
+
+        const y =
+            Y(signal[i]);
+
+
+        if (i === 0) {
+
+            ctx.moveTo(
+                x,
+                y
+            );
+
+        } else {
+
+            ctx.lineTo(
+                x,
+                y
+            );
+
+        }
+
+    }
+
+
+    ctx.stroke();
+
+
+    /*
+     * Légendes
+     */
+
+    ctx.font =
+        "16px Arial";
+
+
+    ctx.fillText(
+        "Temps",
+        canvas.width - 100,
+        canvas.height - 15
+    );
+
+
+    ctx.fillText(
+        "Amplitude",
+        10,
+        25
+    );
+
+
+    /*
+     * Explication
+     */
+
+    document.getElementById(
+        "eegExplanation"
+    ).innerHTML = `
+
+        <p>
+
+            <strong>
+                Fréquence principale :
+            </strong>
+
+            ${frequency} Hz
+
+        </p>
+
+        <p>
+
+            <strong>
+                Amplitude :
+            </strong>
+
+            ${amplitude}
+
+        </p>
+
+        <p>
+
+            <strong>
+                Niveau de bruit :
+            </strong>
+
+            ${noiseLevel}
+
+        </p>
+
+        <p>
+
+            Le signal est construit à partir de
+            plusieurs composantes oscillatoires
+            auxquelles est ajouté un bruit
+            synthétique contrôlé.
+
+        </p>
+
+        <p>
+
+            <strong>
+                Attention :
+            </strong>
+
+            cette simulation est pédagogique.
+            Elle ne représente pas un EEG clinique
+            réel et ne permet pas d'établir
+            un diagnostic médical.
+
+        </p>
+
+    `;
+
+}
+
+
+/* =========================================
+   INITIALISATION
+========================================= */
+
+updateEEGValues();
+
+generateEEG();
+
+</script>
+
+
+</body>
+
+</html>
