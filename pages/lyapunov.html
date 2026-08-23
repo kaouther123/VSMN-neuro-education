@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Exposant de Lyapunov - VSMN</title>
+
+<link rel="stylesheet"
+      href="../css/style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>📊 Exposant maximal de Lyapunov</h1>
+
+<p>
+Validation quantitative de la dynamique du modèle VSMN
+</p>
+
+</header>
+
+
+<nav>
+
+<a href="../index.html">Accueil</a>
+
+<a href="neurone.html">Neurone</a>
+
+<a href="vsmn.html">VSMN</a>
+
+<a href="simulation.html">Simulation VSMN</a>
+
+<a href="validation-chaos.html">Validation du chaos</a>
+
+<a href="chaos.html">Chaos</a>
+
+<a href="chua.html">Chua</a>
+
+<a href="ecg.html">ECG</a>
+
+<a href="eeg.html">EEG</a>
+
+<a href="applications.html">Applications</a>
+
+<a href="quiz.html">Quiz</a>
+
+</nav>
+
+
+<main class="container">
+
+
+<!-- =========================================
+     EXPLICATION
+========================================= -->
+
+<section class="card">
+
+<h2>
+🧠 Qu'est-ce que l'exposant de Lyapunov ?
+</h2>
+
+<p>
+
+L'exposant de Lyapunov mesure le taux moyen
+de divergence ou de convergence de trajectoires
+initialement très proches.
+
+</p>
+
+
+<div style="
+text-align:center;
+font-size:24px;
+padding:20px;
+">
+
+<strong>
+λ<sub>max</sub>
+</strong>
+
+</div>
+
+
+<p>
+
+Dans le cas d'une dynamique chaotique,
+le plus grand exposant de Lyapunov est
+généralement positif.
+
+</p>
+
+</section>
+
+
+<!-- =========================================
+     EQUATION
+========================================= -->
+
+<section class="card">
+
+<h2>
+📐 Principe mathématique
+</h2>
+
+
+<p>
+
+Si deux trajectoires sont initialement séparées
+par une petite perturbation
+<strong>δ₀</strong>, leur séparation peut
+être approximativement décrite par :
+
+</p>
+
+
+<div style="
+text-align:center;
+font-size:22px;
+padding:15px;
+">
+
+<strong>
+δ(t) ≈ δ₀ e<sup>λt</sup>
+</strong>
+
+</div>
+
+
+<p>
+
+En prenant le logarithme :
+
+</p>
+
+
+<div style="
+text-align:center;
+font-size:22px;
+padding:15px;
+">
+
+<strong>
+ln(δ(t)/δ₀) ≈ λt
+</strong>
+
+</div>
+
+
+<p>
+
+La pente de cette relation donne une estimation
+de l'exposant de Lyapunov.
+
+</p>
+
+</section>
+
+
+<!-- =========================================
+     PARAMETRES
+========================================= -->
+
+<section class="card">
+
+<h2>
+⚙️ Paramètres du VSMN
+</h2>
+
+
+<label>
+
+τ :
+
+<input
+type="number"
+id="tau"
+value="1"
+step="0.1">
+
+</label>
+
+<br><br>
+
+
+<label>
+
+p :
+
+<input
+type="number"
+id="p"
+value="0"
+step="0.1">
+
+</label>
+
+<br><br>
+
+
+<label>
+
+q :
+
+<input
+type="number"
+id="q"
+value="0"
+step="0.1">
+
+</label>
+
+<br><br>
+
+
+<label>
+
+α :
+
+<input
+type="number"
+id="alpha"
+value="1"
+step="0.1">
+
+</label>
+
+<br><br>
+
+
+<label>
+
+β :
+
+<input
+type="number"
+id="beta"
+value="1"
+step="0.1">
+
+</label>
+
+<br><br>
+
+
+<label>
+
+λ :
+
+<input
+type="number"
+id="lambda"
+value="1"
+step="0.1">
+
+</label>
+
+<br><br>
+
+
+<label>
+
+n :
+
+<input
+type="number"
+id="n"
+value="1"
+step="1">
+
+</label>
+
+<br><br>
+
+
+<label>
+
+k :
+
+<select id="k">
+
+<option value="1">+1</option>
+
+<option value="-1">-1</option>
+
+</select>
+
+</label>
+
+</section>
+
+
+<!-- =========================================
+     CONDITIONS INITIALES
+========================================= -->
+
+<section class="card">
+
+<h2>
+🎯 Conditions initiales
+</h2>
+
+
+<label>
+
+u₀ :
+
+<input
+type="number"
+id="u0"
+value="0.1"
+step="0.0001">
+
+</label>
+
+<br><br>
+
+
+<label>
+
+v₀ :
+
+<input
+type="number"
+id="v0"
+value="0.1"
+step="0.0001">
+
+</label>
+
+<br><br>
+
+
+<label>
+
+Perturbation initiale :
+
+<input
+type="number"
+id="delta"
+value="0.000001"
+step="0.000001">
+
+</label>
+
+<br><br>
+
+
+<label>
+
+Temps total :
+
+<input
+type="number"
+id="totalTime"
+value="100"
+step="10">
+
+</label>
+
+<br><br>
+
+
+<button
+class="button"
+onclick="calculateLyapunov()">
+
+▶ CALCULER λmax
+
+</button>
+
+</section>
+
+
+<!-- =========================================
+     RESULTAT
+========================================= -->
+
+<section class="card">
+
+<h2>
+📊 Résultat
+</h2>
+
+
+<div id="result">
+
+<p>
+Lancez le calcul pour obtenir λ<sub>max</sub>.
+</p>
+
+</div>
+
+</section>
+
+
+<!-- =========================================
+     GRAPHIQUE
+========================================= -->
+
+<section class="card">
+
+<h2>
+📈 Évolution de l'estimation de λ
+</h2>
+
+
+<canvas
+id="lyapunovChart"
+width="1000"
+height="450">
+</canvas>
+
+</section>
+
+
+<!-- =========================================
+     INTERPRETATION
+========================================= -->
+
+<section class="card">
+
+<h2>
+🔬 Interprétation scientifique
+</h2>
+
+
+<div id="interpretation">
+
+<p>
+Le résultat apparaîtra après le calcul.
+</p>
+
+</div>
+
+</section>
+
+
+</main>
+
+
+<footer>
+
+<p>
+VSMN Neuro Education
+</p>
+
+</footer>
+
+
+<script>
+
+
+/* =========================================
+   FONCTION NON LINEAIRE
+========================================= */
+
+function f(x) {
+
+return Math.exp(
+-(x*x)/2
+);
+
+}
+
+
+/* =========================================
+   EQUATIONS VSMN
+========================================= */
+
+function derivatives(
+u,
+v,
+par
+) {
+
+
+const f1 =
+f(
+par.beta*v
+);
+
+
+const f2 =
+f(
+par.lambda*(u+par.p)
+);
+
+
+const du =
+-(u+par.p)/par.tau
++
+(u+par.p)
+*
+v
+*
+f1
+*
+f2;
+
+
+const dv =
+-par.alpha*v
++
+par.k
+*
+Math.pow(
+u+par.q,
+par.n
+)
+*
+par.alpha
+*
+f2*f2;
+
+
+return {
+
+du: du,
+
+dv: dv
+
+};
+
+}
+
+
+/* =========================================
+   RUNGE KUTTA 4
+========================================= */
+
+function rk4(
+u,
+v,
+dt,
+par
+) {
+
+
+const k1 =
+derivatives(
+u,
+v,
+par
+);
+
+
+const k2 =
+derivatives(
+u + dt*k1.du/2,
+v + dt*k1.dv/2,
+par
+);
+
+
+const k3 =
+derivatives(
+u + dt*k2.du/2,
+v + dt*k2.dv/2,
+par
+);
+
+
+const k4 =
+derivatives(
+u + dt*k3.du,
+v + dt*k3.dv,
+par
+);
+
+
+return {
+
+u:
+u+
+dt/6*
+(
+k1.du+
+2*k2.du+
+2*k3.du+
+k4.du
+),
+
+v:
+v+
+dt/6*
+(
+k1.dv+
+2*k2.dv+
+2*k3.dv+
+k4.dv
+)
+
+};
+
+}
+
+
+/* =========================================
+   NORMALISATION DU VECTEUR
+========================================= */
+
+function normalizeVector(
+dx,
+dy
+) {
+
+
+const norm =
+Math.sqrt(
+dx*dx+
+dy*dy
+);
+
+
+if(norm === 0) {
+
+return {
+
+x:1,
+y:0,
+norm:0
+
+};
+
+}
+
+
+return {
+
+x:dx/norm,
+y:dy/norm,
+norm:norm
+
+};
+
+}
+
+
+/* =========================================
+   CALCUL DE LYAPUNOV
+========================================= */
+
+function calculateLyapunov() {
+
+
+/* -----------------------------
+   PARAMETRES
+----------------------------- */
+
+const par = {
+
+tau:Number(
+document.getElementById("tau").value
+),
+
+p:Number(
+document.getElementById("p").value
+),
+
+q:Number(
+document.getElementById("q").value
+),
+
+alpha:Number(
+document.getElementById("alpha").value
+),
+
+beta:Number(
+document.getElementById("beta").value
+),
+
+lambda:Number(
+document.getElementById("lambda").value
+),
+
+n:Number(
+document.getElementById("n").value
+),
+
+k:Number(
+document.getElementById("k").value
+)
+
+};
+
+
+/* -----------------------------
+   CONDITIONS INITIALES
+----------------------------- */
+
+let u =
+Number(
+document.getElementById("u0").value
+);
+
+
+let v =
+Number(
+document.getElementById("v0").value
+);
+
+
+let dx =
+Number(
+document.getElementById("delta").value
+);
+
+
+let dy = 0;
+
+
+/* -----------------------------
+   TEMPS
+----------------------------- */
+
+const dt = 0.01;
+
+const totalTime =
+Number(
+document.getElementById(
+"totalTime"
+).value
+);
+
+
+const steps =
+Math.floor(
+totalTime/dt
+);
+
+
+/*
+ * Temps d'échauffement.
+ *
+ * On évite de calculer l'exposant
+ * sur une courte phase transitoire.
+ */
+
+const transientSteps =
+Math.floor(
+steps * 0.10
+);
+
+
+/* -----------------------------
+   SOMME LOGARITHMIQUE
+----------------------------- */
+
+let sumLog = 0;
+
+
+/* -----------------------------
+   GRAPHIQUE
+----------------------------- */
+
+const times = [];
+
+const estimates = [];
+
+
+/* =================================
+   INTÉGRATION
+================================= */
+
+for(
+let i=0;
+i<steps;
+i++
+) {
+
+
+/*
+ * Trajectoire de référence
+ */
+
+const reference =
+rk4(
+u,
+v,
+dt,
+par
+);
+
+
+/*
+ * Trajectoire perturbée
+ */
+
+const perturbed =
+rk4(
+u+dx,
+v+dy,
+dt,
+par
+);
+
+
+/*
+ * Nouvelle perturbation
+ */
+
+dx =
+perturbed.u -
+reference.u;
+
+
+dy =
+perturbed.v -
+reference.v;
+
+
+/*
+ * Norme de la perturbation
+ */
+
+const norm =
+Math.sqrt(
+dx*dx+
+dy*dy
+);
+
+
+/*
+ * Éviter log(0)
+ */
+
+const safeNorm =
+Math.max(
+norm,
+1e-300
+);
+
+
+/*
+ * Après le transitoire :
+ * accumulation de ln(norm/delta)
+ */
+
+if(
+i >= transientSteps
+) {
+
+
+sumLog +=
+Math.log(
+safeNorm /
+Number(
+document.getElementById(
+"delta"
+).value
+)
+);
+
+
+/*
+ * Renormalisation
+ */
+
+const factor =
+Number(
+document.getElementById(
+"delta"
+).value
+)
+/
+safeNorm;
+
+
+dx *= factor;
+
+dy *= factor;
+
+
+/*
+ * Estimation courante
+ */
+
+const elapsed =
+(i -
+transientSteps +
+1)
+*
+dt;
+
+
+const estimate =
+sumLog /
+elapsed;
+
+
+times.push(
+elapsed
+);
+
+
+estimates.push(
+estimate
+);
+
+}
+
+
+/*
+ * Mise à jour
+ */
+
+u =
+reference.u;
+
+v =
+reference.v;
+
+
+/*
+ * Vérification numérique
+ */
+
+if(
+!Number.isFinite(u)
+||
+!Number.isFinite(v)
+||
+!Number.isFinite(dx)
+||
+!Number.isFinite(dy)
+) {
+
+break;
+
+}
+
+}
+
+
+/* =================================
+   RESULTAT FINAL
+================================= */
+
+if(
+estimates.length === 0
+) {
+
+document.getElementById(
+"result"
+).innerHTML =
+
+"<p>Calcul impossible.</p>";
+
+return;
+
+}
+
+
+const finalLambda =
+estimates[
+estimates.length-1
+];
+
+
+/* =================================
+   AFFICHAGE
+================================= */
+
+document.getElementById(
+"result"
+).innerHTML = `
+
+<h3>
+λ<sub>max</sub> ≈
+${finalLambda.toFixed(6)}
+</h3>
+
+<p>
+Valeur obtenue pour les paramètres
+actuellement sélectionnés.
+</p>
+
+`;
+
+
+/* =================================
+   INTERPRETATION
+================================= */
+
+let interpretation;
+
+
+if(
+finalLambda > 0.001
+) {
+
+
+interpretation = `
+
+<p>
+
+<strong>
+λmax > 0
+</strong>
+
+</p>
+
+<p>
+
+L'exposant maximal est positif.
+Cela indique une divergence moyenne
+des trajectoires voisines.
+
+</p>
+
+<p>
+
+<strong>
+Cette observation est compatible avec
+un comportement chaotique.
+</strong>
+
+</p>
+
+<p>
+
+La conclusion doit être confirmée
+par l'ensemble des analyses :
+sensibilité aux conditions initiales,
+portrait de phase et autres
+indicateurs dynamiques.
+
+</p>
+
+`;
+
+}
+
+else if(
+finalLambda < -0.001
+) {
+
+
+interpretation = `
+
+<p>
+
+<strong>
+λmax < 0
+</strong>
+
+</p>
+
+<p>
+
+Les perturbations ont tendance à
+diminuer au cours du temps.
+
+</p>
+
+<p>
+
+Le système ne présente pas ici
+l'indicateur typique d'une dynamique
+chaotique.
+
+</p>
+
+`;
+
+}
+
+else {
+
+
+interpretation = `
+
+<p>
+
+<strong>
+λmax ≈ 0
+</strong>
+
+</p>
+
+<p>
+
+L'exposant est proche de zéro.
+
+</p>
+
+<p>
+
+Il faut alors analyser plus précisément
+la dynamique du système et les paramètres
+utilisés.
+
+</p>
+
+`;
+
+}
+
+
+document.getElementById(
+"interpretation"
+).innerHTML =
+interpretation;
+
+
+/* =================================
+   GRAPHIQUE
+================================= */
+
+drawLyapunov(
+times,
+estimates
+);
+
+}
+
+
+/* =========================================
+   GRAPHIQUE LYAPUNOV
+========================================= */
+
+function drawLyapunov(
+times,
+values
+) {
+
+
+const canvas =
+document.getElementById(
+"lyapunovChart"
+);
+
+
+const ctx =
+canvas.getContext("2d");
+
+
+ctx.clearRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+
+if(
+values.length === 0
+) return;
+
+
+const min =
+Math.min(
+...values
+);
+
+
+const max =
+Math.max(
+...values
+);
+
+
+const range =
+max-min || 1;
+
+
+const margin = 50;
+
+
+const width =
+canvas.width -
+2*margin;
+
+
+const height =
+canvas.height -
+2*margin;
+
+
+function X(i) {
+
+return margin +
+i/
+(values.length-1)
+*
+width;
+
+}
+
+
+function Y(value) {
+
+return canvas.height -
+margin -
+(
+value-min
+)/
+range
+*
+height;
+
+}
+
+
+/* =================================
+   AXES
+================================= */
+
+ctx.beginPath();
+
+ctx.moveTo(
+margin,
+margin
+);
+
+ctx.lineTo(
+margin,
+canvas.height-margin
+);
+
+ctx.lineTo(
+canvas.width-margin,
+canvas.height-margin
+);
+
+ctx.stroke();
+
+
+/* =================================
+   LIGNE λ = 0
+================================= */
+
+if(
+min <= 0 &&
+max >= 0
+) {
+
+
+const y0 =
+Y(0);
+
+
+ctx.beginPath();
+
+ctx.moveTo(
+margin,
+y0
+);
+
+ctx.lineTo(
+canvas.width-margin,
+y0
+);
+
+ctx.stroke();
+
+}
+
+
+/* =================================
+   COURBE
+================================= */
+
+ctx.beginPath();
+
+
+for(
+let i=0;
+i<values.length;
+i++
+) {
+
+
+if(i === 0) {
+
+ctx.moveTo(
+X(i),
+Y(values[i])
+);
+
+}
+
+else {
+
+ctx.lineTo(
+X(i),
+Y(values[i])
+);
+
+}
+
+}
+
+
+ctx.stroke();
+
+
+/* =================================
+   TEXTE
+================================= */
+
+ctx.font =
+"16px Arial";
+
+
+ctx.fillText(
+"λmax estimé",
+60,
+30
+);
+
+
+ctx.fillText(
+"Temps",
+canvas.width-70,
+canvas.height-15
+);
+
+}
+
+</script>
+
+
+</body>
+
+</html>
