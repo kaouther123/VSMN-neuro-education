@@ -3,46 +3,47 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-<title>Chaos - VSMN Neuro Education</title>
+    <title>Chaos - VSMN Neuro Education</title>
 
-<link rel="stylesheet"
-      href="../css/style.css">
+    <link rel="stylesheet"
+          href="../css/style.css">
 
 </head>
+
 
 <body>
 
 <header>
 
-<h1>🌀 Comprendre le chaos</h1>
+    <h1>🌀 Comprendre le chaos</h1>
 
-<p>
-Sensibilité aux conditions initiales dans le modèle VSMN
-</p>
+    <p>
+        Sensibilité aux conditions initiales dans le modèle VSMN
+    </p>
 
 </header>
 
 
 <nav>
 
-<a href="../index.html">Accueil</a>
+    <a href="../index.html">Accueil</a>
 
-<a href="neurone.html">Neurone</a>
+    <a href="neurone.html">Neurone</a>
 
-<a href="vsmn.html">VSMN</a>
+    <a href="vsmn.html">VSMN</a>
 
-<a href="chaos.html">Chaos</a>
+    <a href="chaos.html">Chaos</a>
 
-<a href="ecg.html">ECG</a>
+    <a href="ecg.html">ECG</a>
 
-<a href="eeg.html">EEG</a>
+    <a href="eeg.html">EEG</a>
 
-<a href="quiz.html">Quiz</a>
+    <a href="quiz.html">Quiz</a>
 
 </nav>
 
@@ -50,158 +51,199 @@ Sensibilité aux conditions initiales dans le modèle VSMN
 <main class="container">
 
 
-<section class="card">
+    <!-- =========================================
+         1. EXPLICATION DU CHAOS
+    ========================================== -->
 
-<h2>🌀 Qu'est-ce que le chaos ?</h2>
+    <section class="card">
 
-<p>
-Un système chaotique est un système déterministe
-dont l'évolution peut devenir très difficile à prévoir
-à long terme.
-</p>
+        <h2>🌀 Qu'est-ce que le chaos ?</h2>
 
-<p>
-Une propriété importante est la
-<strong>sensibilité aux conditions initiales</strong>.
-</p>
+        <p>
+            Un système chaotique est un système déterministe
+            dont l'évolution peut devenir très difficile à prévoir
+            à long terme.
+        </p>
 
-<p>
-Deux trajectoires partant de conditions initiales
-très proches peuvent progressivement se séparer.
-</p>
+        <p>
+            Une propriété importante est la
+            <strong>sensibilité aux conditions initiales</strong>.
+        </p>
 
-</section>
+        <p>
+            Deux trajectoires partant de conditions initiales
+            très proches peuvent progressivement se séparer.
+        </p>
 
-
-<section class="card">
-
-<h2>⚙️ Expérience interactive</h2>
-
-<p>
-Nous allons comparer deux conditions initiales
-presque identiques.
-</p>
+    </section>
 
 
-<label>
+    <!-- =========================================
+         2. EXPÉRIENCE INTERACTIVE
+    ========================================== -->
 
-u₀ :
+    <section class="card">
 
-<input type="number"
-       id="u0"
-       value="0.1"
-       step="0.000001">
+        <h2>⚙️ Expérience interactive</h2>
 
-</label>
-
-
-<br><br>
-
-
-<label>
-
-Petite perturbation :
-
-<input type="number"
-       id="epsilon"
-       value="0.000001"
-       step="0.000001">
-
-</label>
+        <p>
+            Nous allons comparer deux trajectoires
+            ayant des conditions initiales presque identiques.
+        </p>
 
 
-<br><br>
+        <label>
+
+            <strong>u₀ :</strong>
+
+            <input type="number"
+                   id="u0"
+                   value="0.1"
+                   step="0.000001">
+
+        </label>
 
 
-<label>
-
-v₀ :
-
-<input type="number"
-       id="v0"
-       value="0.1"
-       step="0.000001">
-
-</label>
+        <br><br>
 
 
-<br><br>
+        <label>
+
+            <strong>Petite perturbation ε :</strong>
+
+            <input type="number"
+                   id="epsilon"
+                   value="0.000001"
+                   step="0.000001">
+
+        </label>
 
 
-<button class="button"
-        onclick="runChaos()">
-
-▶ LANCER L'EXPÉRIENCE
-
-</button>
-
-</section>
+        <br><br>
 
 
-<section class="card">
+        <label>
 
-<h2>📈 Comparaison des trajectoires</h2>
+            <strong>v₀ :</strong>
 
-<canvas id="chaosChart"
-        width="1000"
-        height="450">
-</canvas>
+            <input type="number"
+                   id="v0"
+                   value="0.1"
+                   step="0.000001">
 
-</section>
-
-
-<section class="card">
-
-<h2>🌀 Portrait de phase</h2>
-
-<canvas id="phaseChart"
-        width="1000"
-        height="450">
-</canvas>
-
-</section>
+        </label>
 
 
-<section class="card">
+        <br><br>
 
-<section class="card">
 
-<h2>🌀 Attracteur dans l'espace des phases</h2>
+        <button class="button"
+                onclick="runChaos()">
 
-<p>
-Le portrait de phase représente l'évolution du système
-dans l'espace des variables d'état.
-Pour le modèle VSMN, nous représentons ici
-la variable <strong>v</strong> en fonction de <strong>u</strong>.
-</p>
+            ▶ LANCER L'EXPÉRIENCE
 
-<canvas id="phaseChart"
-        width="1000"
-        height="450">
-</canvas>
+        </button>
 
-<div id="attractorExplanation">
+    </section>
 
-<p>
-<strong>Interprétation :</strong>
-la géométrie de la trajectoire permet d'étudier
-la structure de la dynamique du système.
-</p>
 
-</div>
+    <!-- =========================================
+         3. COMPARAISON DES TRAJECTOIRES
+    ========================================== -->
 
-</section>
+    <section class="card">
 
-<div id="interpretation">
+        <h2>📈 Comparaison des trajectoires</h2>
 
-<p>
-Lancez la simulation pour observer
-l'évolution des deux trajectoires.
-</p>
+        <p>
+            Les deux courbes représentent l'évolution de
+            <strong>u(t)</strong> pour deux conditions initiales
+            très proches.
+        </p>
 
-</div>
+        <canvas id="chaosChart"
+                width="1000"
+                height="450">
+        </canvas>
 
-</section>
+    </section>
+
+
+    <!-- =========================================
+         4. ÉCART ENTRE LES TRAJECTOIRES
+    ========================================== -->
+
+    <section class="card">
+
+        <h2>📏 Écart entre les trajectoires</h2>
+
+        <p>
+            On mesure l'écart entre les deux trajectoires
+            issues de conditions initiales très proches.
+        </p>
+
+        <p>
+            Ici, nous représentons :
+        </p>
+
+        <p>
+            <strong>
+                |u₁(t) − u₂(t)|
+            </strong>
+        </p>
+
+        <canvas id="distanceChart"
+                width="1000"
+                height="450">
+        </canvas>
+
+    </section>
+
+
+    <!-- =========================================
+         5. PORTRAIT DE PHASE
+    ========================================== -->
+
+    <section class="card">
+
+        <h2>🌀 Portrait de phase</h2>
+
+        <p>
+            Le portrait de phase représente l'évolution
+            du système dans l'espace des variables d'état.
+        </p>
+
+        <p>
+            Pour le modèle VSMN, nous représentons
+            <strong>v</strong> en fonction de <strong>u</strong>.
+        </p>
+
+        <canvas id="phaseChart"
+                width="1000"
+                height="450">
+        </canvas>
+
+    </section>
+
+
+    <!-- =========================================
+         6. INTERPRÉTATION
+    ========================================== -->
+
+    <section class="card">
+
+        <h2>📚 Interprétation</h2>
+
+        <div id="interpretation">
+
+            <p>
+                Lancez la simulation pour observer
+                l'évolution des deux trajectoires.
+            </p>
+
+        </div>
+
+    </section>
 
 
 </main>
@@ -209,46 +251,75 @@ l'évolution des deux trajectoires.
 
 <footer>
 
-<p>VSMN Neuro Education</p>
+    <p>
+        VSMN Neuro Education
+    </p>
 
 </footer>
 
+
+<!-- =========================================
+     FICHIER DU MODÈLE VSMN
+========================================== -->
 
 <script src="../js/vsmn.js"></script>
 
 
 <script>
 
+/* =====================================================
+   LANCER L'EXPÉRIENCE CHAOTIQUE
+===================================================== */
+
 function runChaos() {
 
     /*
-     * Paramètres utilisés pour l'expérience.
-     * Ils pourront ensuite être remplacés par
-     * les paramètres exacts de votre publication.
+     * Paramètres du modèle.
+     *
+     * ATTENTION :
+     * Ces valeurs sont actuellement des valeurs
+     * de test pour la plateforme.
+     *
+     * Elles devront être remplacées par les valeurs
+     * exactes de votre modèle scientifique.
      */
 
     const P = {
 
         alpha: 1,
+
         tau: 1,
+
         p: 0,
+
         q: 0,
+
         n: 1,
+
         lambda: 1,
+
         beta: 1,
+
         k: 1,
 
         u0:
-        Number(document.getElementById("u0").value),
+        Number(
+            document.getElementById("u0").value
+        ),
 
         v0:
-        Number(document.getElementById("v0").value),
+        Number(
+            document.getElementById("v0").value
+        ),
 
         dt: 0.01,
 
         steps: 5000
+
     };
 
+
+    /* Petite perturbation */
 
     const epsilon =
         Number(
@@ -256,19 +327,24 @@ function runChaos() {
         );
 
 
-    // Première trajectoire
+    /* =================================================
+       TRAJECTOIRE A
+    ================================================= */
 
     const A =
         simulateVSMN(P);
 
 
-    // Deuxième trajectoire
+    /* =================================================
+       TRAJECTOIRE B
+    ================================================= */
 
     const P2 = {
 
         ...P,
 
-        u0: P.u0 + epsilon
+        u0:
+        P.u0 + epsilon
 
     };
 
@@ -277,12 +353,30 @@ function runChaos() {
         simulateVSMN(P2);
 
 
+    /* =================================================
+       GRAPHIQUE DES TRAJECTOIRES
+    ================================================= */
+
     drawChaosChart(
         A.time,
         A.U,
         B.U
     );
 
+
+    /* =================================================
+       GRAPHIQUE DE DISTANCE
+    ================================================= */
+
+    drawDistanceChart(
+        A.U,
+        B.U
+    );
+
+
+    /* =================================================
+       PORTRAIT DE PHASE
+    ================================================= */
 
     drawChaosPhase(
         A.U,
@@ -292,47 +386,58 @@ function runChaos() {
     );
 
 
+    /* =================================================
+       INTERPRÉTATION
+    ================================================= */
+
     document.getElementById(
         "interpretation"
     ).innerHTML = `
 
         <p>
-        Les deux simulations commencent avec des
-        conditions initiales très proches :
+            Les deux simulations commencent avec des
+            conditions initiales très proches.
         </p>
 
         <p>
-        <strong>
-        u₀ = ${P.u0}
-        </strong>
+            Première condition :
+            <strong>
+                u₀ = ${P.u0}
+            </strong>
         </p>
 
         <p>
-        et
+            Deuxième condition :
+            <strong>
+                u₀ = ${(P.u0 + epsilon).toFixed(8)}
+            </strong>
         </p>
 
         <p>
-        <strong>
-        u₀ = ${(P.u0 + epsilon).toFixed(8)}
-        </strong>
+            La différence initiale est :
+            <strong>
+                ε = ${epsilon}
+            </strong>
         </p>
 
         <p>
-        La différence initiale est :
-        <strong>${epsilon}</strong>.
+            Observez maintenant l'évolution des deux
+            trajectoires et leur distance au cours du temps.
         </p>
 
         <p>
-        Observez maintenant si les deux trajectoires
-        restent proches ou divergent progressivement.
+            Cette expérience permet d'illustrer la
+            <strong>
+                sensibilité aux conditions initiales
+            </strong>,
+            une propriété importante des systèmes chaotiques.
         </p>
 
         <p>
-        Cette expérience permet d'illustrer
-        la sensibilité aux conditions initiales.
-        Elle doit être complétée par d'autres
-        indicateurs pour conclure à la présence
-        d'un chaos déterministe.
+            Cependant, cette observation seule ne constitue
+            pas une preuve suffisante du chaos déterministe.
+            D'autres indicateurs, comme l'exposant de Lyapunov,
+            peuvent être utilisés pour renforcer l'analyse.
         </p>
 
     `;
@@ -340,10 +445,20 @@ function runChaos() {
 }
 
 
-function drawChaosChart(time, A, B) {
+/* =====================================================
+   GRAPHIQUE DES DEUX TRAJECTOIRES
+===================================================== */
+
+function drawChaosChart(
+    time,
+    A,
+    B
+) {
 
     const canvas =
-        document.getElementById("chaosChart");
+        document.getElementById(
+            "chaosChart"
+        );
 
     const ctx =
         canvas.getContext("2d");
@@ -360,10 +475,12 @@ function drawChaosChart(time, A, B) {
     const margin = 50;
 
     const width =
-        canvas.width - 2 * margin;
+        canvas.width -
+        2 * margin;
 
     const height =
-        canvas.height - 2 * margin;
+        canvas.height -
+        2 * margin;
 
 
     const values =
@@ -380,7 +497,8 @@ function drawChaosChart(time, A, B) {
     function X(i) {
 
         return margin +
-            i / (A.length - 1)
+            i /
+            (A.length - 1)
             * width;
 
     }
@@ -389,14 +507,14 @@ function drawChaosChart(time, A, B) {
     function Y(value) {
 
         return margin +
-            (max - value)
-            / (max - min || 1)
+            (max - value) /
+            (max - min || 1)
             * height;
 
     }
 
 
-    // Axes
+    /* Axes */
 
     ctx.beginPath();
 
@@ -418,7 +536,7 @@ function drawChaosChart(time, A, B) {
     ctx.stroke();
 
 
-    // Trajectoire A
+    /* Trajectoire A */
 
     ctx.beginPath();
 
@@ -449,7 +567,7 @@ function drawChaosChart(time, A, B) {
     ctx.stroke();
 
 
-    // Trajectoire B
+    /* Trajectoire B */
 
     ctx.beginPath();
 
@@ -480,8 +598,11 @@ function drawChaosChart(time, A, B) {
     ctx.stroke();
 
 
+    /* Texte */
+
     ctx.font =
         "16px Arial";
+
 
     ctx.fillText(
         "Temps",
@@ -489,14 +610,194 @@ function drawChaosChart(time, A, B) {
         canvas.height - 15
     );
 
+
     ctx.fillText(
         "u(t)",
         15,
         25
     );
 
+
+    ctx.fillText(
+        "Trajectoire A : u₀",
+        70,
+        25
+    );
+
+
+    ctx.fillText(
+        "Trajectoire B : u₀ + ε",
+        250,
+        25
+    );
+
 }
 
+
+/* =====================================================
+   GRAPHIQUE DE L'ÉCART
+===================================================== */
+
+function drawDistanceChart(
+    A,
+    B
+) {
+
+    const canvas =
+        document.getElementById(
+            "distanceChart"
+        );
+
+    const ctx =
+        canvas.getContext("2d");
+
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    const margin = 50;
+
+    const width =
+        canvas.width -
+        2 * margin;
+
+    const height =
+        canvas.height -
+        2 * margin;
+
+
+    /* -----------------------------------------------
+       Calcul de |A-B|
+    ------------------------------------------------ */
+
+    const distance = [];
+
+
+    for (
+        let i = 0;
+        i < A.length;
+        i++
+    ) {
+
+        distance.push(
+            Math.abs(
+                A[i] - B[i]
+            )
+        );
+
+    }
+
+
+    const maxDistance =
+        Math.max(...distance);
+
+
+    function X(i) {
+
+        return margin +
+            i /
+            (distance.length - 1)
+            * width;
+
+    }
+
+
+    function Y(value) {
+
+        return canvas.height -
+            margin -
+            value /
+            (maxDistance || 1)
+            * height;
+
+    }
+
+
+    /* Axes */
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        margin,
+        margin
+    );
+
+    ctx.lineTo(
+        margin,
+        canvas.height - margin
+    );
+
+    ctx.lineTo(
+        canvas.width - margin,
+        canvas.height - margin
+    );
+
+    ctx.stroke();
+
+
+    /* Courbe de distance */
+
+    ctx.beginPath();
+
+
+    for (
+        let i = 0;
+        i < distance.length;
+        i++
+    ) {
+
+        if (i === 0) {
+
+            ctx.moveTo(
+                X(i),
+                Y(distance[i])
+            );
+
+        } else {
+
+            ctx.lineTo(
+                X(i),
+                Y(distance[i])
+            );
+
+        }
+
+    }
+
+
+    ctx.stroke();
+
+
+    /* Texte */
+
+    ctx.font =
+        "16px Arial";
+
+
+    ctx.fillText(
+        "Temps",
+        canvas.width - 100,
+        canvas.height - 15
+    );
+
+
+    ctx.fillText(
+        "|u₁(t) − u₂(t)|",
+        10,
+        25
+    );
+
+}
+
+
+/* =====================================================
+   PORTRAIT DE PHASE
+===================================================== */
 
 function drawChaosPhase(
     UA,
@@ -525,10 +826,12 @@ function drawChaosPhase(
     const margin = 50;
 
     const width =
-        canvas.width - 2 * margin;
+        canvas.width -
+        2 * margin;
 
     const height =
-        canvas.height - 2 * margin;
+        canvas.height -
+        2 * margin;
 
 
     const allU =
@@ -554,8 +857,8 @@ function drawChaosPhase(
     function X(u) {
 
         return margin +
-            (u - minU)
-            / (maxU - minU || 1)
+            (u - minU) /
+            (maxU - minU || 1)
             * width;
 
     }
@@ -565,16 +868,19 @@ function drawChaosPhase(
 
         return canvas.height -
             margin -
-            (v - minV)
-            / (maxV - minV || 1)
+            (v - minV) /
+            (maxV - minV || 1)
             * height;
 
     }
 
 
-    // Première trajectoire
+    /* -----------------------------------------------
+       Trajectoire A
+    ------------------------------------------------ */
 
     ctx.beginPath();
+
 
     for (
         let i = 0;
@@ -600,12 +906,16 @@ function drawChaosPhase(
 
     }
 
+
     ctx.stroke();
 
 
-    // Deuxième trajectoire
+    /* -----------------------------------------------
+       Trajectoire B
+    ------------------------------------------------ */
 
     ctx.beginPath();
+
 
     for (
         let i = 0;
@@ -631,8 +941,11 @@ function drawChaosPhase(
 
     }
 
+
     ctx.stroke();
 
+
+    /* Texte */
 
     ctx.font =
         "16px Arial";
