@@ -1,0 +1,1572 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Analyse complète VSMN</title>
+
+<link rel="stylesheet"
+      href="../css/style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>🧠 Laboratoire virtuel VSMN</h1>
+
+<p>
+Analyse complète de la dynamique du
+Variable Structure Model of Neurons
+</p>
+
+</header>
+
+
+<nav>
+
+<a href="../index.html">Accueil</a>
+
+<a href="neurone.html">Neurone</a>
+
+<a href="vsmn.html">VSMN</a>
+
+<a href="simulation.html">
+Simulation
+</a>
+
+<a href="validation-chaos.html">
+Sensibilité
+</a>
+
+<a href="lyapunov.html">
+Lyapunov
+</a>
+
+<a href="bifurcation.html">
+Bifurcation
+</a>
+
+<a href="chua.html">
+Chua
+</a>
+
+<a href="ecg.html">
+ECG
+</a>
+
+<a href="eeg.html">
+EEG
+</a>
+
+</nav>
+
+
+<main class="container">
+
+
+<!-- =====================================
+     INTRODUCTION
+===================================== -->
+
+<section class="card">
+
+<h2>
+🔬 Analyse globale du VSMN
+</h2>
+
+<p>
+
+Cette page regroupe les principaux outils
+d'analyse utilisés pour étudier la dynamique
+du modèle VSMN.
+
+</p>
+
+<p>
+
+L'objectif est de passer d'une simple
+simulation numérique à une analyse dynamique
+plus complète.
+
+</p>
+
+</section>
+
+
+<!-- =====================================
+     PARAMETRES
+===================================== -->
+
+<section class="card">
+
+<h2>
+⚙️ Paramètres du modèle
+</h2>
+
+
+<div class="parameter-grid">
+
+
+<div>
+
+<label>
+τ
+</label>
+
+<input
+type="number"
+id="tau"
+value="1"
+step="0.1">
+
+</div>
+
+
+<div>
+
+<label>
+p
+</label>
+
+<input
+type="number"
+id="p"
+value="0"
+step="0.1">
+
+</div>
+
+
+<div>
+
+<label>
+q
+</label>
+
+<input
+type="number"
+id="q"
+value="0"
+step="0.1">
+
+</div>
+
+
+<div>
+
+<label>
+α
+</label>
+
+<input
+type="number"
+id="alpha"
+value="1"
+step="0.1">
+
+</div>
+
+
+<div>
+
+<label>
+β
+</label>
+
+<input
+type="number"
+id="beta"
+value="1"
+step="0.1">
+
+</div>
+
+
+<div>
+
+<label>
+λ
+</label>
+
+<input
+type="number"
+id="lambda"
+value="1"
+step="0.1">
+
+</div>
+
+
+<div>
+
+<label>
+n
+</label>
+
+<input
+type="number"
+id="n"
+value="1"
+step="1">
+
+</div>
+
+
+<div>
+
+<label>
+k
+</label>
+
+<select id="k">
+
+<option value="1">
++1
+</option>
+
+<option value="-1">
+-1
+</option>
+
+</select>
+
+</div>
+
+
+</div>
+
+
+<br>
+
+
+<button
+class="button"
+onclick="runCompleteAnalysis()">
+
+▶ LANCER L'ANALYSE COMPLÈTE
+
+</button>
+
+</section>
+
+
+<!-- =====================================
+     RESULTATS PRINCIPAUX
+===================================== -->
+
+<section class="card">
+
+<h2>
+📊 Résultats principaux
+</h2>
+
+
+<div id="summary"
+style="
+display:grid;
+grid-template-columns:
+repeat(auto-fit,minmax(200px,1fr));
+gap:20px;
+text-align:center;
+">
+
+
+<div>
+
+<h3>
+λ<sub>max</sub>
+</h3>
+
+<p
+id="lambdaResult">
+
+—
+
+</p>
+
+</div>
+
+
+<div>
+
+<h3>
+Distance finale
+</h3>
+
+<p
+id="distanceResult">
+
+—
+
+</p>
+
+</div>
+
+
+<div>
+
+<h3>
+u final
+</h3>
+
+<p
+id="uResult">
+
+—
+
+</p>
+
+</div>
+
+
+<div>
+
+<h3>
+v final
+</h3>
+
+<p
+id="vResult">
+
+—
+
+</p>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<!-- =====================================
+     SIGNALS
+===================================== -->
+
+<section class="card">
+
+<h2>
+📈 Dynamique temporelle
+</h2>
+
+
+<canvas
+id="signalChart"
+width="1000"
+height="450">
+</canvas>
+
+</section>
+
+
+<!-- =====================================
+     PHASE
+===================================== -->
+
+<section class="card">
+
+<h2>
+🌀 Portrait de phase
+</h2>
+
+
+<p>
+
+Trajectoire du système dans l'espace
+des variables d'état.
+
+</p>
+
+
+<canvas
+id="phaseChart"
+width="700"
+height="500">
+</canvas>
+
+</section>
+
+
+<!-- =====================================
+     SENSIBILITE
+===================================== -->
+
+<section class="card">
+
+<h2>
+📏 Sensibilité aux conditions initiales
+</h2>
+
+
+<p>
+
+Deux trajectoires sont initialisées avec
+une très faible différence.
+
+</p>
+
+
+<canvas
+id="distanceChart"
+width="1000"
+height="450">
+</canvas>
+
+</section>
+
+
+<!-- =====================================
+     LYAPUNOV
+===================================== -->
+
+<section class="card">
+
+<h2>
+📊 Exposant maximal de Lyapunov
+</h2>
+
+
+<div
+id="lyapunovInterpretation">
+
+<p>
+
+Calcul en cours...
+
+</p>
+
+</div>
+
+</section>
+
+
+<!-- =====================================
+     CONCLUSION
+===================================== -->
+
+<section class="card">
+
+<h2>
+🎓 Conclusion automatique
+</h2>
+
+
+<div
+id="globalConclusion">
+
+<p>
+
+Lancez l'analyse pour obtenir
+une interprétation.
+
+</p>
+
+</div>
+
+</section>
+
+
+<!-- =====================================
+     RAPPEL SCIENTIFIQUE
+===================================== -->
+
+<section class="card">
+
+<h2>
+⚠️ Interprétation scientifique
+</h2>
+
+
+<p>
+
+Un comportement complexe ou irrégulier
+ne suffit pas à lui seul pour conclure
+à l'existence du chaos.
+
+</p>
+
+
+<p>
+
+La validation doit s'appuyer sur plusieurs
+indicateurs complémentaires :
+
+</p>
+
+
+<ul>
+
+<li>
+Sensibilité aux conditions initiales
+</li>
+
+<li>
+Portrait de phase
+</li>
+
+<li>
+Exposant maximal de Lyapunov
+</li>
+
+<li>
+Diagramme de bifurcation
+</li>
+
+</ul>
+
+
+</section>
+
+
+</main>
+
+
+<footer>
+
+<p>
+VSMN Neuro Education
+</p>
+
+</footer>
+
+
+<script>
+
+
+/* =====================================
+   FONCTION NON LINEAIRE
+===================================== */
+
+function f(x) {
+
+return Math.exp(
+-(x*x)/2
+);
+
+}
+
+
+/* =====================================
+   EQUATIONS VSMN
+===================================== */
+
+function derivatives(
+u,
+v,
+par
+) {
+
+
+const fBeta =
+f(
+par.beta*v
+);
+
+
+const fLambda =
+f(
+par.lambda*(u+par.p)
+);
+
+
+const du =
+-(u+par.p)/par.tau
++
+(u+par.p)
+*
+v
+*
+fBeta
+*
+fLambda;
+
+
+const dv =
+-par.alpha*v
++
+par.k
+*
+Math.pow(
+u+par.q,
+par.n
+)
+*
+par.alpha
+*
+fLambda*fLambda;
+
+
+return {
+
+du:du,
+
+dv:dv
+
+};
+
+}
+
+
+/* =====================================
+   RUNGE KUTTA 4
+===================================== */
+
+function rk4(
+u,
+v,
+dt,
+par
+) {
+
+
+const k1 =
+derivatives(
+u,
+v,
+par
+);
+
+
+const k2 =
+derivatives(
+u+dt*k1.du/2,
+v+dt*k1.dv/2,
+par
+);
+
+
+const k3 =
+derivatives(
+u+dt*k2.du/2,
+v+dt*k2.dv/2,
+par
+);
+
+
+const k4 =
+derivatives(
+u+dt*k3.du,
+v+dt*k3.dv,
+par
+);
+
+
+return {
+
+u:
+u+
+dt/6*
+(
+k1.du+
+2*k2.du+
+2*k3.du+
+k4.du
+),
+
+v:
+v+
+dt/6*
+(
+k1.dv+
+2*k2.dv+
+2*k3.dv+
+k4.dv
+)
+
+};
+
+}
+
+
+/* =====================================
+   ANALYSE COMPLETE
+===================================== */
+
+function runCompleteAnalysis() {
+
+
+const par = {
+
+tau:Number(
+document.getElementById(
+"tau"
+).value
+),
+
+p:Number(
+document.getElementById(
+"p"
+).value
+),
+
+q:Number(
+document.getElementById(
+"q"
+).value
+),
+
+alpha:Number(
+document.getElementById(
+"alpha"
+).value
+),
+
+beta:Number(
+document.getElementById(
+"beta"
+).value
+),
+
+lambda:Number(
+document.getElementById(
+"lambda"
+).value
+),
+
+n:Number(
+document.getElementById(
+"n"
+).value
+),
+
+k:Number(
+document.getElementById(
+"k"
+).value
+)
+
+};
+
+
+const dt =
+0.01;
+
+
+const steps =
+10000;
+
+
+let u =
+0.1;
+
+
+let v =
+0.1;
+
+
+let u2 =
+u+0.000001;
+
+
+let v2 =
+v;
+
+
+const time=[];
+
+const U=[];
+
+const V=[];
+
+const distance=[];
+
+const lyap=[];
+
+
+let sumLog=0;
+
+
+const delta =
+0.000001;
+
+
+/* =====================================
+   SIMULATION
+===================================== */
+
+for(
+let i=0;
+i<steps;
+i++
+) {
+
+
+const t =
+i*dt;
+
+
+time.push(t);
+
+U.push(u);
+
+V.push(v);
+
+
+/* --------------------------------
+   TRAJECTOIRE DE REFERENCE
+-------------------------------- */
+
+const r1 =
+rk4(
+u,
+v,
+dt,
+par
+);
+
+
+/* --------------------------------
+   TRAJECTOIRE PERTURBEE
+-------------------------------- */
+
+const r2 =
+rk4(
+u2,
+v2,
+dt,
+par
+);
+
+
+/* --------------------------------
+   DISTANCE
+-------------------------------- */
+
+const dx =
+r2.u-r1.u;
+
+
+const dy =
+r2.v-r1.v;
+
+
+let d =
+Math.sqrt(
+dx*dx+
+dy*dy
+);
+
+
+d =
+Math.max(
+d,
+1e-15
+);
+
+
+distance.push(d);
+
+
+/* --------------------------------
+   LYAPUNOV
+-------------------------------- */
+
+if(
+i>1000
+) {
+
+sumLog +=
+Math.log(
+d/delta
+);
+
+const elapsed =
+(i-1000)*dt;
+
+
+lyap.push(
+sumLog/
+elapsed
+);
+
+}
+
+
+/* --------------------------------
+   RENORMALISATION
+-------------------------------- */
+
+const factor =
+delta/d;
+
+
+u2 =
+r1.u+
+dx*factor;
+
+
+v2 =
+r1.v+
+dy*factor;
+
+
+/* --------------------------------
+   MISE A JOUR
+-------------------------------- */
+
+u =
+r1.u;
+
+v =
+r1.v;
+
+
+if(
+!Number.isFinite(u)
+||
+!Number.isFinite(v)
+) {
+
+break;
+
+}
+
+}
+
+
+/* =====================================
+   RESULTATS
+===================================== */
+
+const finalDistance =
+distance[
+distance.length-1
+];
+
+
+const finalLyap =
+lyap.length>0
+?
+lyap[
+lyap.length-1
+]
+:
+NaN;
+
+
+/* =====================================
+   AFFICHAGE
+===================================== */
+
+document.getElementById(
+"lambdaResult"
+).innerHTML =
+
+Number.isFinite(finalLyap)
+?
+finalLyap.toFixed(6)
+:
+"—";
+
+
+document.getElementById(
+"distanceResult"
+).innerHTML =
+
+finalDistance.toExponential(3);
+
+
+document.getElementById(
+"uResult"
+).innerHTML =
+
+u.toFixed(5);
+
+
+document.getElementById(
+"vResult"
+).innerHTML =
+
+v.toFixed(5);
+
+
+/* =====================================
+   GRAPHIQUES
+===================================== */
+
+drawSignals(
+time,
+U,
+V
+);
+
+
+drawPhase(
+U,
+V
+);
+
+
+drawDistance(
+time,
+distance
+);
+
+
+/* =====================================
+   INTERPRETATION
+===================================== */
+
+if(
+finalLyap>0.001
+) {
+
+
+document.getElementById(
+"lyapunovInterpretation"
+).innerHTML = `
+
+<h3>
+λmax ≈ ${finalLyap.toFixed(6)}
+</h3>
+
+<p>
+
+L'exposant maximal est positif pour
+les paramètres sélectionnés.
+
+</p>
+
+<p>
+
+Cela constitue un indicateur quantitatif
+compatible avec une dynamique chaotique.
+
+</p>
+
+`;
+
+document.getElementById(
+"globalConclusion"
+).innerHTML = `
+
+<h3>
+🌀 Dynamique potentiellement chaotique
+</h3>
+
+<p>
+
+Pour cette configuration, la simulation
+montre une sensibilité aux conditions
+initiales et un exposant maximal positif.
+
+</p>
+
+<p>
+
+<strong>
+La conclusion doit être interprétée
+avec les autres analyses dynamiques.
+</strong>
+
+</p>
+
+`;
+
+}
+
+else {
+
+
+document.getElementById(
+"lyapunovInterpretation"
+).innerHTML = `
+
+<h3>
+λmax ≈ ${finalLyap.toFixed(6)}
+</h3>
+
+<p>
+
+L'exposant maximal n'est pas positif
+pour cette configuration.
+
+</p>
+
+`;
+
+document.getElementById(
+"globalConclusion"
+).innerHTML = `
+
+<h3>
+🔎 Dynamique à analyser
+</h3>
+
+<p>
+
+Avec ces paramètres, le comportement
+chaotique n'est pas confirmé par
+l'exposant maximal.
+
+</p>
+
+<p>
+
+Il faut éventuellement tester les
+paramètres utilisés dans votre travail
+expérimental.
+
+</p>
+
+`;
+
+}
+
+}
+
+
+/* =====================================
+   SIGNALS
+===================================== */
+
+function drawSignals(
+time,
+U,
+V
+) {
+
+
+const canvas =
+document.getElementById(
+"signalChart"
+);
+
+
+const ctx =
+canvas.getContext("2d");
+
+
+ctx.clearRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+
+const all =
+U.concat(V);
+
+
+const min =
+Math.min(...all);
+
+
+const max =
+Math.max(...all);
+
+
+const range =
+max-min || 1;
+
+
+const margin=50;
+
+
+const width=
+canvas.width-2*margin;
+
+
+const height=
+canvas.height-2*margin;
+
+
+function X(i) {
+
+return margin+
+i/(U.length-1)*width;
+
+}
+
+
+function Y(x) {
+
+return canvas.height-
+margin-
+(x-min)/range*height;
+
+}
+
+
+/* axes */
+
+ctx.beginPath();
+
+ctx.moveTo(
+margin,
+margin
+);
+
+ctx.lineTo(
+margin,
+canvas.height-margin
+);
+
+ctx.lineTo(
+canvas.width-margin,
+canvas.height-margin
+);
+
+ctx.stroke();
+
+
+/* u */
+
+ctx.beginPath();
+
+for(
+let i=0;
+i<U.length;
+i++
+) {
+
+if(i===0)
+ctx.moveTo(
+X(i),
+Y(U[i])
+);
+
+else
+ctx.lineTo(
+X(i),
+Y(U[i])
+);
+
+}
+
+ctx.stroke();
+
+
+/* v */
+
+ctx.beginPath();
+
+for(
+let i=0;
+i<V.length;
+i++
+) {
+
+if(i===0)
+ctx.moveTo(
+X(i),
+Y(V[i])
+);
+
+else
+ctx.lineTo(
+X(i),
+Y(V[i])
+);
+
+}
+
+ctx.stroke();
+
+
+ctx.font=
+"16px Arial";
+
+ctx.fillText(
+"u(t)",
+60,
+30
+);
+
+ctx.fillText(
+"v(t)",
+60,
+50
+);
+
+}
+
+
+/* =====================================
+   PORTRAIT DE PHASE
+===================================== */
+
+function drawPhase(
+U,
+V
+) {
+
+
+const canvas =
+document.getElementById(
+"phaseChart"
+);
+
+
+const ctx =
+canvas.getContext("2d");
+
+
+ctx.clearRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+
+const minU =
+Math.min(...U);
+
+
+const maxU =
+Math.max(...U);
+
+
+const minV =
+Math.min(...V);
+
+
+const maxV =
+Math.max(...V);
+
+
+const rangeU =
+maxU-minU || 1;
+
+
+const rangeV =
+maxV-minV || 1;
+
+
+const margin=50;
+
+
+const width=
+canvas.width-2*margin;
+
+
+const height=
+canvas.height-2*margin;
+
+
+function X(u) {
+
+return margin+
+(u-minU)/rangeU*width;
+
+}
+
+
+function Y(v) {
+
+return canvas.height-
+margin-
+(v-minV)/rangeV*height;
+
+}
+
+
+ctx.beginPath();
+
+ctx.moveTo(
+margin,
+margin
+);
+
+ctx.lineTo(
+margin,
+canvas.height-margin
+);
+
+ctx.lineTo(
+canvas.width-margin,
+canvas.height-margin
+);
+
+ctx.stroke();
+
+
+ctx.beginPath();
+
+
+for(
+let i=0;
+i<U.length;
+i++
+) {
+
+if(i===0)
+ctx.moveTo(
+X(U[i]),
+Y(V[i])
+);
+
+else
+ctx.lineTo(
+X(U[i]),
+Y(V[i])
+);
+
+}
+
+
+ctx.stroke();
+
+
+ctx.font=
+"16px Arial";
+
+ctx.fillText(
+"v",
+20,
+30
+);
+
+ctx.fillText(
+"u",
+canvas.width-25,
+canvas.height-15
+);
+
+}
+
+
+/* =====================================
+   DISTANCE
+===================================== */
+
+function drawDistance(
+time,
+D
+) {
+
+
+const canvas =
+document.getElementById(
+"distanceChart"
+);
+
+
+const ctx =
+canvas.getContext("2d");
+
+
+ctx.clearRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+
+const min =
+Math.min(...D);
+
+
+const max =
+Math.max(...D);
+
+
+const range =
+max-min || 1;
+
+
+const margin=50;
+
+
+const width=
+canvas.width-2*margin;
+
+
+const height=
+canvas.height-2*margin;
+
+
+function X(i) {
+
+return margin+
+i/(D.length-1)*width;
+
+}
+
+
+function Y(d) {
+
+return canvas.height-
+margin-
+(d-min)/range*height;
+
+}
+
+
+ctx.beginPath();
+
+ctx.moveTo(
+margin,
+margin
+);
+
+ctx.lineTo(
+margin,
+canvas.height-margin
+);
+
+ctx.lineTo(
+canvas.width-margin,
+canvas.height-margin
+);
+
+ctx.stroke();
+
+
+ctx.beginPath();
+
+
+for(
+let i=0;
+i<D.length;
+i++
+) {
+
+if(i===0)
+ctx.moveTo(
+X(i),
+Y(D[i])
+);
+
+else
+ctx.lineTo(
+X(i),
+Y(D[i])
+);
+
+}
+
+
+ctx.stroke();
+
+
+ctx.font=
+"16px Arial";
+
+ctx.fillText(
+"d(t)",
+60,
+30
+);
+
+}
+
+</script>
+
+
+</body>
+
+</html>
