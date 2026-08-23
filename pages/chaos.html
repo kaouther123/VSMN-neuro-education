@@ -224,8 +224,98 @@
         </canvas>
 
     </section>
+<!-- =========================================
+     6. ANALYSE DE LYAPUNOV
+========================================== -->
 
+<section class="card">
 
+    <h2>🔬 Analyse de la dynamique</h2>
+
+    <p>
+        L'exposant de Lyapunov permet de quantifier
+        la divergence moyenne de trajectoires initialement
+        très proches.
+    </p>
+
+    <button class="button"
+            onclick="calculateLyapunov()">
+
+        🧮 CALCULER L'EXPOSANT DE LYAPUNOV
+
+    </button>
+
+    <div id="lyapunovResult"
+         style="margin-top:20px;">
+
+        <p>
+            Cliquez sur le bouton pour effectuer
+            le calcul.
+        </p>
+
+    </div>
+
+</section>
+<!-- =========================================
+     DIAGRAMME DE BIFURCATION
+========================================== -->
+
+<section class="card">
+
+    <h2>📊 Diagramme de bifurcation</h2>
+
+    <p>
+        Le diagramme de bifurcation permet d'observer
+        l'évolution du comportement du système lorsqu'un
+        paramètre du modèle est progressivement modifié.
+    </p>
+
+    <label>
+        <strong>Paramètre λ :</strong>
+
+        <input type="number"
+               id="lambdaMin"
+               value="0.1"
+               step="0.1">
+    </label>
+
+    <br><br>
+
+    <label>
+        <strong>λ maximum :</strong>
+
+        <input type="number"
+               id="lambdaMax"
+               value="5"
+               step="0.1">
+    </label>
+
+    <br><br>
+
+    <button class="button"
+            onclick="calculateBifurcation()">
+
+        📊 GÉNÉRER LE DIAGRAMME
+
+    </button>
+
+    <br><br>
+
+    <canvas id="bifurcationChart"
+            width="1000"
+            height="500">
+    </canvas>
+
+    <div id="bifurcationExplanation">
+
+        <p>
+            Modifiez l'intervalle de λ puis lancez
+            le calcul.
+        </p>
+
+    </div>
+
+</section>
     <!-- =========================================
          6. INTERPRÉTATION
     ========================================== -->
@@ -965,7 +1055,284 @@ function drawChaosPhase(
     );
 
 }
+/* =====================================================
+   CALCUL APPROXIMATIF DE L'EXPOSANT DE LYAPUNOV
+===================================================== */
 
+function calculateLyapunov() {
+
+    const P = {
+
+        alpha: 1,
+        tau: 1,
+        p: 0,
+        q: 0,
+        n: 1,
+        lambda: 1,
+        beta: 1,
+        k: 1,
+
+        u0:
+        Number(
+            document.getElementById("u0").value
+        ),
+
+        v0:
+        Number(
+            document.getElementById("v0").value
+        ),
+
+        dt: 0.01,
+
+        steps: 5000
+
+    };
+
+
+    /*
+     * Petite perturbation initiale.
+     */
+
+    const epsilon = 1e-8;
+
+
+    let u1 = P.u0;
+    let v1 = P.v0;
+
+    let u2 = P.u0 + epsilon;
+    let v2 = P.v0;
+
+
+    let sumLog = 0;
+
+    let count = 0;
+
+
+    /*
+     * Évolution des deux trajectoires.
+     */
+
+    for (
+        let i = 0;
+        i < P.steps;
+        i++
+    ) {
+
+        const A =
+            rk4(
+                u1,
+                v1,
+                P.dt,
+                P
+            );
+
+
+        const B =
+            rk4(
+                u2,
+                v2,
+                P.dt,
+                P
+            );
+
+
+        u1 = A.u;
+        v1 = A.v;
+
+        u2 = B.u;
+        v2 = B.v;
+
+
+        /*
+         * Distance entre les trajectoires.
+         */
+
+        const dx =
+            u2 - u1;
+
+        const dy =
+            v2 - v1;
+
+
+        const distance =
+            Math.sqrt(
+                dx * dx +
+                dy * dy
+            );
+
+
+        /*
+         * Éviter log(0).
+         */
+
+        if (
+            distance > 1e-15 &&
+            Number.isFinite(distance)
+        ) {
+
+            sumLog +=
+                Math.log(
+                    distance / epsilon
+                );
+
+            count++;
+
+        }
+
+
+        /*
+         * Renormalisation de la perturbation.
+         */
+
+        if (
+            distance > 0 &&
+            Number.isFinite(distance)
+        ) {
+
+            u2 =
+                u1 +
+                epsilon *
+                dx /
+                distance;
+
+            v2 =
+                v1 +
+                epsilon *
+                dy /
+                distance;
+
+        }
+
+    }
+
+
+    /*
+     * Calcul de l'exposant.
+     */
+
+    const totalTime =
+        P.steps * P.dt;
+
+
+    const lyapunov =
+        sumLog /
+        (count * P.dt);
+
+
+    /*
+     * Affichage.
+     */
+
+    const result =
+        document.getElementById(
+            "lyapunovResult"
+        );
+
+
+    if (
+        !Number.isFinite(lyapunov)
+    ) {
+
+        result.innerHTML = `
+
+            <p>
+                ⚠️ Le calcul n'a pas produit
+                une valeur numérique exploitable.
+            </p>
+
+            <p>
+                Vérifiez les paramètres du modèle
+                et les conditions initiales.
+            </p>
+
+        `;
+
+        return;
+
+    }
+
+
+    let interpretation;
+
+
+    if (lyapunov > 0) {
+
+        interpretation = `
+
+            <strong>
+                λmax > 0
+            </strong>
+
+            <p>
+                La valeur positive indique une divergence
+                moyenne des trajectoires proches.
+                C'est un indicateur compatible avec
+                une dynamique chaotique.
+            </p>
+
+        `;
+
+    } else if (lyapunov < 0) {
+
+        interpretation = `
+
+            <strong>
+                λmax < 0
+            </strong>
+
+            <p>
+                La valeur négative indique que les
+                trajectoires proches tendent en moyenne
+                à se rapprocher.
+            </p>
+
+        `;
+
+    } else {
+
+        interpretation = `
+
+            <strong>
+                λmax ≈ 0
+            </strong>
+
+            <p>
+                L'exposant est proche de zéro.
+                Ce résultat doit être interprété
+                avec les autres analyses du système.
+            </p>
+
+        `;
+
+    }
+
+
+    result.innerHTML = `
+
+        <h3>
+            Résultat
+        </h3>
+
+        <p style="font-size:24px;">
+
+            <strong>
+                λmax ≈ ${lyapunov.toFixed(6)}
+            </strong>
+
+        </p>
+
+        ${interpretation}
+
+        <hr>
+
+        <p>
+            <strong>Durée de simulation :</strong>
+            ${totalTime.toFixed(2)}
+        </p>
+
+    `;
+
+}
 </script>
 
 
