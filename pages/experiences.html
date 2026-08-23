@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Expériences VSMN</title>
+
+<link rel="stylesheet"
+href="../css/style.css">
+
+<style>
+
+.experiment-grid {
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(250px,1fr));
+
+gap:20px;
+
+margin-top:20px;
+
+}
+
+.experiment {
+
+padding:25px;
+
+border-radius:12px;
+
+cursor:pointer;
+
+transition:0.2s;
+
+}
+
+.experiment:hover {
+
+transform:translateY(-5px);
+
+}
+
+canvas {
+
+max-width:100%;
+
+margin-top:20px;
+
+}
+
+.result {
+
+margin-top:20px;
+
+padding:20px;
+
+border-radius:10px;
+
+}
+
+.compare {
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(250px,1fr));
+
+gap:20px;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>🧪 Laboratoire expérimental VSMN</h1>
+
+<p>
+Modifier un paramètre et observer son influence
+sur la dynamique du modèle
+</p>
+
+</header>
+
+
+<nav>
+
+<a href="../index.html">
+Accueil
+</a>
+
+<a href="apprendre-vsmn.html">
+Apprendre VSMN
+</a>
+
+<a href="simulation.html">
+Simulation
+</a>
+
+<a href="analyse-vsmn.html">
+Analyse complète
+</a>
+
+<a href="experiences.html">
+Expériences
+</a>
+
+</nav>
+
+
+<main class="container">
+
+
+<!-- =====================================
+INTRODUCTION
+===================================== -->
+
+<section class="card">
+
+<h2>
+🧪 Principe expérimental
+</h2>
+
+<p>
+
+Une expérience consiste à modifier un paramètre
+du modèle tout en conservant les autres paramètres
+constants.
+
+</p>
+
+<p>
+
+On peut ainsi étudier l'influence individuelle
+de chaque paramètre sur la dynamique du VSMN.
+
+</p>
+
+</section>
+
+
+<!-- =====================================
+CHOIX EXPERIENCE
+===================================== -->
+
+<section class="card">
+
+<h2>
+🔬 Choisir une expérience
+</h2>
+
+
+<div class="experiment-grid">
+
+
+<div
+class="experiment"
+onclick="selectExperiment('lambda')">
+
+<h3>
+Expérience 1
+</h3>
+
+<h2>
+Influence de λ
+</h2>
+
+<p>
+
+Modifier le paramètre de la
+fonction non linéaire.
+
+</p>
+
+</div>
+
+
+<div
+class="experiment"
+onclick="selectExperiment('alpha')">
+
+<h3>
+Expérience 2
+</h3>
+
+<h2>
+Influence de α
+</h2>
+
+<p>
+
+Observer l'influence du paramètre
+dynamique.
+
+</p>
+
+</div>
+
+
+<div
+class="experiment"
+onclick="selectExperiment('tau')">
+
+<h3>
+Expérience 3
+</h3>
+
+<h2>
+Influence de τ
+</h2>
+
+<p>
+
+Étudier l'influence de l'échelle
+temporelle.
+
+</p>
+
+</div>
+
+
+<div
+class="experiment"
+onclick="selectExperiment('initial')">
+
+<h3>
+Expérience 4
+</h3>
+
+<h2>
+Conditions initiales</h2>
+
+<p>
+
+Comparer deux trajectoires
+très proches.
+
+</p>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<!-- =====================================
+PARAMETRES
+===================================== -->
+
+<section class="card">
+
+<h2>
+⚙️ Paramètres
+</h2>
+
+
+<div class="compare">
+
+
+<div>
+
+<label>
+τ
+</label>
+
+<input
+type="number"
+id="tau"
+value="1"
+step="0.1">
+
+</div>
+
+
+<div>
+
+<label>
+α
+</label>
+
+<input
+type="number"
+id="alpha"
+value="1"
+step="0.1">
+
+</div>
+
+
+<div>
+
+<label>
+β
+</label>
+
+<input
+type="number"
+id="beta"
+value="1"
+step="0.1">
+
+</div>
+
+
+<div>
+
+<label>
+λ
+</label>
+
+<input
+type="number"
+id="lambda"
+value="1"
+step="0.1">
+
+</div>
+
+
+<div>
+
+<label>
+p
+</label>
+
+<input
+type="number"
+id="p"
+value="0"
+step="0.1">
+
+</div>
+
+
+<div>
+
+<label>
+q
+</label>
+
+<input
+type="number"
+id="q"
+value="0"
+step="0.1">
+
+</div>
+
+
+<div>
+
+<label>
+n
+</label>
+
+<input
+type="number"
+id="n"
+value="1"
+step="1">
+
+</div>
+
+
+</div>
+
+
+<br>
+
+
+<button
+class="button"
+onclick="runExperiment()">
+
+▶ LANCER L'EXPÉRIENCE
+
+</button>
+
+
+</section>
+
+
+<!-- =====================================
+EXPERIENCE
+===================================== -->
+
+<section class="card">
+
+<h2 id="experimentTitle">
+
+Sélectionnez une expérience
+
+</h2>
+
+
+<p id="experimentDescription">
+
+Cliquez sur une expérience ci-dessus.
+
+</p>
+
+
+<canvas
+id="experimentChart"
+width="1000"
+height="500">
+</canvas>
+
+
+<div
+id="result"
+class="result">
+
+</div>
+
+
+</section>
+
+
+<!-- =====================================
+COMPARAISON
+===================================== -->
+
+<section class="card">
+
+<h2>
+📊 Comparer deux expériences
+</h2>
+
+
+<p>
+
+L'objectif est de comprendre comment une
+modification du paramètre influence
+la dynamique.
+
+</p>
+
+
+<button
+class="button"
+onclick="compareExperiments()">
+
+🔎 COMPARER
+
+</button>
+
+
+<canvas
+id="comparisonChart"
+width="1000"
+height="500">
+</canvas>
+
+
+<div
+id="comparisonResult"
+class="result">
+
+</div>
+
+</section>
+
+
+<!-- =====================================
+CONCLUSION
+===================================== -->
+
+<section class="card">
+
+<h2>
+🎓 Conclusion expérimentale
+</h2>
+
+
+<div id="conclusion">
+
+<p>
+
+Lancez une expérience pour obtenir
+une interprétation.
+
+</p>
+
+</div>
+
+</section>
+
+
+</main>
+
+
+<footer>
+
+<p>
+VSMN Neuro Education
+</p>
+
+</footer>
+
+
+<script>
+
+
+/* =====================================
+VARIABLE
+===================================== */
+
+let currentExperiment = null;
+
+
+/* =====================================
+SELECTION
+===================================== */
+
+function selectExperiment(type) {
+
+
+currentExperiment = type;
+
+
+const title =
+document.getElementById(
+"experimentTitle"
+);
+
+
+const description =
+document.getElementById(
+"experimentDescription"
+);
+
+
+if(type === "lambda") {
+
+title.innerHTML =
+"🧪 Expérience 1 — Influence de λ";
+
+description.innerHTML =
+
+"Nous faisons varier λ tout en conservant "
++
+"les autres paramètres constants.";
+
+}
+
+
+else if(type === "alpha") {
+
+title.innerHTML =
+"🧪 Expérience 2 — Influence de α";
+
+description.innerHTML =
+
+"Nous faisons varier α afin d'observer "
++
+"son influence sur la dynamique.";
+
+}
+
+
+else if(type === "tau") {
+
+title.innerHTML =
+"🧪 Expérience 3 — Influence de τ";
+
+description.innerHTML =
+
+"Nous faisons varier τ afin d'étudier "
++
+"l'influence de l'échelle temporelle.";
+
+}
+
+
+else if(type === "initial") {
+
+title.innerHTML =
+"🧪 Expérience 4 — Conditions initiales";
+
+description.innerHTML =
+
+"Deux trajectoires sont initialisées "
++
+"avec une très faible différence.";
+
+}
+
+
+}
+
+
+/* =====================================
+FONCTION NON LINEAIRE
+===================================== */
+
+function f(x) {
+
+return Math.exp(
+-(x*x)/2
+);
+
+}
+
+
+/* =====================================
+EQUATIONS
+===================================== */
+
+function derivatives(
+u,
+v,
+par
+) {
+
+
+const f1 =
+f(par.beta*v);
+
+
+const f2 =
+f(
+par.lambda*
+(u+par.p)
+);
+
+
+const du =
+
+-(u+par.p)/par.tau
+
++
+
+(u+par.p)
+*
+v
+*
+f1
+*
+f2;
+
+
+const dv =
+
+-par.alpha*v
+
++
+
+par.k
+*
+Math.pow(
+u+par.q,
+par.n
+)
+*
+par.alpha
+*
+f2*f2;
+
+
+return {
+
+du:du,
+
+dv:dv
+
+};
+
+}
+
+
+/* =====================================
+RK4
+===================================== */
+
+function rk4(
+u,
+v,
+dt,
+par
+) {
+
+
+const k1 =
+derivatives(
+u,
+v,
+par
+);
+
+
+const k2 =
+derivatives(
+u+dt*k1.du/2,
+v+dt*k1.dv/2,
+par
+);
+
+
+const k3 =
+derivatives(
+u+dt*k2.du/2,
+v+dt*k2.dv/2,
+par
+);
+
+
+const k4 =
+derivatives(
+u+dt*k3.du,
+v+dt*k3.dv,
+par
+);
+
+
+return {
+
+u:
+u+
+dt/6*
+(
+k1.du+
+2*k2.du+
+2*k3.du+
+k4.du
+),
+
+v:
+v+
+dt/6*
+(
+k1.dv+
+2*k2.dv+
+2*k3.dv+
+k4.dv
+)
+
+};
+
+}
+
+
+/* =====================================
+PARAMETRES
+===================================== */
+
+function getParameters() {
+
+
+return {
+
+tau:Number(
+document.getElementById(
+"tau"
+).value
+),
+
+alpha:Number(
+document.getElementById(
+"alpha"
+).value
+),
+
+beta:Number(
+document.getElementById(
+"beta"
+).value
+),
+
+lambda:Number(
+document.getElementById(
+"lambda"
+).value
+),
+
+p:Number(
+document.getElementById(
+"p"
+).value
+),
+
+q:Number(
+document.getElementById(
+"q"
+).value
+),
+
+n:Number(
+document.getElementById(
+"n"
+).value
+),
+
+k:1
+
+};
+
+}
+
+
+/* =====================================
+SIMULATION
+===================================== */
+
+function simulate(par) {
+
+
+const dt =
+0.01;
+
+
+const steps =
+5000;
+
+
+let u =
+0.1;
+
+
+let v =
+0.1;
+
+
+const U=[];
+
+const V=[];
+
+
+for(
+let i=0;
+i<steps;
+i++
+) {
+
+
+const result =
+rk4(
+u,
+v,
+dt,
+par
+);
+
+
+u=result.u;
+
+v=result.v;
+
+
+U.push(u);
+
+V.push(v);
+
+}
+
+
+return {
+
+U:U,
+
+V:V
+
+};
+
+}
+
+
+/* =====================================
+EXPERIENCE
+===================================== */
+
+function runExperiment() {
+
+
+if(!currentExperiment) {
+
+alert(
+"Sélectionnez d'abord une expérience."
+);
+
+return;
+
+}
+
+
+const base =
+getParameters();
+
+
+let par1 =
+Object.assign(
+{},
+base
+);
+
+
+let par2 =
+Object.assign(
+{},
+base
+);
+
+
+let label1 =
+"";
+
+
+let label2 =
+"";
+
+
+if(
+currentExperiment === "lambda"
+) {
+
+par1.lambda =
+base.lambda*0.5;
+
+par2.lambda =
+base.lambda*1.5;
+
+label1 =
+"λ faible";
+
+label2 =
+"λ élevé";
+
+}
+
+
+else if(
+currentExperiment === "alpha"
+) {
+
+par1.alpha =
+base.alpha*0.5;
+
+par2.alpha =
+base.alpha*1.5;
+
+label1 =
+"α faible";
+
+label2 =
+"α élevé";
+
+}
+
+
+else if(
+currentExperiment === "tau"
+) {
+
+par1.tau =
+base.tau*0.5;
+
+par2.tau =
+base.tau*1.5;
+
+label1 =
+"τ faible";
+
+label2 =
+"τ élevé";
+
+}
+
+
+else if(
+currentExperiment === "initial"
+) {
+
+const result =
+simulate(base);
+
+
+drawSingle(
+result.U,
+result.V
+);
+
+
+runInitialConditionExperiment(
+base
+);
+
+return;
+
+}
+
+
+const result1 =
+simulate(par1);
+
+
+const result2 =
+simulate(par2);
+
+
+drawComparison(
+result1.U,
+result2.U
+);
+
+
+document.getElementById(
+"result"
+).innerHTML =
+
+"<h3>Résultat</h3>"
++
+
+"<p>"
++
+label1
++
+" : paramètre = "
++
+getValue(
+currentExperiment,
+par1
+)
++
+"</p>"
+
++
+
+"<p>"
++
+label2
++
+" : paramètre = "
++
+getValue(
+currentExperiment,
+par2
+)
++
+"</p>";
+
+
+document.getElementById(
+"conclusion"
+).innerHTML =
+
+"<p>"
++
+"Cette expérience montre que la "
++
+"modification de <strong>"
++
+currentExperiment
++
+"</strong> "
++
+"peut modifier la dynamique du modèle."
++
+"</p>"
+
++
+
+"<p>"
++
+"Pour une conclusion scientifique, "
++
+"il faut analyser quantitativement "
++
+"les trajectoires obtenues."
++
+"</p>";
+
+}
+
+
+/* =====================================
+VALEUR
+===================================== */
+
+function getValue(
+type,
+par
+) {
+
+
+if(type==="lambda")
+return par.lambda;
+
+if(type==="alpha")
+return par.alpha;
+
+if(type==="tau")
+return par.tau;
+
+return "";
+
+}
+
+
+/* =====================================
+CONDITIONS INITIALES
+===================================== */
+
+function runInitialConditionExperiment(
+par
+) {
+
+
+const dt=0.01;
+
+const steps=5000;
+
+
+let u1=0.1;
+
+let v1=0.1;
+
+
+let u2=
+0.100001;
+
+let v2=0.1;
+
+
+const D=[];
+
+
+for(
+let i=0;
+i<steps;
+i++
+) {
+
+
+const r1 =
+rk4(
+u1,
+v1,
+dt,
+par
+);
+
+
+const r2 =
+rk4(
+u2,
+v2,
+dt,
+par
+);
+
+
+u1=r1.u;
+
+v1=r1.v;
+
+
+u2=r2.u;
+
+v2=r2.v;
+
+
+const d =
+Math.sqrt(
+Math.pow(
+u2-u1,
+2
+)
++
+Math.pow(
+v2-v1,
+2
+)
+);
+
+
+D.push(d);
+
+}
+
+
+drawDistance(D);
+
+
+document.getElementById(
+"result"
+).innerHTML =
+
+"<h3>Distance entre les trajectoires</h3>"
++
+
+"<p>"
++
+"D₀ = 10⁻⁶"
++
+"</p>"
+
++
+
+"<p>"
++
+"La distance est calculée entre "
++
+"deux trajectoires ayant des conditions "
++
+"initiales très proches."
++
+"</p>";
+
+
+document.getElementById(
+"conclusion"
+).innerHTML =
+
+"<p>"
++
+"Cette expérience permet d'étudier "
++
+"la sensibilité du système aux "
++
+"conditions initiales."
++
+"</p>";
+
+}
+
+
+/* =====================================
+GRAPHIQUE COMPARAISON
+===================================== */
+
+function drawComparison(
+A,
+B
+) {
+
+
+const canvas =
+document.getElementById(
+"experimentChart"
+);
+
+
+const ctx =
+canvas.getContext("2d");
+
+
+ctx.clearRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+
+const all =
+A.concat(B);
+
+
+const min =
+Math.min(...all);
+
+
+const max =
+Math.max(...all);
+
+
+const range =
+max-min || 1;
+
+
+const margin=50;
+
+
+function X(i) {
+
+return margin+
+i/(A.length-1)
+*
+(canvas.width-2*margin);
+
+}
+
+
+function Y(x) {
+
+return canvas.height-
+margin-
+(x-min)/range*
+(canvas.height-2*margin);
+
+}
+
+
+/* Première trajectoire */
+
+ctx.beginPath();
+
+
+for(
+let i=0;
+i<A.length;
+i++
+) {
+
+if(i===0)
+ctx.moveTo(
+X(i),
+Y(A[i])
+);
+
+else
+ctx.lineTo(
+X(i),
+Y(A[i])
+);
+
+}
+
+
+ctx.stroke();
+
+
+/* Deuxième trajectoire */
+
+ctx.beginPath();
+
+
+for(
+let i=0;
+i<B.length;
+i++
+) {
+
+if(i===0)
+ctx.moveTo(
+X(i),
+Y(B[i])
+);
+
+else
+ctx.lineTo(
+X(i),
+Y(B[i])
+);
+
+}
+
+
+ctx.stroke();
+
+
+ctx.font=
+"16px Arial";
+
+
+ctx.fillText(
+"Comparaison des trajectoires",
+350,
+25
+);
+
+}
+
+
+/* =====================================
+GRAPHIQUE SIMPLE
+===================================== */
+
+function drawSingle(
+U,
+V
+) {
+
+
+drawComparison(
+U,
+V
+);
+
+}
+
+
+/* =====================================
+DISTANCE
+===================================== */
+
+function drawDistance(D) {
+
+
+const canvas =
+document.getElementById(
+"experimentChart"
+);
+
+
+const ctx =
+canvas.getContext("2d");
+
+
+ctx.clearRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+
+const max =
+Math.max(...D) || 1;
+
+
+const margin=50;
+
+
+ctx.beginPath();
+
+
+for(
+let i=0;
+i<D.length;
+i++
+) {
+
+
+const x =
+margin+
+i/(D.length-1)
+*
+(canvas.width-2*margin);
+
+
+const y =
+canvas.height-
+margin-
+D[i]/max*
+(canvas.height-2*margin);
+
+
+if(i===0)
+ctx.moveTo(x,y);
+
+else
+ctx.lineTo(x,y);
+
+}
+
+
+ctx.stroke();
+
+
+ctx.font=
+"16px Arial";
+
+
+ctx.fillText(
+"Distance d(t)",
+60,
+30
+);
+
+}
+
+
+/* =====================================
+COMPARAISON
+===================================== */
+
+function compareExperiments() {
+
+
+const par =
+getParameters();
+
+
+const A =
+simulate(par);
+
+
+const modified =
+Object.assign(
+{},
+par
+);
+
+
+modified.lambda *= 1.5;
+
+
+const B =
+simulate(modified);
+
+
+drawComparison(
+A.U,
+B.U
+);
+
+
+document.getElementById(
+"comparisonResult"
+).innerHTML =
+
+"<h3>Comparaison réalisée</h3>"
++
+
+"<p>"
++
+"Trajectoire 1 : λ = "
++
+par.lambda
++
+"</p>"
+
++
+
+"<p>"
++
+"Trajectoire 2 : λ = "
++
+modified.lambda.toFixed(3)
++
+"</p>";
+
+
+}
+
+</script>
+
+
+</body>
+
+</html>
