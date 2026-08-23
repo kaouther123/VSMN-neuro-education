@@ -449,6 +449,193 @@ function updateValue() {
 /* =========================================
    SIMULATION CONCEPTUELLE
 ========================================= */
+/* =========================================
+   NON-LINÉARITÉ DE CHUA
+========================================= */
+
+function chuaNonlinearity(x, m0, m1) {
+
+    return (
+        m1 * x
+        +
+        0.5 * (m0 - m1)
+        *
+        (
+            Math.abs(x + 1)
+            -
+            Math.abs(x - 1)
+        )
+    );
+
+}
+
+
+/* =========================================
+   ÉQUATIONS DE CHUA
+========================================= */
+
+function chuaDerivatives(
+    x,
+    y,
+    z,
+    alpha,
+    beta,
+    m0,
+    m1
+) {
+
+    const f =
+        chuaNonlinearity(
+            x,
+            m0,
+            m1
+        );
+
+
+    const dx =
+        alpha *
+        (
+            y
+            -
+            x
+            -
+            f
+        );
+
+
+    const dy =
+        x
+        -
+        y
+        +
+        z;
+
+
+    const dz =
+        -beta * y;
+
+
+    return {
+        dx: dx,
+        dy: dy,
+        dz: dz
+    };
+
+}
+
+
+/* =========================================
+   RUNGE-KUTTA 4
+========================================= */
+
+function rk4Chua(
+    x,
+    y,
+    z,
+    dt,
+    alpha,
+    beta,
+    m0,
+    m1
+) {
+
+    const k1 =
+        chuaDerivatives(
+            x,
+            y,
+            z,
+            alpha,
+            beta,
+            m0,
+            m1
+        );
+
+
+    const k2 =
+        chuaDerivatives(
+            x + dt * k1.dx / 2,
+            y + dt * k1.dy / 2,
+            z + dt * k1.dz / 2,
+            alpha,
+            beta,
+            m0,
+            m1
+        );
+
+
+    const k3 =
+        chuaDerivatives(
+            x + dt * k2.dx / 2,
+            y + dt * k2.dy / 2,
+            z + dt * k2.dz / 2,
+            alpha,
+            beta,
+            m0,
+            m1
+        );
+
+
+    const k4 =
+        chuaDerivatives(
+            x + dt * k3.dx,
+            y + dt * k3.dy,
+            z + dt * k3.dz,
+            alpha,
+            beta,
+            m0,
+            m1
+        );
+
+
+    return {
+
+        x:
+        x +
+        dt / 6 *
+        (
+            k1.dx
+            +
+            2 * k2.dx
+            +
+            2 * k3.dx
+            +
+            k4.dx
+        ),
+
+        y:
+        y +
+        dt / 6 *
+        (
+            k1.dy
+            +
+            2 * k2.dy
+            +
+            2 * k3.dy
+            +
+            k4.dy
+        ),
+
+        z:
+        z +
+        dt / 6 *
+        (
+            k1.dz
+            +
+            2 * k2.dz
+            +
+            2 * k3.dz
+            +
+            k4.dz
+        )
+
+    };
+
+}
+
+
+/* =========================================
+   SIMULATION RÉELLE DU SYSTÈME DE CHUA
+========================================= */
 
 function simulateChua() {
 
@@ -469,6 +656,10 @@ function simulateChua() {
     );
 
 
+    /*
+     * Paramètre contrôlé par l'utilisateur
+     */
+
     const strength =
         Number(
             document.getElementById(
@@ -477,82 +668,258 @@ function simulateChua() {
         );
 
 
-    const centerX =
-        canvas.width / 2;
+    /*
+     * Paramètres du système
+     */
 
-    const centerY =
-        canvas.height / 2;
+    const alpha =
+        15.6;
 
 
-    const scale =
-        45 * strength;
+    const beta =
+        28;
 
 
     /*
-     * Génération d'une trajectoire
-     * de type attracteur.
-     *
-     * Cette visualisation est destinée
-     * à l'apprentissage du concept.
+     * Paramètres de la non-linéarité
+     */
+
+    const m0 =
+        -1.143;
+
+
+    const m1 =
+        -0.714;
+
+
+    /*
+     * Pas d'intégration
+     */
+
+    const dt =
+        0.01;
+
+
+    /*
+     * Nombre d'itérations
+     */
+
+    const steps =
+        30000;
+
+
+    /*
+     * Conditions initiales
+     */
+
+    let x =
+        0.1;
+
+    let y =
+        0;
+
+    let z =
+        0;
+
+
+    const X = [];
+    const Y = [];
+
+
+    /*
+     * Simulation
+     */
+
+    for (
+        let i = 0;
+        i < steps;
+        i++
+    ) {
+
+        const result =
+            rk4Chua(
+                x,
+                y,
+                z,
+                dt,
+                alpha * strength,
+                beta,
+                m0,
+                m1
+            );
+
+
+        x =
+            result.x;
+
+        y =
+            result.y;
+
+        z =
+            result.z;
+
+
+        /*
+         * Élimination du régime transitoire
+         */
+
+        if (i > 5000) {
+
+            X.push(x);
+            Y.push(y);
+
+        }
+
+    }
+
+
+    /*
+     * Vérification numérique
+     */
+
+    if (
+        X.length === 0
+        ||
+        !Number.isFinite(X[0])
+    ) {
+
+        document.getElementById(
+            "chuaInterpretation"
+        ).innerHTML = `
+
+            <p>
+                ⚠️ La simulation n'est pas stable
+                pour cette valeur du paramètre.
+            </p>
+
+        `;
+
+        return;
+
+    }
+
+
+    /*
+     * Recherche des bornes
+     */
+
+    const minX =
+        Math.min(...X);
+
+    const maxX =
+        Math.max(...X);
+
+    const minY =
+        Math.min(...Y);
+
+    const maxY =
+        Math.max(...Y);
+
+
+    const margin =
+        50;
+
+
+    const width =
+        canvas.width -
+        2 * margin;
+
+
+    const height =
+        canvas.height -
+        2 * margin;
+
+
+    function screenX(value) {
+
+        return margin +
+            (
+                value - minX
+            )
+            /
+            (
+                maxX - minX || 1
+            )
+            *
+            width;
+
+    }
+
+
+    function screenY(value) {
+
+        return canvas.height -
+            margin -
+            (
+                value - minY
+            )
+            /
+            (
+                maxY - minY || 1
+            )
+            *
+            height;
+
+    }
+
+
+    /*
+     * Axes
+     */
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        margin,
+        margin
+    );
+
+    ctx.lineTo(
+        margin,
+        canvas.height - margin
+    );
+
+    ctx.lineTo(
+        canvas.width - margin,
+        canvas.height - margin
+    );
+
+    ctx.stroke();
+
+
+    /*
+     * Attracteur
      */
 
     ctx.beginPath();
 
 
     for (
-        let t = 0;
-        t < 30000;
-        t++
+        let i = 0;
+        i < X.length;
+        i++
     ) {
 
-        const time =
-            t * 0.015;
+        const sx =
+            screenX(X[i]);
 
 
-        const x =
-            Math.sin(
-                time * 2.1
-            )
-            *
-            Math.exp(
-                0.08 *
-                Math.sin(time)
-            );
+        const sy =
+            screenY(Y[i]);
 
 
-        const y =
-            Math.sin(
-                time * 3.1
-            )
-            *
-            Math.exp(
-                0.08 *
-                Math.cos(time)
-            );
-
-
-        const X =
-            centerX +
-            x * scale;
-
-
-        const Y =
-            centerY +
-            y * scale;
-
-
-        if (t === 0) {
+        if (i === 0) {
 
             ctx.moveTo(
-                X,
-                Y
+                sx,
+                sy
             );
 
         } else {
 
             ctx.lineTo(
-                X,
-                Y
+                sx,
+                sy
             );
 
         }
@@ -563,29 +930,57 @@ function simulateChua() {
     ctx.stroke();
 
 
+    /*
+     * Légendes
+     */
+
+    ctx.font =
+        "16px Arial";
+
+
+    ctx.fillText(
+        "x",
+        canvas.width - 30,
+        canvas.height - 15
+    );
+
+
+    ctx.fillText(
+        "y",
+        15,
+        30
+    );
+
+
+    /*
+     * Explication
+     */
+
     document.getElementById(
         "chuaInterpretation"
     ).innerHTML = `
 
         <p>
-
-            La trajectoire obtenue permet de visualiser
-            la notion d'attracteur dans un système
-            dynamique non linéaire.
-
+            <strong>Simulation numérique :</strong>
+            les équations différentielles du système
+            de Chua sont intégrées avec la méthode
+            de Runge-Kutta d'ordre 4.
         </p>
 
         <p>
+            Le graphique représente la trajectoire
+            dans le plan <strong>(x,y)</strong>.
+        </p>
 
-            <strong>
-                Attention :
-            </strong>
+        <p>
+            Le paramètre de non-linéarité utilisé :
+            <strong>${strength}</strong>
+        </p>
 
-            cette animation est une visualisation
-            pédagogique. Elle ne constitue pas encore
-            une résolution numérique des équations
-            physiques exactes du circuit de Chua.
-
+        <p>
+            <strong>Interprétation :</strong>
+            la structure de la trajectoire permet
+            d'étudier la dynamique du système.
         </p>
 
     `;
