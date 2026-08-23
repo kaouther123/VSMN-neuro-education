@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Validation du chaos - VSMN</title>
+
+<link rel="stylesheet"
+      href="../css/style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>🌀 Validation du comportement chaotique</h1>
+
+<p>
+Sensibilité aux conditions initiales
+du modèle VSMN
+</p>
+
+</header>
+
+
+<nav>
+
+<a href="../index.html">Accueil</a>
+
+<a href="neurone.html">Neurone</a>
+
+<a href="vsmn.html">VSMN</a>
+
+<a href="simulation.html">Simulation VSMN</a>
+
+<a href="chaos.html">Chaos</a>
+
+<a href="chua.html">Chua</a>
+
+<a href="ecg.html">ECG</a>
+
+<a href="eeg.html">EEG</a>
+
+<a href="applications.html">Applications</a>
+
+<a href="quiz.html">Quiz</a>
+
+</nav>
+
+
+<main class="container">
+
+
+<!-- =========================================
+     EXPLICATION
+========================================= -->
+
+<section class="card">
+
+<h2>
+🔬 Principe de validation
+</h2>
+
+<p>
+
+Pour étudier la sensibilité aux conditions
+initiales, nous considérons deux trajectoires
+issues de conditions initiales très proches.
+
+</p>
+
+<p>
+
+Une petite perturbation est introduite sur
+la valeur initiale de <strong>u</strong>.
+
+</p>
+
+<div style="
+text-align:center;
+font-size:20px;
+padding:20px;
+">
+
+<strong>
+u₀' = u₀ + δ
+</strong>
+
+<br><br>
+
+avec :
+
+<strong>
+δ = 0.0001
+</strong>
+
+</div>
+
+<p>
+
+Nous calculons ensuite la distance entre les
+deux trajectoires :
+
+</p>
+
+<div style="
+text-align:center;
+font-size:22px;
+padding:15px;
+">
+
+<strong>
+d(t) =
+√[(u₁-u₂)² + (v₁-v₂)²]
+</strong>
+
+</div>
+
+</section>
+
+
+<!-- =========================================
+     PARAMETRES
+========================================= -->
+
+<section class="card">
+
+<h2>
+⚙️ Paramètres
+</h2>
+
+
+<label>
+
+τ :
+
+<input
+type="number"
+id="tau"
+value="1"
+step="0.1">
+
+</label>
+
+<br><br>
+
+
+<label>
+
+p :
+
+<input
+type="number"
+id="p"
+value="0"
+step="0.1">
+
+</label>
+
+<br><br>
+
+
+<label>
+
+q :
+
+<input
+type="number"
+id="q"
+value="0"
+step="0.1">
+
+</label>
+
+<br><br>
+
+
+<label>
+
+α :
+
+<input
+type="number"
+id="alpha"
+value="1"
+step="0.1">
+
+</label>
+
+<br><br>
+
+
+<label>
+
+β :
+
+<input
+type="number"
+id="beta"
+value="1"
+step="0.1">
+
+</label>
+
+<br><br>
+
+
+<label>
+
+λ :
+
+<input
+type="number"
+id="lambda"
+value="1"
+step="0.1">
+
+</label>
+
+<br><br>
+
+
+<label>
+
+n :
+
+<input
+type="number"
+id="n"
+value="1"
+step="1">
+
+</label>
+
+<br><br>
+
+
+<label>
+
+k :
+
+<select id="k">
+
+<option value="1">+1</option>
+
+<option value="-1">-1</option>
+
+</select>
+
+</label>
+
+<br><br>
+
+
+<label>
+
+u₀ :
+
+<input
+type="number"
+id="u0"
+value="0.1"
+step="0.0001">
+
+</label>
+
+<br><br>
+
+
+<label>
+
+v₀ :
+
+<input
+type="number"
+id="v0"
+value="0.1"
+step="0.0001">
+
+</label>
+
+<br><br>
+
+
+<label>
+
+Perturbation δ :
+
+<input
+type="number"
+id="delta"
+value="0.0001"
+step="0.0001">
+
+</label>
+
+<br><br>
+
+
+<button
+class="button"
+onclick="runValidation()">
+
+▶ LANCER LA VALIDATION
+
+</button>
+
+</section>
+
+
+<!-- =========================================
+     TRAJECTOIRES
+========================================= -->
+
+<section class="card">
+
+<h2>
+📈 Comparaison des trajectoires
+</h2>
+
+<p>
+
+Deux trajectoires sont calculées avec
+des conditions initiales presque identiques.
+
+</p>
+
+<canvas
+id="trajectoryChart"
+width="1000"
+height="450">
+</canvas>
+
+</section>
+
+
+<!-- =========================================
+     DISTANCE
+========================================= -->
+
+<section class="card">
+
+<h2>
+📏 Distance entre les trajectoires
+</h2>
+
+<p>
+
+Cette courbe montre l'évolution de :
+
+</p>
+
+<div style="
+text-align:center;
+font-size:22px;
+padding:10px;
+">
+
+<strong>
+d(t)
+</strong>
+
+</div>
+
+<canvas
+id="distanceChart"
+width="1000"
+height="450">
+</canvas>
+
+</section>
+
+
+<!-- =========================================
+     DISTANCE LOGARITHMIQUE
+========================================= -->
+
+<section class="card">
+
+<h2>
+📊 Évolution logarithmique de la distance
+</h2>
+
+<p>
+
+Pour une divergence approximativement
+exponentielle :
+
+</p>
+
+<div style="
+text-align:center;
+font-size:20px;
+padding:15px;
+">
+
+<strong>
+d(t) ≈ d₀e<sup>λt</sup>
+</strong>
+
+</div>
+
+<p>
+
+Donc :
+
+</p>
+
+<div style="
+text-align:center;
+font-size:20px;
+padding:15px;
+">
+
+<strong>
+ln(d(t)) ≈ ln(d₀) + λt
+</strong>
+
+</div>
+
+<canvas
+id="logDistanceChart"
+width="1000"
+height="450">
+</canvas>
+
+</section>
+
+
+<!-- =========================================
+     INTERPRETATION
+========================================= -->
+
+<section class="card">
+
+<h2>
+🧠 Interprétation scientifique
+</h2>
+
+<div id="result">
+
+<p>
+
+Lancez la simulation pour obtenir
+l'analyse.
+
+</p>
+
+</div>
+
+</section>
+
+
+</main>
+
+
+<footer>
+
+<p>
+VSMN Neuro Education
+</p>
+
+</footer>
+
+
+<script>
+
+
+/* =========================================
+   FONCTION NON LINEAIRE
+========================================= */
+
+function f(x) {
+
+return Math.exp(
+-(x*x)/2
+);
+
+}
+
+
+/* =========================================
+   EQUATIONS VSMN
+========================================= */
+
+function derivatives(
+u,
+v,
+par
+) {
+
+
+const f1 =
+f(
+par.beta*v
+);
+
+
+const f2 =
+f(
+par.lambda*(u+par.p)
+);
+
+
+const du =
+-(u+par.p)/par.tau
++
+(u+par.p)
+*
+v
+*
+f1
+*
+f2;
+
+
+const dv =
+-par.alpha*v
++
+par.k
+*
+Math.pow(
+u+par.q,
+par.n
+)
+*
+par.alpha
+*
+f2*f2;
+
+
+return {
+
+du:du,
+
+dv:dv
+
+};
+
+}
+
+
+/* =========================================
+   RUNGE KUTTA
+========================================= */
+
+function rk4(
+u,
+v,
+dt,
+par
+) {
+
+
+const k1 =
+derivatives(
+u,
+v,
+par
+);
+
+
+const k2 =
+derivatives(
+u + dt*k1.du/2,
+v + dt*k1.dv/2,
+par
+);
+
+
+const k3 =
+derivatives(
+u + dt*k2.du/2,
+v + dt*k2.dv/2,
+par
+);
+
+
+const k4 =
+derivatives(
+u + dt*k3.du,
+v + dt*k3.dv,
+par
+);
+
+
+return {
+
+u:
+u+
+dt/6*
+(
+k1.du+
+2*k2.du+
+2*k3.du+
+k4.du
+),
+
+v:
+v+
+dt/6*
+(
+k1.dv+
+2*k2.dv+
+2*k3.dv+
+k4.dv
+)
+
+};
+
+}
+
+
+/* =========================================
+   VALIDATION
+========================================= */
+
+function runValidation() {
+
+
+const par = {
+
+tau:Number(
+document.getElementById("tau").value
+),
+
+p:Number(
+document.getElementById("p").value
+),
+
+q:Number(
+document.getElementById("q").value
+),
+
+alpha:Number(
+document.getElementById("alpha").value
+),
+
+beta:Number(
+document.getElementById("beta").value
+),
+
+lambda:Number(
+document.getElementById("lambda").value
+),
+
+n:Number(
+document.getElementById("n").value
+),
+
+k:Number(
+document.getElementById("k").value
+)
+
+};
+
+
+let u1 =
+Number(
+document.getElementById("u0").value
+);
+
+
+let v1 =
+Number(
+document.getElementById("v0").value
+);
+
+
+const delta =
+Number(
+document.getElementById("delta").value
+);
+
+
+let u2 =
+u1 + delta;
+
+
+let v2 =
+v1;
+
+
+const dt =
+0.01;
+
+
+const steps =
+10000;
+
+
+const time = [];
+
+const U1 = [];
+
+const V1 = [];
+
+const U2 = [];
+
+const V2 = [];
+
+const distance = [];
+
+
+for(
+let i=0;
+i<steps;
+i++
+) {
+
+
+const t =
+i*dt;
+
+
+time.push(t);
+
+U1.push(u1);
+
+V1.push(v1);
+
+U2.push(u2);
+
+V2.push(v2);
+
+
+/* Distance */
+
+const d =
+Math.sqrt(
+Math.pow(u1-u2,2)
++
+Math.pow(v1-v2,2)
+);
+
+
+distance.push(
+Math.max(d,1e-15)
+);
+
+
+/* Intégration */
+
+const r1 =
+rk4(
+u1,
+v1,
+dt,
+par
+);
+
+
+const r2 =
+rk4(
+u2,
+v2,
+dt,
+par
+);
+
+
+u1 =
+r1.u;
+
+v1 =
+r1.v;
+
+u2 =
+r2.u;
+
+v2 =
+r2.v;
+
+
+/* sécurité */
+
+if(
+!Number.isFinite(u1)
+||
+!Number.isFinite(v1)
+||
+!Number.isFinite(u2)
+||
+!Number.isFinite(v2)
+) {
+
+break;
+
+}
+
+}
+
+
+/* Distance logarithmique */
+
+const logDistance =
+distance.map(
+d => Math.log(d)
+);
+
+
+drawTwoTrajectories(
+time,
+U1,
+U2
+);
+
+
+drawDistance(
+time,
+distance
+);
+
+
+drawLogDistance(
+time,
+logDistance
+);
+
+
+/* =====================================
+   ANALYSE SIMPLE
+===================================== */
+
+const d0 =
+distance[0];
+
+
+const df =
+distance[
+distance.length-1
+];
+
+
+let message;
+
+
+if(
+df > d0 * 100
+) {
+
+message = `
+
+<p>
+
+<strong>
+Les deux trajectoires se sont fortement
+séparées.
+</strong>
+
+</p>
+
+<p>
+
+Cette observation illustre la sensibilité
+du système aux conditions initiales.
+
+</p>
+
+<p>
+
+Cependant, cette observation seule ne suffit
+pas à démontrer rigoureusement le chaos.
+
+Pour une validation complète, il faut
+également analyser notamment l'exposant
+de Lyapunov et d'autres indicateurs
+dynamiques.
+
+</p>
+
+`;
+
+}
+
+else {
+
+message = `
+
+<p>
+
+Les deux trajectoires ne montrent pas ici
+une forte divergence dans la durée simulée.
+
+</p>
+
+<p>
+
+Il faut alors tester d'autres paramètres,
+conditions initiales ou indicateurs
+dynamiques.
+
+</p>
+
+`;
+
+}
+
+
+document.getElementById(
+"result"
+).innerHTML = message;
+
+}
+
+
+/* =========================================
+   TRAJECTOIRES
+========================================= */
+
+function drawTwoTrajectories(
+time,
+A,
+B
+) {
+
+
+const canvas =
+document.getElementById(
+"trajectoryChart"
+);
+
+
+const ctx =
+canvas.getContext("2d");
+
+
+ctx.clearRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+
+const all =
+A.concat(B);
+
+
+const min =
+Math.min(...all);
+
+
+const max =
+Math.max(...all);
+
+
+const range =
+max-min || 1;
+
+
+const margin =
+50;
+
+
+const width =
+canvas.width-
+2*margin;
+
+
+const height =
+canvas.height-
+2*margin;
+
+
+function X(i) {
+
+return margin+
+i/(A.length-1)*width;
+
+}
+
+
+function Y(x) {
+
+return canvas.height-margin-
+(x-min)/range*height;
+
+}
+
+
+/* axes */
+
+ctx.beginPath();
+
+ctx.moveTo(
+margin,
+margin
+);
+
+ctx.lineTo(
+margin,
+canvas.height-margin
+);
+
+ctx.lineTo(
+canvas.width-margin,
+canvas.height-margin
+);
+
+ctx.stroke();
+
+
+/* trajectoire 1 */
+
+ctx.beginPath();
+
+
+for(
+let i=0;
+i<A.length;
+i++
+) {
+
+if(i===0)
+ctx.moveTo(
+X(i),
+Y(A[i])
+);
+
+else
+ctx.lineTo(
+X(i),
+Y(A[i])
+);
+
+}
+
+
+ctx.stroke();
+
+
+/* trajectoire 2 */
+
+ctx.beginPath();
+
+
+for(
+let i=0;
+i<B.length;
+i++
+) {
+
+if(i===0)
+ctx.moveTo(
+X(i),
+Y(B[i])
+);
+
+else
+ctx.lineTo(
+X(i),
+Y(B[i])
+);
+
+}
+
+
+ctx.stroke();
+
+
+ctx.font =
+"16px Arial";
+
+
+ctx.fillText(
+"Trajectoire 1 : u₁(t)",
+60,
+30
+);
+
+
+ctx.fillText(
+"Trajectoire 2 : u₂(t)",
+60,
+50
+);
+
+}
+
+
+/* =========================================
+   DISTANCE
+========================================= */
+
+function drawDistance(
+time,
+D
+) {
+
+
+drawGeneric(
+"distanceChart",
+time,
+D,
+"d(t)"
+);
+
+}
+
+
+/* =========================================
+   LOG DISTANCE
+========================================= */
+
+function drawLogDistance(
+time,
+D
+) {
+
+
+drawGeneric(
+"logDistanceChart",
+time,
+D,
+"ln(d(t))"
+);
+
+}
+
+
+/* =========================================
+   GRAPHIQUE GENERIQUE
+========================================= */
+
+function drawGeneric(
+canvasId,
+time,
+signal,
+label
+) {
+
+
+const canvas =
+document.getElementById(
+canvasId
+);
+
+
+const ctx =
+canvas.getContext("2d");
+
+
+ctx.clearRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+
+const min =
+Math.min(...signal);
+
+
+const max =
+Math.max(...signal);
+
+
+const range =
+max-min || 1;
+
+
+const margin =
+50;
+
+
+const width =
+canvas.width-
+2*margin;
+
+
+const height =
+canvas.height-
+2*margin;
+
+
+function X(i) {
+
+return margin+
+i/(signal.length-1)*width;
+
+}
+
+
+function Y(x) {
+
+return canvas.height-margin-
+(x-min)/range*height;
+
+}
+
+
+/* axes */
+
+ctx.beginPath();
+
+ctx.moveTo(
+margin,
+margin
+);
+
+ctx.lineTo(
+margin,
+canvas.height-margin
+);
+
+ctx.lineTo(
+canvas.width-margin,
+canvas.height-margin
+);
+
+ctx.stroke();
+
+
+/* courbe */
+
+ctx.beginPath();
+
+
+for(
+let i=0;
+i<signal.length;
+i++
+) {
+
+if(i===0)
+ctx.moveTo(
+X(i),
+Y(signal[i])
+);
+
+else
+ctx.lineTo(
+X(i),
+Y(signal[i])
+);
+
+}
+
+
+ctx.stroke();
+
+
+ctx.font =
+"16px Arial";
+
+
+ctx.fillText(
+label,
+60,
+30
+);
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
