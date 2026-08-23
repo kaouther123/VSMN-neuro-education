@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>ECG simulé - VSMN Neuro Education</title>
+
+    <link rel="stylesheet"
+          href="../css/style.css">
+
+</head>
+
+
+<body>
+
+<header>
+
+    <h1>❤️ Génération d'un signal ECG</h1>
+
+    <p>
+        Visualisation pédagogique d'un signal cardiaque simulé
+    </p>
+
+</header>
+
+
+<nav>
+
+    <a href="../index.html">Accueil</a>
+    <a href="neurone.html">Neurone</a>
+    <a href="vsmn.html">VSMN</a>
+    <a href="chaos.html">Chaos</a>
+    <a href="chua.html">Chua</a>
+    <a href="ecg.html">ECG</a>
+    <a href="eeg.html">EEG</a>
+    <a href="quiz.html">Quiz</a>
+
+</nav>
+
+
+<main class="container">
+
+
+    <!-- =========================================
+         1. INTRODUCTION
+    ========================================== -->
+
+    <section class="card">
+
+        <h2>❤️ Pourquoi simuler un ECG ?</h2>
+
+        <p>
+            Un ECG représente l'activité électrique
+            du cœur au cours du temps.
+        </p>
+
+        <p>
+            Dans cette plateforme, nous utilisons
+            un signal synthétique afin de comprendre
+            la structure générale d'un ECG et son
+            lien avec la modélisation dynamique.
+        </p>
+
+    </section>
+
+
+    <!-- =========================================
+         2. PARAMÈTRES
+    ========================================== -->
+
+    <section class="card">
+
+        <h2>⚙️ Paramètres du signal</h2>
+
+        <label>
+
+            <strong>Fréquence cardiaque :</strong>
+
+            <input
+                type="range"
+                id="heartRate"
+                min="40"
+                max="160"
+                value="70"
+                step="1"
+                oninput="updateECGValues()">
+
+        </label>
+
+        <span id="heartRateValue">
+            70 bpm
+        </span>
+
+        <br><br>
+
+
+        <label>
+
+            <strong>Amplitude :</strong>
+
+            <input
+                type="range"
+                id="amplitude"
+                min="0.5"
+                max="2"
+                value="1"
+                step="0.1"
+                oninput="updateECGValues()">
+
+        </label>
+
+        <span id="amplitudeValue">
+            1
+        </span>
+
+        <br><br>
+
+
+        <button
+            class="button"
+            onclick="generateECG()">
+
+            ▶ GÉNÉRER ECG
+
+        </button>
+
+    </section>
+
+
+    <!-- =========================================
+         3. SIGNAL ECG
+    ========================================== -->
+
+    <section class="card">
+
+        <h2>📈 Signal ECG simulé</h2>
+
+        <canvas
+            id="ecgChart"
+            width="1000"
+            height="450">
+        </canvas>
+
+    </section>
+
+
+    <!-- =========================================
+         4. EXPLICATION
+    ========================================== -->
+
+    <section class="card">
+
+        <h2>🫀 Comprendre le signal</h2>
+
+        <div id="ecgExplanation">
+
+            <p>
+                Cliquez sur « Générer ECG » pour
+                afficher le signal.
+            </p>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<footer>
+
+    <p>
+        VSMN Neuro Education
+    </p>
+
+</footer>
+
+
+<script>
+
+
+/* =========================================
+   MISE À JOUR DES PARAMÈTRES
+========================================= */
+
+function updateECGValues() {
+
+    const heartRate =
+        document.getElementById(
+            "heartRate"
+        ).value;
+
+
+    const amplitude =
+        document.getElementById(
+            "amplitude"
+        ).value;
+
+
+    document.getElementById(
+        "heartRateValue"
+    ).textContent =
+        heartRate + " bpm";
+
+
+    document.getElementById(
+        "amplitudeValue"
+    ).textContent =
+        amplitude;
+
+}
+
+
+/* =========================================
+   FONCTION GAUSSIENNE
+========================================= */
+
+function gaussian(
+    x,
+    center,
+    width,
+    amplitude
+) {
+
+    return amplitude *
+        Math.exp(
+            -Math.pow(
+                (x - center) /
+                width,
+                2
+            ) / 2
+        );
+
+}
+
+
+/* =========================================
+   MODÈLE ECG SYNTHÉTIQUE
+========================================= */
+
+function ecgWave(
+    phase,
+    amplitude
+) {
+
+    /*
+     * Onde P
+     */
+
+    const P =
+        gaussian(
+            phase,
+            0.20,
+            0.025,
+            0.15
+        );
+
+
+    /*
+     * Onde Q
+     */
+
+    const Q =
+        gaussian(
+            phase,
+            0.38,
+            0.010,
+            -0.12
+        );
+
+
+    /*
+     * Onde R
+     */
+
+    const R =
+        gaussian(
+            phase,
+            0.40,
+            0.012,
+            1.00
+        );
+
+
+    /*
+     * Onde S
+     */
+
+    const S =
+        gaussian(
+            phase,
+            0.43,
+            0.012,
+            -0.25
+        );
+
+
+    /*
+     * Onde T
+     */
+
+    const T =
+        gaussian(
+            phase,
+            0.68,
+            0.045,
+            0.30
+        );
+
+
+    return amplitude *
+        (
+            P +
+            Q +
+            R +
+            S +
+            T
+        );
+
+}
+
+
+/* =========================================
+   GÉNÉRATION ECG
+========================================= */
+
+function generateECG() {
+
+    const canvas =
+        document.getElementById(
+            "ecgChart"
+        );
+
+    const ctx =
+        canvas.getContext("2d");
+
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    const heartRate =
+        Number(
+            document.getElementById(
+                "heartRate"
+            ).value
+        );
+
+
+    const amplitude =
+        Number(
+            document.getElementById(
+                "amplitude"
+            ).value
+        );
+
+
+    /*
+     * Durée affichée
+     */
+
+    const duration =
+        10;
+
+
+    /*
+     * Fréquence d'échantillonnage
+     */
+
+    const fs =
+        500;
+
+
+    const samples =
+        duration * fs;
+
+
+    const signal = [];
+
+
+    /*
+     * Génération du signal
+     */
+
+    for (
+        let i = 0;
+        i < samples;
+        i++
+    ) {
+
+        const time =
+            i / fs;
+
+
+        /*
+         * Période cardiaque
+         */
+
+        const period =
+            60 / heartRate;
+
+
+        /*
+         * Phase comprise entre 0 et 1
+         */
+
+        const phase =
+            (
+                time %
+                period
+            )
+            /
+            period;
+
+
+        /*
+         * Signal ECG
+         */
+
+        const value =
+            ecgWave(
+                phase,
+                amplitude
+            );
+
+
+        signal.push(value);
+
+    }
+
+
+    /*
+     * Mise à l'échelle
+     */
+
+    const margin =
+        50;
+
+
+    const width =
+        canvas.width -
+        2 * margin;
+
+
+    const height =
+        canvas.height -
+        2 * margin;
+
+
+    const min =
+        -0.5 * amplitude;
+
+
+    const max =
+        1.1 * amplitude;
+
+
+    function X(i) {
+
+        return margin +
+            i /
+            (signal.length - 1)
+            *
+            width;
+
+    }
+
+
+    function Y(value) {
+
+        return canvas.height -
+            margin -
+            (
+                value - min
+            )
+            /
+            (
+                max - min
+            )
+            *
+            height;
+
+    }
+
+
+    /*
+     * Axes
+     */
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        margin,
+        margin
+    );
+
+    ctx.lineTo(
+        margin,
+        canvas.height - margin
+    );
+
+    ctx.lineTo(
+        canvas.width - margin,
+        canvas.height - margin
+    );
+
+    ctx.stroke();
+
+
+    /*
+     * ECG
+     */
+
+    ctx.beginPath();
+
+
+    for (
+        let i = 0;
+        i < signal.length;
+        i++
+    ) {
+
+        const x =
+            X(i);
+
+
+        const y =
+            Y(signal[i]);
+
+
+        if (i === 0) {
+
+            ctx.moveTo(
+                x,
+                y
+            );
+
+        } else {
+
+            ctx.lineTo(
+                x,
+                y
+            );
+
+        }
+
+    }
+
+
+    ctx.stroke();
+
+
+    /*
+     * Légendes
+     */
+
+    ctx.font =
+        "16px Arial";
+
+
+    ctx.fillText(
+        "Temps",
+        canvas.width - 100,
+        canvas.height - 15
+    );
+
+
+    ctx.fillText(
+        "Amplitude",
+        10,
+        25
+    );
+
+
+    /*
+     * Explication
+     */
+
+    document.getElementById(
+        "ecgExplanation"
+    ).innerHTML = `
+
+        <p>
+
+            <strong>
+                Fréquence cardiaque :
+            </strong>
+
+            ${heartRate} bpm
+
+        </p>
+
+        <p>
+
+            <strong>
+                Amplitude :
+            </strong>
+
+            ${amplitude}
+
+        </p>
+
+        <p>
+
+            Le signal synthétique présente
+            plusieurs composantes permettant
+            d'illustrer les principales
+            déflexions d'un cycle ECG :
+
+            <strong>
+                P, Q, R, S et T.
+            </strong>
+
+        </p>
+
+        <p>
+
+            <strong>
+                Attention :
+            </strong>
+
+            ce signal est généré à des fins
+            pédagogiques. Il ne constitue pas
+            un signal ECG clinique réel.
+
+        </p>
+
+    `;
+
+}
+
+
+/* =========================================
+   INITIALISATION
+========================================= */
+
+updateECGValues();
+
+generateECG();
+
+</script>
+
+
+</body>
+
+</html>
