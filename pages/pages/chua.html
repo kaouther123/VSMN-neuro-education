@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Circuit de Chua - VSMN Neuro Education</title>
+
+    <link rel="stylesheet"
+          href="../css/style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>⚡ Circuit de Chua</h1>
+
+    <p>
+        Comprendre la génération du chaos dans un circuit électronique
+    </p>
+
+</header>
+
+
+<nav>
+
+    <a href="../index.html">Accueil</a>
+
+    <a href="neurone.html">Neurone</a>
+
+    <a href="vsmn.html">VSMN</a>
+
+    <a href="chaos.html">Chaos</a>
+
+    <a href="chua.html">Chua</a>
+
+    <a href="ecg.html">ECG</a>
+
+    <a href="eeg.html">EEG</a>
+
+    <a href="quiz.html">Quiz</a>
+
+</nav>
+
+
+<main class="container">
+
+
+    <!-- =========================================
+         1. INTRODUCTION
+    ========================================== -->
+
+    <section class="card">
+
+        <h2>⚡ Qu'est-ce que le circuit de Chua ?</h2>
+
+        <p>
+
+            Le circuit de Chua est un système électronique
+            non linéaire qui peut présenter des comportements
+            chaotiques.
+
+        </p>
+
+        <p>
+
+            Il constitue un exemple classique permettant
+            d'étudier expérimentalement la dynamique chaotique
+            dans un système physique.
+
+        </p>
+
+    </section>
+
+
+    <!-- =========================================
+         2. STRUCTURE DU CIRCUIT
+    ========================================== -->
+
+    <section class="card">
+
+        <h2>🔌 Structure simplifiée</h2>
+
+        <div style="
+            text-align:center;
+            font-size:22px;
+            padding:30px;
+        ">
+
+            <p>
+
+                <strong>
+                    C₁
+                </strong>
+
+                &nbsp;&nbsp;→&nbsp;&nbsp;
+
+                <strong>
+                    C₂
+                </strong>
+
+                &nbsp;&nbsp;→&nbsp;&nbsp;
+
+                <strong>
+                    L
+                </strong>
+
+            </p>
+
+
+            <p>
+
+                ↓
+
+            </p>
+
+
+            <p>
+
+                <strong>
+                    Élément non linéaire
+                </strong>
+
+                <br>
+
+                (Diode de Chua)
+
+            </p>
+
+
+            <p>
+
+                ↓
+
+            </p>
+
+
+            <p>
+
+                <strong>
+                    Dynamique chaotique
+                </strong>
+
+            </p>
+
+        </div>
+
+        <p>
+
+            L'élément non linéaire joue un rôle essentiel :
+            il introduit une relation courant-tension
+            non linéaire dans le circuit.
+
+        </p>
+
+    </section>
+
+
+    <!-- =========================================
+         3. NON-LINÉARITÉ
+    ========================================== -->
+
+    <section class="card">
+
+        <h2>〽️ La non-linéarité</h2>
+
+        <p>
+
+            Dans un circuit linéaire, la réponse est
+            proportionnelle à l'entrée.
+
+        </p>
+
+        <p>
+
+            Dans le circuit de Chua, l'élément non linéaire
+            possède une caractéristique courant-tension
+            non linéaire.
+
+        </p>
+
+
+        <div style="
+            text-align:center;
+            font-size:24px;
+            padding:20px;
+        ">
+
+            <p>
+
+                <strong>
+                    i = g(v)
+                </strong>
+
+            </p>
+
+            <p>
+
+                au lieu d'une simple relation linéaire :
+
+            </p>
+
+            <p>
+
+                <strong>
+                    i = Gv
+                </strong>
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         4. MODÈLE MATHÉMATIQUE
+    ========================================== -->
+
+    <section class="card">
+
+        <h2>📐 Modèle mathématique simplifié</h2>
+
+        <p>
+
+            Le comportement du circuit peut être décrit
+            par un système d'équations différentielles
+            non linéaires.
+
+        </p>
+
+
+        <p>
+
+            On peut représenter le système sous la forme :
+
+        </p>
+
+
+        <div style="
+            text-align:center;
+            font-size:22px;
+            padding:20px;
+        ">
+
+            <p>
+                <strong>
+                    dx/dt = α(y − x − f(x))
+                </strong>
+            </p>
+
+            <p>
+                <strong>
+                    dy/dt = x − y + z
+                </strong>
+            </p>
+
+            <p>
+                <strong>
+                    dz/dt = −βy
+                </strong>
+            </p>
+
+        </div>
+
+
+        <p>
+
+            La fonction <strong>f(x)</strong> représente
+            la non-linéarité introduite par l'élément
+            électronique.
+
+        </p>
+
+    </section>
+
+
+    <!-- =========================================
+         5. SIMULATION
+    ========================================== -->
+
+    <section class="card">
+
+        <h2>🌀 Simulation conceptuelle</h2>
+
+        <p>
+
+            Cette section permet de visualiser une trajectoire
+            dans l'espace des phases.
+
+        </p>
+
+
+        <label>
+
+            <strong>
+                Intensité de la non-linéarité :
+            </strong>
+
+            <input
+                type="range"
+                id="nonlinear"
+                min="0.1"
+                max="5"
+                step="0.1"
+                value="1"
+                oninput="updateValue()">
+
+        </label>
+
+
+        <span id="nonlinearValue">
+            1
+        </span>
+
+
+        <br><br>
+
+
+        <button class="button"
+                onclick="simulateChua()">
+
+            ▶ SIMULER
+
+        </button>
+
+    </section>
+
+
+    <!-- =========================================
+         6. ATTRACTEUR
+    ========================================== -->
+
+    <section class="card">
+
+        <h2>🌀 Attracteur de Chua</h2>
+
+        <canvas
+            id="chuaChart"
+            width="1000"
+            height="500">
+        </canvas>
+
+        <div id="chuaInterpretation">
+
+            <p>
+                Lancez la simulation pour visualiser
+                la trajectoire dans l'espace des phases.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         7. LIEN AVEC LE VSMN
+    ========================================== -->
+
+    <section class="card">
+
+        <h2>🧠 Lien avec le modèle VSMN</h2>
+
+        <p>
+
+            Le circuit de Chua et le modèle VSMN sont
+            deux systèmes différents, mais ils permettent
+            tous les deux d'étudier des dynamiques
+            non linéaires complexes.
+
+        </p>
+
+
+        <div style="
+            text-align:center;
+            font-size:20px;
+            padding:20px;
+        ">
+
+            <strong>
+                VSMN
+            </strong>
+
+            <br>
+
+            Modélisation neuronale
+
+            <br><br>
+
+            ↕
+
+            <br><br>
+
+            <strong>
+                Chua
+            </strong>
+
+            <br>
+
+            Système électronique non linéaire
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<footer>
+
+    <p>
+        VSMN Neuro Education
+    </p>
+
+</footer>
+
+
+
+<script>
+
+/* =========================================
+   AFFICHAGE DU PARAMÈTRE
+========================================= */
+
+function updateValue() {
+
+    const value =
+        document.getElementById(
+            "nonlinear"
+        ).value;
+
+
+    document.getElementById(
+        "nonlinearValue"
+    ).textContent = value;
+
+}
+
+
+/* =========================================
+   SIMULATION CONCEPTUELLE
+========================================= */
+
+function simulateChua() {
+
+    const canvas =
+        document.getElementById(
+            "chuaChart"
+        );
+
+    const ctx =
+        canvas.getContext("2d");
+
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    const strength =
+        Number(
+            document.getElementById(
+                "nonlinear"
+            ).value
+        );
+
+
+    const centerX =
+        canvas.width / 2;
+
+    const centerY =
+        canvas.height / 2;
+
+
+    const scale =
+        45 * strength;
+
+
+    /*
+     * Génération d'une trajectoire
+     * de type attracteur.
+     *
+     * Cette visualisation est destinée
+     * à l'apprentissage du concept.
+     */
+
+    ctx.beginPath();
+
+
+    for (
+        let t = 0;
+        t < 30000;
+        t++
+    ) {
+
+        const time =
+            t * 0.015;
+
+
+        const x =
+            Math.sin(
+                time * 2.1
+            )
+            *
+            Math.exp(
+                0.08 *
+                Math.sin(time)
+            );
+
+
+        const y =
+            Math.sin(
+                time * 3.1
+            )
+            *
+            Math.exp(
+                0.08 *
+                Math.cos(time)
+            );
+
+
+        const X =
+            centerX +
+            x * scale;
+
+
+        const Y =
+            centerY +
+            y * scale;
+
+
+        if (t === 0) {
+
+            ctx.moveTo(
+                X,
+                Y
+            );
+
+        } else {
+
+            ctx.lineTo(
+                X,
+                Y
+            );
+
+        }
+
+    }
+
+
+    ctx.stroke();
+
+
+    document.getElementById(
+        "chuaInterpretation"
+    ).innerHTML = `
+
+        <p>
+
+            La trajectoire obtenue permet de visualiser
+            la notion d'attracteur dans un système
+            dynamique non linéaire.
+
+        </p>
+
+        <p>
+
+            <strong>
+                Attention :
+            </strong>
+
+            cette animation est une visualisation
+            pédagogique. Elle ne constitue pas encore
+            une résolution numérique des équations
+            physiques exactes du circuit de Chua.
+
+        </p>
+
+    `;
+
+}
+
+</script>
+
+
+</body>
+
+</html>
