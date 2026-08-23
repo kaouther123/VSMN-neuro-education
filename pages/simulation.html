@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Simulation VSMN</title>
+
+    <link rel="stylesheet"
+          href="../css/style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>🧠 Simulation interactive du VSMN</h1>
+
+    <p>
+        Variable Structure Model of Neurons
+    </p>
+
+</header>
+
+
+<nav>
+
+    <a href="../index.html">Accueil</a>
+    <a href="neurone.html">Neurone</a>
+    <a href="vsmn.html">VSMN</a>
+    <a href="chaos.html">Chaos</a>
+    <a href="chua.html">Chua</a>
+    <a href="ecg.html">ECG</a>
+    <a href="eeg.html">EEG</a>
+    <a href="applications.html">Applications</a>
+    <a href="quiz.html">Quiz</a>
+
+</nav>
+
+
+<main class="container">
+
+
+<!-- =========================================
+     ÉQUATION
+========================================= -->
+
+<section class="card">
+
+    <h2>📐 Équation du modèle VSMN</h2>
+
+    <p>
+        Le modèle est défini par le système :
+    </p>
+
+    <div style="
+        text-align:center;
+        font-size:20px;
+        line-height:2;
+        padding:20px;
+    ">
+
+        <strong>
+            du/dt =
+            −(u+p)/τ
+            +
+            (u+p)v f(βv) f(λ(u+p))
+        </strong>
+
+        <br>
+
+        <strong>
+            dv/dt =
+            −αv
+            +
+            k(u+q)<sup>n</sup> α
+            f²(λ(u+p))
+        </strong>
+
+        <br><br>
+
+        avec :
+
+        <strong>
+            f(x) = exp(−x²/2)
+        </strong>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     PARAMÈTRES
+========================================= -->
+
+<section class="card">
+
+    <h2>⚙️ Paramètres du VSMN</h2>
+
+
+    <label>
+
+        <strong>τ :</strong>
+
+        <input
+            type="number"
+            id="tau"
+            value="1"
+            step="0.1">
+
+    </label>
+
+    <br><br>
+
+
+    <label>
+
+        <strong>p :</strong>
+
+        <input
+            type="number"
+            id="p"
+            value="0"
+            step="0.1">
+
+    </label>
+
+    <br><br>
+
+
+    <label>
+
+        <strong>q :</strong>
+
+        <input
+            type="number"
+            id="q"
+            value="0"
+            step="0.1">
+
+    </label>
+
+    <br><br>
+
+
+    <label>
+
+        <strong>α :</strong>
+
+        <input
+            type="number"
+            id="alpha"
+            value="1"
+            step="0.1">
+
+    </label>
+
+    <br><br>
+
+
+    <label>
+
+        <strong>β :</strong>
+
+        <input
+            type="number"
+            id="beta"
+            value="1"
+            step="0.1">
+
+    </label>
+
+    <br><br>
+
+
+    <label>
+
+        <strong>λ :</strong>
+
+        <input
+            type="number"
+            id="lambda"
+            value="1"
+            step="0.1">
+
+    </label>
+
+    <br><br>
+
+
+    <label>
+
+        <strong>n :</strong>
+
+        <input
+            type="number"
+            id="n"
+            value="1"
+            step="1">
+
+    </label>
+
+    <br><br>
+
+
+    <label>
+
+        <strong>k :</strong>
+
+        <select id="k">
+
+            <option value="1">
+                +1
+            </option>
+
+            <option value="-1">
+                -1
+            </option>
+
+        </select>
+
+    </label>
+
+</section>
+
+
+<!-- =========================================
+     CONDITIONS INITIALES
+========================================= -->
+
+<section class="card">
+
+    <h2>🎯 Conditions initiales</h2>
+
+
+    <label>
+
+        <strong>u₀ :</strong>
+
+        <input
+            type="number"
+            id="u0"
+            value="0.1"
+            step="0.01">
+
+    </label>
+
+
+    <br><br>
+
+
+    <label>
+
+        <strong>v₀ :</strong>
+
+        <input
+            type="number"
+            id="v0"
+            value="0.1"
+            step="0.01">
+
+    </label>
+
+
+    <br><br>
+
+
+    <button
+        class="button"
+        onclick="simulateVSMN()">
+
+        ▶ SIMULER LE VSMN
+
+    </button>
+
+</section>
+
+
+<!-- =========================================
+     SIGNAL u(t)
+========================================= -->
+
+<section class="card">
+
+    <h2>📈 Évolution de u(t)</h2>
+
+    <canvas
+        id="uChart"
+        width="1000"
+        height="400">
+    </canvas>
+
+</section>
+
+
+<!-- =========================================
+     SIGNAL v(t)
+========================================= -->
+
+<section class="card">
+
+    <h2>📈 Évolution de v(t)</h2>
+
+    <canvas
+        id="vChart"
+        width="1000"
+        height="400">
+    </canvas>
+
+</section>
+
+
+<!-- =========================================
+     PORTRAIT DE PHASE
+========================================= -->
+
+<section class="card">
+
+    <h2>🌀 Portrait de phase</h2>
+
+    <p>
+        Représentation de v en fonction de u.
+    </p>
+
+    <canvas
+        id="phaseChart"
+        width="700"
+        height="500">
+    </canvas>
+
+</section>
+
+
+<!-- =========================================
+     INTERPRÉTATION
+========================================= -->
+
+<section class="card">
+
+    <h2>🔬 Interprétation</h2>
+
+    <div id="interpretation">
+
+        <p>
+            Lancez une simulation pour observer
+            la dynamique du modèle.
+        </p>
+
+    </div>
+
+</section>
+
+
+</main>
+
+
+<footer>
+
+    <p>
+        VSMN Neuro Education
+    </p>
+
+</footer>
+
+
+<script>
+
+
+/* =========================================
+   FONCTION NON LINÉAIRE
+========================================= */
+
+function f(x) {
+
+    return Math.exp(
+        -(x * x) / 2
+    );
+
+}
+
+
+/* =========================================
+   ÉQUATIONS DU VSMN
+========================================= */
+
+function derivatives(
+    u,
+    v,
+    parameters
+) {
+
+    const tau =
+        parameters.tau;
+
+    const p =
+        parameters.p;
+
+    const q =
+        parameters.q;
+
+    const alpha =
+        parameters.alpha;
+
+    const beta =
+        parameters.beta;
+
+    const lambda =
+        parameters.lambda;
+
+    const n =
+        parameters.n;
+
+    const k =
+        parameters.k;
+
+
+    /*
+     * f(βv)
+     */
+
+    const f_beta_v =
+        f(
+            beta * v
+        );
+
+
+    /*
+     * f(λ(u+p))
+     */
+
+    const f_lambda =
+        f(
+            lambda *
+            (u + p)
+        );
+
+
+    /*
+     * Première équation
+     *
+     * du/dt =
+     * -(u+p)/tau
+     * +(u+p)v f(βv) f(λ(u+p))
+     */
+
+    const du =
+        -(u + p) / tau
+        +
+        (u + p)
+        *
+        v
+        *
+        f_beta_v
+        *
+        f_lambda;
+
+
+    /*
+     * f²(λ(u+p))
+     */
+
+    const f_squared =
+        f_lambda *
+        f_lambda;
+
+
+    /*
+     * Deuxième équation
+     *
+     * dv/dt =
+     * -αv
+     * + k(u+q)^n α f²(...)
+     */
+
+    const dv =
+        -alpha * v
+        +
+        k
+        *
+        Math.pow(
+            u + q,
+            n
+        )
+        *
+        alpha
+        *
+        f_squared;
+
+
+    return {
+        du: du,
+        dv: dv
+    };
+
+}
+
+
+/* =========================================
+   RUNGE-KUTTA 4
+========================================= */
+
+function rk4(
+    u,
+    v,
+    dt,
+    parameters
+) {
+
+    const k1 =
+        derivatives(
+            u,
+            v,
+            parameters
+        );
+
+
+    const k2 =
+        derivatives(
+            u + dt * k1.du / 2,
+            v + dt * k1.dv / 2,
+            parameters
+        );
+
+
+    const k3 =
+        derivatives(
+            u + dt * k2.du / 2,
+            v + dt * k2.dv / 2,
+            parameters
+        );
+
+
+    const k4 =
+        derivatives(
+            u + dt * k3.du,
+            v + dt * k3.dv,
+            parameters
+        );
+
+
+    return {
+
+        u:
+            u +
+            dt / 6 *
+            (
+                k1.du
+                +
+                2 * k2.du
+                +
+                2 * k3.du
+                +
+                k4.du
+            ),
+
+        v:
+            v +
+            dt / 6 *
+            (
+                k1.dv
+                +
+                2 * k2.dv
+                +
+                2 * k3.dv
+                +
+                k4.dv
+            )
+
+    };
+
+}
+
+
+/* =========================================
+   SIMULATION
+========================================= */
+
+function simulateVSMN() {
+
+
+    /* -----------------------------
+       RÉCUPÉRATION DES PARAMÈTRES
+    ----------------------------- */
+
+    const parameters = {
+
+        tau:
+            Number(
+                document.getElementById(
+                    "tau"
+                ).value
+            ),
+
+        p:
+            Number(
+                document.getElementById(
+                    "p"
+                ).value
+            ),
+
+        q:
+            Number(
+                document.getElementById(
+                    "q"
+                ).value
+            ),
+
+        alpha:
+            Number(
+                document.getElementById(
+                    "alpha"
+                ).value
+            ),
+
+        beta:
+            Number(
+                document.getElementById(
+                    "beta"
+                ).value
+            ),
+
+        lambda:
+            Number(
+                document.getElementById(
+                    "lambda"
+                ).value
+            ),
+
+        n:
+            Number(
+                document.getElementById(
+                    "n"
+                ).value
+            ),
+
+        k:
+            Number(
+                document.getElementById(
+                    "k"
+                ).value
+            )
+
+    };
+
+
+    /* -----------------------------
+       CONDITIONS INITIALES
+    ----------------------------- */
+
+    let u =
+        Number(
+            document.getElementById(
+                "u0"
+            ).value
+        );
+
+
+    let v =
+        Number(
+            document.getElementById(
+                "v0"
+            ).value
+        );
+
+
+    /* -----------------------------
+       PARAMÈTRES NUMÉRIQUES
+    ----------------------------- */
+
+    const dt =
+        0.01;
+
+
+    const steps =
+        10000;
+
+
+    const time = [];
+
+    const U = [];
+
+    const V = [];
+
+
+    /* -----------------------------
+       INTÉGRATION NUMÉRIQUE
+    ----------------------------- */
+
+    for (
+        let i = 0;
+        i < steps;
+        i++
+    ) {
+
+        const t =
+            i * dt;
+
+
+        time.push(t);
+
+        U.push(u);
+
+        V.push(v);
+
+
+        const result =
+            rk4(
+                u,
+                v,
+                dt,
+                parameters
+            );
+
+
+        u =
+            result.u;
+
+        v =
+            result.v;
+
+
+        /*
+         * Arrêt si divergence numérique
+         */
+
+        if (
+            !Number.isFinite(u)
+            ||
+            !Number.isFinite(v)
+            ||
+            Math.abs(u) > 1e6
+            ||
+            Math.abs(v) > 1e6
+        ) {
+
+            break;
+
+        }
+
+    }
+
+
+    drawSignal(
+        "uChart",
+        time,
+        U,
+        "u(t)"
+    );
+
+
+    drawSignal(
+        "vChart",
+        time,
+        V,
+        "v(t)"
+    );
+
+
+    drawPhase(
+        U,
+        V
+    );
+
+
+    document.getElementById(
+        "interpretation"
+    ).innerHTML = `
+
+        <p>
+            <strong>
+                Nombre de points :
+            </strong>
+            ${U.length}
+        </p>
+
+        <p>
+            Le premier graphique représente
+            l'évolution temporelle de
+            <strong>u(t)</strong>.
+        </p>
+
+        <p>
+            Le deuxième graphique représente
+            l'évolution temporelle de
+            <strong>v(t)</strong>.
+        </p>
+
+        <p>
+            Le portrait de phase représente
+            la trajectoire du système dans
+            le plan <strong>(u,v)</strong>.
+        </p>
+
+        <p>
+            La dynamique observée dépend
+            fortement des paramètres du modèle
+            et des conditions initiales.
+        </p>
+
+    `;
+
+}
+
+
+/* =========================================
+   DESSIN SIGNAL
+========================================= */
+
+function drawSignal(
+    canvasId,
+    time,
+    signal,
+    label
+) {
+
+
+    const canvas =
+        document.getElementById(
+            canvasId
+        );
+
+
+    const ctx =
+        canvas.getContext("2d");
+
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    if (
+        signal.length === 0
+    ) {
+
+        return;
+
+    }
+
+
+    const margin =
+        50;
+
+
+    const min =
+        Math.min(
+            ...signal
+        );
+
+
+    const max =
+        Math.max(
+            ...signal
+        );
+
+
+    const range =
+        max - min || 1;
+
+
+    const width =
+        canvas.width -
+        2 * margin;
+
+
+    const height =
+        canvas.height -
+        2 * margin;
+
+
+    function X(i) {
+
+        return margin +
+            i /
+            (signal.length - 1)
+            *
+            width;
+
+    }
+
+
+    function Y(value) {
+
+        return canvas.height -
+            margin -
+            (
+                value - min
+            )
+            /
+            range
+            *
+            height;
+
+    }
+
+
+    /* Axes */
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        margin,
+        margin
+    );
+
+    ctx.lineTo(
+        margin,
+        canvas.height - margin
+    );
+
+    ctx.lineTo(
+        canvas.width - margin,
+        canvas.height - margin
+    );
+
+    ctx.stroke();
+
+
+    /* Courbe */
+
+    ctx.beginPath();
+
+
+    for (
+        let i = 0;
+        i < signal.length;
+        i++
+    ) {
+
+        const x =
+            X(i);
+
+        const y =
+            Y(signal[i]);
+
+
+        if (i === 0) {
+
+            ctx.moveTo(
+                x,
+                y
+            );
+
+        } else {
+
+            ctx.lineTo(
+                x,
+                y
+            );
+
+        }
+
+    }
+
+
+    ctx.stroke();
+
+
+    /* Légendes */
+
+    ctx.font =
+        "16px Arial";
+
+
+    ctx.fillText(
+        label,
+        15,
+        25
+    );
+
+
+    ctx.fillText(
+        "Temps",
+        canvas.width - 70,
+        canvas.height - 15
+    );
+
+}
+
+
+/* =========================================
+   PORTRAIT DE PHASE
+========================================= */
+
+function drawPhase(
+    U,
+    V
+) {
+
+
+    const canvas =
+        document.getElementById(
+            "phaseChart"
+        );
+
+
+    const ctx =
+        canvas.getContext("2d");
+
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    if (
+        U.length === 0
+    ) {
+
+        return;
+
+    }
+
+
+    const margin =
+        50;
+
+
+    const minU =
+        Math.min(
+            ...U
+        );
+
+
+    const maxU =
+        Math.max(
+            ...U
+        );
+
+
+    const minV =
+        Math.min(
+            ...V
+        );
+
+
+    const maxV =
+        Math.max(
+            ...V
+        );
+
+
+    const rangeU =
+        maxU - minU || 1;
+
+
+    const rangeV =
+        maxV - minV || 1;
+
+
+    const width =
+        canvas.width -
+        2 * margin;
+
+
+    const height =
+        canvas.height -
+        2 * margin;
+
+
+    function X(u) {
+
+        return margin +
+            (
+                u - minU
+            )
+            /
+            rangeU
+            *
+            width;
+
+    }
+
+
+    function Y(v) {
+
+        return canvas.height -
+            margin -
+            (
+                v - minV
+            )
+            /
+            rangeV
+            *
+            height;
+
+    }
+
+
+    /* Axes */
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        margin,
+        margin
+    );
+
+    ctx.lineTo(
+        margin,
+        canvas.height - margin
+    );
+
+    ctx.lineTo(
+        canvas.width - margin,
+        canvas.height - margin
+    );
+
+    ctx.stroke();
+
+
+    /* Trajectoire */
+
+    ctx.beginPath();
+
+
+    for (
+        let i = 0;
+        i < U.length;
+        i++
+    ) {
+
+        const x =
+            X(U[i]);
+
+
+        const y =
+            Y(V[i]);
+
+
+        if (i === 0) {
+
+            ctx.moveTo(
+                x,
+                y
+            );
+
+        } else {
+
+            ctx.lineTo(
+                x,
+                y
+            );
+
+        }
+
+    }
+
+
+    ctx.stroke();
+
+
+    /* Légendes */
+
+    ctx.font =
+        "16px Arial";
+
+
+    ctx.fillText(
+        "v",
+        15,
+        25
+    );
+
+
+    ctx.fillText(
+        "u",
+        canvas.width - 25,
+        canvas.height - 15
+    );
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
