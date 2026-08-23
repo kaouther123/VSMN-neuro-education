@@ -1333,6 +1333,273 @@ function calculateLyapunov() {
     `;
 
 }
+    /* =====================================================
+   DIAGRAMME DE BIFURCATION
+===================================================== */
+
+function calculateBifurcation() {
+
+    const lambdaMin =
+        Number(
+            document.getElementById("lambdaMin").value
+        );
+
+    const lambdaMax =
+        Number(
+            document.getElementById("lambdaMax").value
+        );
+
+
+    const canvas =
+        document.getElementById(
+            "bifurcationChart"
+        );
+
+    const ctx =
+        canvas.getContext("2d");
+
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    const margin = 50;
+
+    const width =
+        canvas.width - 2 * margin;
+
+    const height =
+        canvas.height - 2 * margin;
+
+
+    /*
+     * Nombre de valeurs du paramètre λ
+     */
+
+    const numberOfLambda = 150;
+
+
+    /*
+     * Nombre de points conservés
+     * après élimination du transitoire.
+     */
+
+    const transient = 3000;
+
+    const keptPoints = 500;
+
+
+    const lambdaValues = [];
+
+    const points = [];
+
+
+    for (
+        let j = 0;
+        j < numberOfLambda;
+        j++
+    ) {
+
+        const lambda =
+            lambdaMin +
+            j /
+            (numberOfLambda - 1) *
+            (lambdaMax - lambdaMin);
+
+
+        const P = {
+
+            alpha: 1,
+            tau: 1,
+            p: 0,
+            q: 0,
+            n: 1,
+            lambda: lambda,
+            beta: 1,
+            k: 1,
+
+            u0: 0.1,
+            v0: 0.1,
+
+            dt: 0.01,
+
+            steps:
+                transient +
+                keptPoints
+
+        };
+
+
+        const result =
+            simulateVSMN(P);
+
+
+        /*
+         * On ignore le régime transitoire.
+         */
+
+        for (
+            let i = transient;
+            i < result.U.length;
+            i++
+        ) {
+
+            lambdaValues.push(lambda);
+
+            points.push(result.U[i]);
+
+        }
+
+    }
+
+
+    /*
+     * Échelle verticale
+     */
+
+    const minU =
+        Math.min(...points);
+
+    const maxU =
+        Math.max(...points);
+
+
+    function X(lambda) {
+
+        return margin +
+            (lambda - lambdaMin) /
+            (lambdaMax - lambdaMin || 1)
+            * width;
+
+    }
+
+
+    function Y(u) {
+
+        return canvas.height -
+            margin -
+            (u - minU) /
+            (maxU - minU || 1)
+            * height;
+
+    }
+
+
+    /*
+     * Axes
+     */
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        margin,
+        margin
+    );
+
+    ctx.lineTo(
+        margin,
+        canvas.height - margin
+    );
+
+    ctx.lineTo(
+        canvas.width - margin,
+        canvas.height - margin
+    );
+
+    ctx.stroke();
+
+
+    /*
+     * Points du diagramme
+     */
+
+    ctx.beginPath();
+
+
+    for (
+        let i = 0;
+        i < points.length;
+        i++
+    ) {
+
+        const x =
+            X(lambdaValues[i]);
+
+        const y =
+            Y(points[i]);
+
+
+        ctx.moveTo(
+            x,
+            y
+        );
+
+        ctx.arc(
+            x,
+            y,
+            1,
+            0,
+            2 * Math.PI
+        );
+
+    }
+
+
+    ctx.stroke();
+
+
+    /*
+     * Légendes
+     */
+
+    ctx.font =
+        "16px Arial";
+
+
+    ctx.fillText(
+        "λ",
+        canvas.width - 30,
+        canvas.height - 15
+    );
+
+
+    ctx.fillText(
+        "u",
+        15,
+        30
+    );
+
+
+    document.getElementById(
+        "bifurcationExplanation"
+    ).innerHTML = `
+
+        <p>
+            Le paramètre <strong>λ</strong> a été
+            progressivement augmenté de
+            <strong>${lambdaMin}</strong> à
+            <strong>${lambdaMax}</strong>.
+        </p>
+
+        <p>
+            Chaque ensemble de points représente
+            les valeurs de <strong>u</strong> observées
+            après élimination du régime transitoire.
+        </p>
+
+        <p>
+            La structure obtenue permet d'étudier
+            les changements de régime dynamique
+            lorsque le paramètre λ varie.
+        </p>
+
+    `;
+
+}
 </script>
 
 
