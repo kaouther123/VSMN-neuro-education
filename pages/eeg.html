@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Génération EEG - VSMN</title>
+
+<link rel="stylesheet"
+href="../css/style.css">
+
+<style>
+
+.band-grid {
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(220px,1fr));
+
+gap:20px;
+
+margin-top:20px;
+
+}
+
+.band {
+
+padding:20px;
+
+border-radius:12px;
+
+}
+
+.band h3 {
+
+margin-top:0;
+
+}
+
+.band input[type="range"] {
+
+width:100%;
+
+}
+
+.value {
+
+font-weight:bold;
+
+font-size:18px;
+
+}
+
+canvas {
+
+width:100%;
+
+max-width:100%;
+
+border:1px solid #ccc;
+
+border-radius:10px;
+
+margin-top:20px;
+
+}
+
+.info {
+
+padding:20px;
+
+border-radius:10px;
+
+margin-top:20px;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>🧠 Génération d'un signal EEG</h1>
+
+<p>
+Simulation pédagogique des rythmes cérébraux
+</p>
+
+</header>
+
+
+<nav>
+
+<a href="../index.html">
+Accueil
+</a>
+
+<a href="apprendre-vsmn.html">
+Apprendre VSMN
+</a>
+
+<a href="experiences.html">
+Expériences
+</a>
+
+<a href="ecg.html">
+ECG
+</a>
+
+<a href="eeg.html">
+EEG
+</a>
+
+<a href="quiz.html">
+Quiz
+</a>
+
+</nav>
+
+
+<main class="container">
+
+
+<!-- INTRODUCTION -->
+
+<section class="card">
+
+<h2>
+🧠 Qu'est-ce qu'un EEG ?
+</h2>
+
+<p>
+
+L'électroencéphalogramme (EEG) permet
+d'enregistrer l'activité électrique
+cérébrale au cours du temps.
+
+</p>
+
+<p>
+
+Dans cette plateforme, nous construisons
+un signal EEG synthétique à partir de
+plusieurs composantes fréquentielles.
+
+</p>
+
+</section>
+
+
+<!-- BANDES EEG -->
+
+<section class="card">
+
+<h2>
+🎚️ Composantes du signal EEG
+</h2>
+
+
+<div class="band-grid">
+
+
+<!-- DELTA -->
+
+<div class="band">
+
+<h3>
+🔵 Delta
+</h3>
+
+<p>
+0.5 – 4 Hz
+</p>
+
+<label>
+Amplitude
+</label>
+
+<input
+type="range"
+id="deltaAmp"
+min="0"
+max="2"
+value="0.5"
+step="0.1"
+oninput="updateValues()">
+
+<p>
+Valeur :
+<span
+id="deltaValue"
+class="value">
+0.5
+</span>
+</p>
+
+</div>
+
+
+<!-- THETA -->
+
+<div class="band">
+
+<h3>
+🟢 Theta
+</h3>
+
+<p>
+4 – 8 Hz
+</p>
+
+<label>
+Amplitude
+</label>
+
+<input
+type="range"
+id="thetaAmp"
+min="0"
+max="2"
+value="0.4"
+step="0.1"
+oninput="updateValues()">
+
+<p>
+Valeur :
+<span
+id="thetaValue"
+class="value">
+0.4
+</span>
+</p>
+
+</div>
+
+
+<!-- ALPHA -->
+
+<div class="band">
+
+<h3>
+🟡 Alpha
+</h3>
+
+<p>
+8 – 13 Hz
+</p>
+
+<label>
+Amplitude
+</label>
+
+<input
+type="range"
+id="alphaAmp"
+min="0"
+max="2"
+value="1"
+step="0.1"
+oninput="updateValues()">
+
+<p>
+Valeur :
+<span
+id="alphaValue"
+class="value">
+1
+</span>
+</p>
+
+</div>
+
+
+<!-- BETA -->
+
+<div class="band">
+
+<h3>
+🟠 Beta
+</h3>
+
+<p>
+13 – 30 Hz
+</p>
+
+<label>
+Amplitude
+</label>
+
+<input
+type="range"
+id="betaAmp"
+min="0"
+max="2"
+value="0.3"
+step="0.1"
+oninput="updateValues()">
+
+<p>
+Valeur :
+<span
+id="betaValue"
+class="value">
+0.3
+</span>
+</p>
+
+</div>
+
+
+<!-- GAMMA -->
+
+<div class="band">
+
+<h3>
+🔴 Gamma
+</h3>
+
+<p>
+> 30 Hz
+</p>
+
+<label>
+Amplitude
+</label>
+
+<input
+type="range"
+id="gammaAmp"
+min="0"
+max="2"
+value="0.1"
+step="0.1"
+oninput="updateValues()">
+
+<p>
+Valeur :
+<span
+id="gammaValue"
+class="value">
+0.1
+</span>
+</p>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<!-- PARAMETRES -->
+
+<section class="card">
+
+<h2>
+⚙️ Paramètres généraux
+</h2>
+
+
+<div class="band-grid">
+
+
+<div class="band">
+
+<label>
+Durée (secondes)
+</label>
+
+<input
+type="number"
+id="duration"
+value="10"
+min="1"
+max="30"
+step="1">
+
+</div>
+
+
+<div class="band">
+
+<label>
+Bruit
+</label>
+
+<input
+type="number"
+id="noise"
+value="0.05"
+min="0"
+max="1"
+step="0.01">
+
+</div>
+
+
+<div class="band">
+
+<label>
+Fréquence d'échantillonnage
+</label>
+
+<input
+type="number"
+id="sampling"
+value="250"
+min="100"
+max="1000"
+step="50">
+
+</div>
+
+</div>
+
+
+<br>
+
+
+<button
+class="button"
+onclick="generateEEG()">
+
+🧠 GÉNÉRER EEG
+
+</button>
+
+
+<button
+class="button"
+onclick="downloadEEG()">
+
+⬇️ EXPORTER CSV
+
+</button>
+
+</section>
+
+
+<!-- SIGNAL -->
+
+<section class="card">
+
+<h2>
+📈 Signal EEG synthétique
+</h2>
+
+
+<canvas
+id="eegCanvas"
+width="1200"
+height="500">
+</canvas>
+
+
+<div
+id="eegInfo"
+class="info">
+
+Modifiez les paramètres puis
+générez le signal.
+
+</div>
+
+</section>
+
+
+<!-- EXPLICATION -->
+
+<section class="card">
+
+<h2>
+🔎 Comment construire le signal EEG ?
+</h2>
+
+
+<p>
+
+Le signal EEG synthétique est obtenu
+par la combinaison de plusieurs
+composantes oscillatoires.
+
+</p>
+
+
+<div style="
+text-align:center;
+font-size:24px;
+padding:20px;
+">
+
+EEG(t) =
+Delta(t)
++
+Theta(t)
++
+Alpha(t)
++
+Beta(t)
++
+Gamma(t)
++
+Bruit(t)
+
+</div>
+
+
+<p>
+
+Cette représentation permet à l'étudiant
+de comprendre comment différentes
+composantes fréquentielles peuvent
+contribuer au signal global.
+
+</p>
+
+</section>
+
+
+<!-- ALPHA -->
+
+<section class="card">
+
+<h2>
+⭐ Expérience : rythme Alpha
+</h2>
+
+<p>
+
+Le rythme alpha est généralement associé
+à une bande autour de 8–13 Hz.
+
+</p>
+
+<p>
+
+Essayez de mettre les amplitudes Delta,
+Theta, Beta et Gamma à zéro et augmentez
+l'amplitude Alpha.
+
+</p>
+
+
+<button
+class="button"
+onclick="alphaExperiment()">
+
+▶ EXPÉRIENCE ALPHA
+
+</button>
+
+</section>
+
+
+<!-- LIEN ANALYSE -->
+
+<section class="card">
+
+<h2>
+📊 Analyse du signal
+</h2>
+
+<p>
+
+Après avoir généré le signal, l'étape
+suivante consiste à analyser ses
+caractéristiques temporelles et
+fréquentielles.
+
+</p>
+
+
+<a
+class="button"
+href="analyse-eeg.html">
+
+📊 ANALYSER LE SIGNAL EEG
+
+</a>
+
+</section>
+
+
+</main>
+
+
+<footer>
+
+<p>
+VSMN Neuro Education
+</p>
+
+</footer>
+
+
+<script>
+
+
+let eegTime = [];
+
+let eegSignal = [];
+
+
+/* =====================================
+   MISE A JOUR DES VALEURS
+===================================== */
+
+function updateValues() {
+
+
+document.getElementById(
+"deltaValue"
+).innerText =
+document.getElementById(
+"deltaAmp"
+).value;
+
+
+document.getElementById(
+"thetaValue"
+).innerText =
+document.getElementById(
+"thetaAmp"
+).value;
+
+
+document.getElementById(
+"alphaValue"
+).innerText =
+document.getElementById(
+"alphaAmp"
+).value;
+
+
+document.getElementById(
+"betaValue"
+).innerText =
+document.getElementById(
+"betaAmp"
+).value;
+
+
+document.getElementById(
+"gammaValue"
+).innerText =
+document.getElementById(
+"gammaAmp"
+).value;
+
+}
+
+
+/* =====================================
+   GENERATION EEG
+===================================== */
+
+function generateEEG() {
+
+
+const deltaAmp =
+Number(
+document.getElementById(
+"deltaAmp"
+).value
+);
+
+
+const thetaAmp =
+Number(
+document.getElementById(
+"thetaAmp"
+).value
+);
+
+
+const alphaAmp =
+Number(
+document.getElementById(
+"alphaAmp"
+).value
+);
+
+
+const betaAmp =
+Number(
+document.getElementById(
+"betaAmp"
+).value
+);
+
+
+const gammaAmp =
+Number(
+document.getElementById(
+"gammaAmp"
+).value
+);
+
+
+const duration =
+Number(
+document.getElementById(
+"duration"
+).value
+);
+
+
+const noise =
+Number(
+document.getElementById(
+"noise"
+).value
+);
+
+
+const fs =
+Number(
+document.getElementById(
+"sampling"
+).value
+);
+
+
+const samples =
+Math.floor(
+duration*fs
+);
+
+
+/*
+Fréquences centrales
+*/
+
+const deltaFreq = 2;
+
+const thetaFreq = 6;
+
+const alphaFreq = 10;
+
+const betaFreq = 20;
+
+const gammaFreq = 40;
+
+
+eegTime = [];
+
+eegSignal = [];
+
+
+for(
+let i=0;
+i<samples;
+i++
+) {
+
+
+const t =
+i/fs;
+
+
+/*
+Delta
+*/
+
+const delta =
+
+deltaAmp*
+Math.sin(
+2*Math.PI*
+deltaFreq*
+t
+);
+
+
+/*
+Theta
+*/
+
+const theta =
+
+thetaAmp*
+Math.sin(
+2*Math.PI*
+thetaFreq*
+t
+);
+
+
+/*
+Alpha
+*/
+
+const alpha =
+
+alphaAmp*
+Math.sin(
+2*Math.PI*
+alphaFreq*
+t
+);
+
+
+/*
+Beta
+*/
+
+const beta =
+
+betaAmp*
+Math.sin(
+2*Math.PI*
+betaFreq*
+t
+);
+
+
+/*
+Gamma
+*/
+
+const gamma =
+
+gammaAmp*
+Math.sin(
+2*Math.PI*
+gammaFreq*
+t
+);
+
+
+/*
+Bruit
+*/
+
+const randomNoise =
+
+noise*
+(
+Math.random()*2-1
+);
+
+
+/*
+Signal EEG
+*/
+
+const signal =
+
+delta
++
+theta
++
+alpha
++
+beta
++
+gamma
++
+randomNoise;
+
+
+eegTime.push(t);
+
+eegSignal.push(signal);
+
+}
+
+
+drawEEG();
+
+
+document.getElementById(
+"eegInfo"
+).innerHTML =
+
+"<strong>Signal EEG généré</strong><br><br>"
+
++
+
+"Durée : "
++
+duration
++
+" s<br>"
+
++
+
+"Fréquence d'échantillonnage : "
++
+fs
++
+" Hz<br>"
+
++
+
+"Delta : "
++
+deltaAmp
++
+"<br>"
+
++
+
+"Theta : "
++
+thetaAmp
++
+"<br>"
+
++
+
+"Alpha : "
++
+alphaAmp
++
+"<br>"
+
++
+
+"Beta : "
++
+betaAmp
++
+"<br>"
+
++
+
+"Gamma : "
++
+gammaAmp;
+
+}
+
+
+/* =====================================
+   DESSIN EEG
+===================================== */
+
+function drawEEG() {
+
+
+const canvas =
+document.getElementById(
+"eegCanvas"
+);
+
+
+const ctx =
+canvas.getContext(
+"2d"
+);
+
+
+ctx.clearRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+
+if(
+eegSignal.length===0
+) {
+
+return;
+
+}
+
+
+const min =
+Math.min(
+...eegSignal
+);
+
+
+const max =
+Math.max(
+...eegSignal
+);
+
+
+const range =
+max-min || 1;
+
+
+const marginX=50;
+
+const marginY=40;
+
+
+ctx.beginPath();
+
+
+for(
+let i=0;
+i<eegSignal.length;
+i++
+) {
+
+
+const x =
+
+marginX
++
+i/
+(eegSignal.length-1)
+*
+(
+canvas.width-
+2*marginX
+);
+
+
+const y =
+
+canvas.height-
+marginY
+-
+(
+eegSignal[i]-min
+)/
+range
+*
+(
+canvas.height-
+2*marginY
+);
+
+
+if(i===0) {
+
+ctx.moveTo(
+x,
+y
+);
+
+}
+
+else {
+
+ctx.lineTo(
+x,
+y
+);
+
+}
+
+}
+
+
+ctx.stroke();
+
+
+/*
+Axes
+*/
+
+ctx.beginPath();
+
+ctx.moveTo(
+marginX,
+marginY
+);
+
+ctx.lineTo(
+marginX,
+canvas.height-marginY
+);
+
+ctx.lineTo(
+canvas.width-marginX,
+canvas.height-marginY
+);
+
+ctx.stroke();
+
+
+ctx.font =
+"16px Arial";
+
+
+ctx.fillText(
+"Amplitude",
+10,
+30
+);
+
+
+ctx.fillText(
+"Temps (s)",
+canvas.width-100,
+canvas.height-15
+);
+
+}
+
+
+/* =====================================
+   EXPERIENCE ALPHA
+===================================== */
+
+function alphaExperiment() {
+
+
+document.getElementById(
+"deltaAmp"
+).value=0;
+
+
+document.getElementById(
+"thetaAmp"
+).value=0;
+
+
+document.getElementById(
+"alphaAmp"
+).value=1;
+
+
+document.getElementById(
+"betaAmp"
+).value=0;
+
+
+document.getElementById(
+"gammaAmp"
+).value=0;
+
+
+updateValues();
+
+generateEEG();
+
+
+}
+
+
+/* =====================================
+   EXPORT CSV
+===================================== */
+
+function downloadEEG() {
+
+
+if(
+eegSignal.length===0
+) {
+
+alert(
+"Générez d'abord un signal EEG."
+);
+
+return;
+
+}
+
+
+let csv =
+"Temps,EEG\n";
+
+
+for(
+let i=0;
+i<eegSignal.length;
+i++
+) {
+
+csv +=
+
+eegTime[i].toFixed(4)
++
+","
++
+eegSignal[i].toFixed(6)
++
+"\n";
+
+}
+
+
+const blob =
+new Blob(
+[csv],
+{
+type:"text/csv"
+}
+);
+
+
+const url =
+URL.createObjectURL(
+blob
+);
+
+
+const link =
+document.createElement(
+"a"
+);
+
+
+link.href=url;
+
+link.download=
+"signal_EEG_VSMN.csv";
+
+
+link.click();
+
+
+URL.revokeObjectURL(url);
+
+}
+
+
+/* =====================================
+   INITIALISATION
+===================================== */
+
+updateValues();
+
+generateEEG();
+
+</script>
+
+
+</body>
+
+</html>
