@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Signaux biologiques - VSMN</title>
+
+<link rel="stylesheet"
+href="../css/style.css">
+
+<style>
+
+.signal-grid {
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(280px,1fr));
+
+    gap:20px;
+
+}
+
+.signal-card {
+
+    padding:25px;
+
+    border-radius:15px;
+
+}
+
+canvas {
+
+    width:100%;
+
+    border:1px solid #ccc;
+
+    border-radius:10px;
+
+    margin-top:15px;
+
+}
+
+.info {
+
+    padding:20px;
+
+    margin-top:20px;
+
+    border-radius:12px;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>🧠❤️ Signaux biologiques</h1>
+
+<p>
+Application du modèle VSMN à la génération
+de signaux de type EEG et ECG
+</p>
+
+</header>
+
+
+<nav>
+
+<a href="../index.html">
+Accueil
+</a>
+
+<a href="experience-vsmn.html">
+Expérience VSMN
+</a>
+
+<a href="attracteur-vsmn.html">
+Attracteur
+</a>
+
+<a href="lyapunov-vsmn.html">
+Lyapunov
+</a>
+
+<a href="signaux-biologiques.html">
+EEG / ECG
+</a>
+
+</nav>
+
+
+<main class="container">
+
+
+<section class="card">
+
+<h2>
+🎯 Objectif
+</h2>
+
+<p>
+
+Cette partie permet d'illustrer une
+application du modèle VSMN dans le
+domaine des signaux biologiques.
+
+</p>
+
+<p>
+
+Deux types de signaux sont présentés :
+
+<strong>EEG</strong> pour l'activité cérébrale
+et <strong>ECG</strong> pour l'activité cardiaque.
+
+</p>
+
+</section>
+
+
+<section class="card">
+
+<h2>
+⚙️ Choisir le signal
+</h2>
+
+
+<div class="signal-grid">
+
+
+<div class="signal-card">
+
+<h3>
+🧠 EEG
+</h3>
+
+<p>
+
+Signal représentant une activité
+électrique cérébrale simulée.
+
+</p>
+
+<button
+class="button"
+onclick="generateEEG()">
+
+▶ GÉNÉRER EEG
+
+</button>
+
+</div>
+
+
+<div class="signal-card">
+
+<h3>
+❤️ ECG
+</h3>
+
+<p>
+
+Signal représentant une activité
+électrique cardiaque simulée.
+
+</p>
+
+<button
+class="button"
+onclick="generateECG()">
+
+▶ GÉNÉRER ECG
+
+</button>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<section class="card">
+
+<h2>
+📈 Signal généré
+</h2>
+
+<canvas
+id="signalCanvas"
+width="1200"
+height="500">
+</canvas>
+
+</section>
+
+
+<section class="card">
+
+<h2>
+🔬 Analyse
+</h2>
+
+<div
+id="analysis"
+class="info">
+
+Choisissez EEG ou ECG.
+
+</div>
+
+</section>
+
+
+<section class="card">
+
+<h2>
+🔗 Relation avec le modèle VSMN
+</h2>
+
+<p>
+
+Le modèle VSMN permet d'étudier des
+dynamiques non linéaires complexes.
+Ces dynamiques peuvent ensuite être
+exploitées pour reproduire ou analyser
+des formes de signaux biologiques.
+
+</p>
+
+<div class="info">
+
+<strong>
+VSMN → dynamique non linéaire
+→ signal simulé → analyse EEG/ECG
+</strong>
+
+</div>
+
+</section>
+
+
+<section class="card">
+
+<h2>
+⚠️ Remarque scientifique
+</h2>
+
+<p>
+
+Les signaux générés dans cette page sont
+des signaux pédagogiques simulés.
+Ils ne doivent pas être interprétés comme
+des mesures médicales réelles.
+
+</p>
+
+</section>
+
+
+</main>
+
+
+<footer>
+
+<p>
+VSMN Neuro Education
+</p>
+
+</footer>
+
+
+<script>
+
+
+/*
+==================================================
+OUTILS
+==================================================
+*/
+
+function clearCanvas() {
+
+    const canvas =
+        document.getElementById(
+            "signalCanvas"
+        );
+
+    const ctx =
+        canvas.getContext("2d");
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+}
+
+
+/*
+==================================================
+EEG
+==================================================
+*/
+
+function generateEEG() {
+
+    clearCanvas();
+
+    const canvas =
+        document.getElementById(
+            "signalCanvas"
+        );
+
+    const ctx =
+        canvas.getContext("2d");
+
+
+    const N=1200;
+
+    const signal=[];
+
+
+    for(let i=0;i<N;i++) {
+
+        const t=i/100;
+
+
+        /*
+        Activité alpha
+        */
+
+        let y =
+
+            Math.sin(
+                2*Math.PI*8*t
+            );
+
+
+        /*
+        Activité basse fréquence
+        */
+
+        y +=
+
+            0.35*
+            Math.sin(
+                2*Math.PI*2*t
+            );
+
+
+        /*
+        composante complexe
+        */
+
+        y +=
+
+            0.15*
+            Math.sin(
+                2*Math.PI*13*t
+            );
+
+
+        /*
+        légère modulation
+        */
+
+        y *=
+
+            1+
+            0.15*
+            Math.sin(
+                2*Math.PI*0.3*t
+            );
+
+
+        signal.push(y);
+
+    }
+
+
+    drawSignal(
+        signal
+    );
+
+
+    document.getElementById(
+        "analysis"
+    ).innerHTML =
+
+    `
+
+    <h3>🧠 EEG simulé</h3>
+
+    <p>
+
+    Le signal contient principalement
+    une composante oscillatoire autour
+    de la bande alpha.
+
+    </p>
+
+    <p>
+
+    Cette visualisation permet d'illustrer
+    comment une dynamique mathématique
+    peut produire un signal ressemblant
+    à une activité biologique.
+
+    </p>
+
+    `;
+
+}
+
+
+/*
+==================================================
+ECG
+==================================================
+*/
+
+function generateECG() {
+
+    clearCanvas();
+
+    const canvas =
+        document.getElementById(
+            "signalCanvas"
+        );
+
+    const ctx =
+        canvas.getContext("2d");
+
+
+    const N=1200;
+
+    const signal=[];
+
+
+    for(let i=0;i<N;i++) {
+
+        const t=i/N*10;
+
+        const phase =
+            t % 1;
+
+
+        let y=0;
+
+
+        /*
+        Onde P
+        */
+
+        y +=
+
+            0.15*
+            Math.exp(
+                -Math.pow(
+                    (phase-0.20)/0.035,
+                    2
+                )
+            );
+
+
+        /*
+        Onde Q
+        */
+
+        y -=
+
+            0.15*
+            Math.exp(
+                -Math.pow(
+                    (phase-0.38)/0.012,
+                    2
+                )
+            );
+
+
+        /*
+        Onde R
+        */
+
+        y +=
+
+            1.20*
+            Math.exp(
+                -Math.pow(
+                    (phase-0.40)/0.010,
+                    2
+                )
+            );
+
+
+        /*
+        Onde S
+        */
+
+        y -=
+
+            0.30*
+            Math.exp(
+                -Math.pow(
+                    (phase-0.43)/0.015,
+                    2
+                )
+            );
+
+
+        /*
+        Onde T
+        */
+
+        y +=
+
+            0.30*
+            Math.exp(
+                -Math.pow(
+                    (phase-0.68)/0.07,
+                    2
+                )
+            );
+
+
+        signal.push(y);
+
+    }
+
+
+    drawSignal(
+        signal
+    );
+
+
+    document.getElementById(
+        "analysis"
+    ).innerHTML =
+
+    `
+
+    <h3>❤️ ECG simulé</h3>
+
+    <p>
+
+    Le signal reproduit les principales
+    composantes morphologiques d'un ECG :
+    onde P, complexe QRS et onde T.
+
+    </p>
+
+    <p>
+
+    Il s'agit d'une représentation
+    pédagogique et non d'un signal
+    clinique.
+
+    </p>
+
+    `;
+
+}
+
+
+/*
+==================================================
+AFFICHAGE
+==================================================
+*/
+
+function drawSignal(
+    signal
+) {
+
+
+    const canvas =
+        document.getElementById(
+            "signalCanvas"
+        );
+
+    const ctx =
+        canvas.getContext("2d");
+
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    const min =
+        Math.min(...signal);
+
+    const max =
+        Math.max(...signal);
+
+    const range =
+        max-min || 1;
+
+
+    const margin=50;
+
+
+    /*
+    Axes
+    */
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        margin,
+        canvas.height-margin
+    );
+
+    ctx.lineTo(
+        canvas.width-margin,
+        canvas.height-margin
+    );
+
+    ctx.stroke();
+
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        margin,
+        margin
+    );
+
+    ctx.lineTo(
+        margin,
+        canvas.height-margin
+    );
+
+    ctx.stroke();
+
+
+    /*
+    Signal
+    */
+
+    ctx.beginPath();
+
+
+    for(
+        let i=0;
+        i<signal.length;
+        i++
+    ) {
+
+
+        const x =
+
+            margin+
+
+            i/(signal.length-1)
+            *
+            (
+                canvas.width
+                -
+                2*margin
+            );
+
+
+        const y =
+
+            canvas.height
+            -
+            margin
+            -
+            (
+                signal[i]-min
+            )
+            /
+            range
+            *
+            (
+                canvas.height
+                -
+                2*margin
+            );
+
+
+        if(i===0)
+
+            ctx.moveTo(x,y);
+
+        else
+
+            ctx.lineTo(x,y);
+
+    }
+
+
+    ctx.stroke();
+
+
+    ctx.font =
+        "18px Arial";
+
+
+    ctx.fillText(
+        "Amplitude",
+        60,
+        30
+    );
+
+
+    ctx.fillText(
+        "Temps",
+        canvas.width-90,
+        canvas.height-15
+    );
+
+}
+
+</script>
+
+
+</body>
+
+</html>
