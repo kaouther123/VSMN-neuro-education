@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Modèle VSMN</title>
+
+<link rel="stylesheet"
+href="../css/style.css">
+
+</head>
+
+
+<body>
+
+<header>
+
+<h1>🧠 Modèle VSMN</h1>
+
+<p>
+Simulation numérique du modèle neuronal
+à structure variable
+</p>
+
+</header>
+
+
+<nav>
+
+<a href="../index.html">
+Accueil
+</a>
+
+<a href="apprendre-vsmn.html">
+Apprendre VSMN
+</a>
+
+<a href="vsmn-model.html">
+Modèle VSMN
+</a>
+
+<a href="chaos-lyapunov.html">
+Chaos & Lyapunov
+</a>
+
+<a href="eeg.html">
+EEG
+</a>
+
+<a href="ecg.html">
+ECG
+</a>
+
+</nav>
+
+
+<main class="container">
+
+
+<section class="card">
+
+<h2>
+📐 Équations du modèle
+</h2>
+
+<p>
+Cette section présente les équations
+différentielles du VSMN.
+</p>
+
+<div class="formula">
+
+À compléter avec l'équation VSMN exacte
+
+</div>
+
+</section>
+
+
+<section class="card">
+
+<h2>
+⚙️ Paramètres du modèle
+</h2>
+
+<div id="parameters">
+
+Les paramètres VSMN seront ajoutés ici.
+
+</div>
+
+</section>
+
+
+<section class="card">
+
+<h2>
+▶ Simulation
+</h2>
+
+<button
+class="button"
+onclick="simulateVSMN()">
+
+LANCER LA SIMULATION
+
+</button>
+
+<canvas
+id="vsmnCanvas"
+width="1200"
+height="500">
+</canvas>
+
+</section>
+
+
+<section class="card">
+
+<h2>
+📊 Résultats
+</h2>
+
+<div id="results">
+
+Aucun résultat.
+
+</div>
+
+</section>
+
+
+</main>
+
+
+<footer>
+
+<p>
+VSMN Neuro Education
+</p>
+
+</footer>
+
+
+<script>
+
+function simulateVSMN() {
+
+document.getElementById(
+"results"
+).innerHTML =
+
+"<p>La simulation VSMN sera exécutée ici.</p>";
+
+}
+
+</script>
+
+
+</body>
+
+</html>
