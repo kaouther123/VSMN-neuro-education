@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Influence des paramètres VSMN</title>
+
+<link rel="stylesheet"
+href="../css/style.css">
+
+<style>
+
+.parameter-grid {
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    margin-top:20px;
+}
+
+.parameter-card {
+    padding:20px;
+    border-radius:12px;
+}
+
+.parameter-card input {
+    width:100%;
+    padding:10px;
+    box-sizing:border-box;
+}
+
+canvas {
+    width:100%;
+    border:1px solid #ccc;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+.info {
+    padding:20px;
+    border-radius:12px;
+    margin-top:20px;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>⚙️ Influence de n₁ et n₂</h1>
+
+<p>
+Étude de l'influence des paramètres
+sur la dynamique du modèle neuronal
+</p>
+
+</header>
+
+
+<nav>
+
+<a href="../index.html">
+Accueil
+</a>
+
+<a href="vsmn-model.html">
+Modèle VSMN
+</a>
+
+<a href="parametres-vsmn.html">
+Paramètres
+</a>
+
+<a href="attracteur-vsmn.html">
+Attracteur
+</a>
+
+<a href="chaos-lyapunov.html">
+Lyapunov
+</a>
+
+<a href="eeg.html">
+EEG
+</a>
+
+<a href="ecg.html">
+ECG
+</a>
+
+</nav>
+
+
+<main class="container">
+
+
+<section class="card">
+
+<h2>
+🧠 Pourquoi étudier n₁ et n₂ ?
+</h2>
+
+<p>
+
+Les paramètres n₁ et n₂ permettent
+d'étudier différentes configurations
+de la dynamique du neurone.
+
+</p>
+
+<p>
+
+En faisant varier ces paramètres,
+on peut observer une modification
+de la forme et du comportement
+du signal généré.
+
+</p>
+
+</section>
+
+
+<section class="card">
+
+<h2>
+⚙️ Choisir les paramètres
+</h2>
+
+
+<div class="parameter-grid">
+
+
+<div class="parameter-card">
+
+<h3>
+n₁
+</h3>
+
+<input
+type="number"
+id="n1"
+value="0"
+min="0"
+max="5"
+step="1">
+
+</div>
+
+
+<div class="parameter-card">
+
+<h3>
+n₂
+</h3>
+
+<input
+type="number"
+id="n2"
+value="0"
+min="0"
+max="5"
+step="1">
+
+</div>
+
+
+</div>
+
+
+<br>
+
+
+<button
+class="button"
+onclick="generateSignal()">
+
+▶ GÉNÉRER LE SIGNAL
+
+</button>
+
+
+</section>
+
+
+<section class="card">
+
+<h2>
+📈 Signal obtenu
+</h2>
+
+<canvas
+id="signalCanvas"
+width="1200"
+height="500">
+</canvas>
+
+</section>
+
+
+<section class="card">
+
+<h2>
+🔬 Comparaison des configurations
+</h2>
+
+<button
+class="button"
+onclick="compareConfigurations()">
+
+COMPARER LES 4 CAS
+
+</button>
+
+<canvas
+id="comparisonCanvas"
+width="1200"
+height="600">
+</canvas>
+
+</section>
+
+
+<section class="card">
+
+<h2>
+📊 Interprétation
+</h2>
+
+<div
+id="result"
+class="info">
+
+Choisissez les paramètres
+et lancez la simulation.
+
+</div>
+
+</section>
+
+
+</main>
+
+
+<footer>
+
+<p>
+VSMN Neuro Education
+</p>
+
+</footer>
+
+
+<script>
+
+
+/*
+==================================================
+GÉNÉRATION D'UN SIGNAL PÉDAGOGIQUE
+==================================================
+
+IMPORTANT :
+
+Cette fonction permet de construire
+l'interface et l'expérience pédagogique.
+
+Elle devra ensuite être remplacée
+par les équations numériques exactes
+de votre VSMN.
+*/
+
+
+function createSignal(n1,n2) {
+
+
+const N=1000;
+
+const signal=[];
+
+for(
+let i=0;
+i<N;
+i++
+) {
+
+
+const t=
+i/N*10;
+
+
+/*
+Influence simplifiée de n1 et n2
+pour visualiser le principe.
+*/
+
+const frequency1 =
+1+n1*0.25;
+
+const frequency2 =
+1+n2*0.35;
+
+
+let value =
+
+Math.exp(
+-0.5*
+Math.pow(
+(t-2.5)/0.35,
+2
+)
+)
+*
+Math.sin(
+2*Math.PI*
+frequency1*t
+);
+
+
+value +=
+
+0.7*
+Math.exp(
+-0.5*
+Math.pow(
+(t-7)/0.45,
+2
+)
+)
+*
+Math.sin(
+2*Math.PI*
+frequency2*t
+);
+
+
+/*
+Modification de la forme
+selon n1 et n2
+*/
+
+if(n1>=1 && n2>=1) {
+
+value +=
+
+0.4*
+Math.sin(
+2*Math.PI*
+(0.5+n1*0.1)*
+t
+);
+
+}
+
+
+signal.push(value);
+
+}
+
+
+return signal;
+
+}
+
+
+/* ==========================================
+   AFFICHAGE D'UN SIGNAL
+========================================== */
+
+function drawSignal(
+canvasId,
+signal
+) {
+
+
+const canvas =
+document.getElementById(
+canvasId
+);
+
+const ctx =
+canvas.getContext("2d");
+
+
+ctx.clearRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+
+const min =
+Math.min(...signal);
+
+const max =
+Math.max(...signal);
+
+const range =
+max-min || 1;
+
+
+const margin=50;
+
+
+ctx.beginPath();
+
+
+for(
+let i=0;
+i<signal.length;
+i++
+) {
+
+
+const x =
+
+margin+
+i/(signal.length-1)*
+(
+canvas.width-
+2*margin
+);
+
+
+const y =
+
+canvas.height-
+margin-
+(
+signal[i]-min
+)/range*
+(
+canvas.height-
+2*margin
+);
+
+
+if(i===0)
+
+ctx.moveTo(x,y);
+
+else
+
+ctx.lineTo(x,y);
+
+}
+
+
+ctx.stroke();
+
+
+ctx.font="16px Arial";
+
+
+ctx.fillText(
+"Amplitude",
+10,
+25
+);
+
+
+ctx.fillText(
+"Temps",
+canvas.width-70,
+canvas.height-15
+);
+
+}
+
+
+/* ==========================================
+   SIMULATION
+========================================== */
+
+function generateSignal() {
+
+
+const n1 =
+Number(
+document.getElementById("n1").value
+);
+
+
+const n2 =
+Number(
+document.getElementById("n2").value
+);
+
+
+const signal =
+createSignal(
+n1,
+n2
+);
+
+
+drawSignal(
+"signalCanvas",
+signal
+);
+
+
+document.getElementById(
+"result"
+).innerHTML =
+
+"<strong>Configuration :</strong><br><br>"
++
+
+"n₁ = "
++
+n1
++
+"<br>"
++
+
+"n₂ = "
++
+n2
++
+"<br><br>"
++
+
+"Le changement de n₁ et n₂ "
++
+"modifie la forme de la réponse "
++
+"du modèle.";
+
+}
+
+
+/* ==========================================
+   COMPARAISON DES 4 CAS
+========================================== */
+
+function compareConfigurations() {
+
+
+const canvas =
+document.getElementById(
+"comparisonCanvas"
+);
+
+const ctx =
+canvas.getContext("2d");
+
+
+ctx.clearRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+
+const cases=[
+
+{
+n1:0,
+n2:0
+},
+
+{
+n1:1,
+n2:1
+},
+
+{
+n1:2,
+n2:2
+},
+
+{
+n1:3,
+n2:3
+}
+
+];
+
+
+const colors=[
+"#d62728",
+"#1f77b4",
+"#2ca02c",
+"#9467bd"
+];
+
+
+const margin=60;
+
+const height=110;
+
+
+/*
+Dessiner les quatre signaux
+séparément pour faciliter
+la comparaison.
+*/
+
+cases.forEach(
+(c,index)=> {
+
+
+const signal =
+createSignal(
+c.n1,
+c.n2
+);
+
+
+const offset =
+index*height;
+
+
+const min =
+Math.min(...signal);
+
+const max =
+Math.max(...signal);
+
+const range =
+max-min || 1;
+
+
+ctx.beginPath();
+
+
+for(
+let i=0;
+i<signal.length;
+i++
+) {
+
+
+const x =
+
+margin+
+i/(signal.length-1)*
+(
+canvas.width-
+2*margin
+);
+
+
+const y =
+
+offset+
+height-
+20-
+(
+signal[i]-min
+)/range*
+(
+height-40
+);
+
+
+if(i===0)
+
+ctx.moveTo(x,y);
+
+else
+
+ctx.lineTo(x,y);
+
+}
+
+
+ctx.strokeStyle =
+colors[index];
+
+ctx.stroke();
+
+
+ctx.fillStyle =
+colors[index];
+
+ctx.font =
+"15px Arial";
+
+
+ctx.fillText(
+
+"n₁ = "
++
+c.n1
++
+" , n₂ = "
++
+c.n2,
+
+10,
+offset+30
+
+);
+
+}
+
+);
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
