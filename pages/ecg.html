@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Génération ECG - VSMN</title>
+
+<link rel="stylesheet"
+href="../css/style.css">
+
+<style>
+
+.parameter-grid {
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(220px,1fr));
+
+gap:20px;
+
+margin-top:20px;
+
+}
+
+.parameter {
+
+padding:18px;
+
+border-radius:10px;
+
+}
+
+.parameter label {
+
+display:block;
+
+font-weight:bold;
+
+margin-bottom:8px;
+
+}
+
+.parameter input {
+
+width:100%;
+
+padding:10px;
+
+font-size:16px;
+
+box-sizing:border-box;
+
+}
+
+canvas {
+
+width:100%;
+
+max-width:100%;
+
+border:1px solid #ccc;
+
+border-radius:10px;
+
+margin-top:20px;
+
+}
+
+.info {
+
+padding:20px;
+
+border-radius:10px;
+
+margin-top:20px;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>❤️ Génération d'un signal ECG</h1>
+
+<p>
+Simulation pédagogique d'un signal
+électrocardiographique
+</p>
+
+</header>
+
+
+<nav>
+
+<a href="../index.html">
+Accueil
+</a>
+
+<a href="apprendre-vsmn.html">
+Apprendre VSMN
+</a>
+
+<a href="experiences.html">
+Expériences
+</a>
+
+<a href="quiz.html">
+Quiz
+</a>
+
+<a href="ecg.html">
+ECG
+</a>
+
+<a href="eeg.html">
+EEG
+</a>
+
+</nav>
+
+
+<main class="container">
+
+
+<!-- INTRODUCTION -->
+
+<section class="card">
+
+<h2>
+❤️ Qu'est-ce qu'un ECG ?
+</h2>
+
+<p>
+
+L'électrocardiogramme (ECG) représente
+l'activité électrique du cœur au cours
+du temps.
+
+</p>
+
+<p>
+
+Dans cette plateforme, nous utilisons
+un signal simulé à des fins pédagogiques
+afin d'étudier la génération et
+la visualisation de signaux biologiques.
+
+</p>
+
+</section>
+
+
+<!-- PARAMETRES -->
+
+<section class="card">
+
+<h2>
+⚙️ Paramètres du signal
+</h2>
+
+
+<div class="parameter-grid">
+
+
+<div class="parameter">
+
+<label>
+Fréquence cardiaque (BPM)
+</label>
+
+<input
+type="number"
+id="bpm"
+value="70"
+min="30"
+max="180"
+step="1">
+
+</div>
+
+
+<div class="parameter">
+
+<label>
+Durée (secondes)
+</label>
+
+<input
+type="number"
+id="duration"
+value="10"
+min="1"
+max="30"
+step="1">
+
+</div>
+
+
+<div class="parameter">
+
+<label>
+Amplitude
+</label>
+
+<input
+type="number"
+id="amplitude"
+value="1"
+min="0.1"
+max="3"
+step="0.1">
+
+</div>
+
+
+<div class="parameter">
+
+<label>
+Bruit</label>
+
+<input
+type="number"
+id="noise"
+value="0.02"
+min="0"
+max="0.5"
+step="0.01">
+
+</div>
+
+
+</div>
+
+
+<br>
+
+
+<button
+class="button"
+onclick="generateECG()">
+
+❤️ GÉNÉRER LE SIGNAL ECG
+
+</button>
+
+
+<button
+class="button"
+onclick="downloadECG()">
+
+⬇️ EXPORTER CSV
+
+</button>
+
+</section>
+
+
+<!-- SIGNAL -->
+
+<section class="card">
+
+<h2>
+📈 Signal ECG simulé
+</h2>
+
+
+<canvas
+id="ecgCanvas"
+width="1200"
+height="500">
+</canvas>
+
+
+<div
+id="ecgInfo"
+class="info">
+
+Générez un signal pour commencer.
+
+</div>
+
+</section>
+
+
+<!-- EXPLICATION -->
+
+<section class="card">
+
+<h2>
+🔎 Comprendre le signal ECG
+</h2>
+
+<p>
+
+Un cycle ECG simplifié peut être représenté
+par plusieurs composantes correspondant
+aux principales déflexions du signal.
+
+</p>
+
+<div style="
+font-size:24px;
+text-align:center;
+padding:20px;
+">
+
+P → Q → R → S → T
+
+</div>
+
+<p>
+
+Dans cette simulation pédagogique,
+ces composantes sont représentées
+mathématiquement afin de produire
+une forme d'onde ECG simplifiée.
+
+</p>
+
+</section>
+
+
+<!-- LIEN VSMN -->
+
+<section class="card">
+
+<h2>
+🧠 Relation avec le modèle
+</h2>
+
+<p>
+
+Cette partie constitue une application
+de la modélisation dynamique à la
+génération de signaux biologiques simulés.
+
+</p>
+
+<p>
+
+Le même environnement peut ensuite être
+étendu pour générer et analyser des
+signaux EEG.
+
+</p>
+
+
+<a
+class="button"
+href="eeg.html">
+
+🧠 PASSER À LA GÉNÉRATION EEG
+
+</a>
+
+</section>
+
+
+</main>
+
+
+<footer>
+
+<p>
+VSMN Neuro Education
+</p>
+
+</footer>
+
+
+<script>
+
+
+let ecgTime = [];
+
+let ecgSignal = [];
+
+
+/* =====================================
+   GAUSSIENNE
+===================================== */
+
+function gaussian(
+x,
+mu,
+sigma
+) {
+
+return Math.exp(
+-0.5*
+Math.pow(
+(x-mu)/sigma,
+2
+)
+);
+
+}
+
+
+/* =====================================
+   GENERATION ECG
+===================================== */
+
+function generateECG() {
+
+
+const bpm =
+Number(
+document.getElementById(
+"bpm"
+).value
+);
+
+
+const duration =
+Number(
+document.getElementById(
+"duration"
+).value
+);
+
+
+const amplitude =
+Number(
+document.getElementById(
+"amplitude"
+).value
+);
+
+
+const noise =
+Number(
+document.getElementById(
+"noise"
+).value
+);
+
+
+const fs = 500;
+
+const totalSamples =
+Math.floor(
+duration*fs
+);
+
+
+const period =
+60/bpm;
+
+
+ecgTime = [];
+
+ecgSignal = [];
+
+
+for(
+let i=0;
+i<totalSamples;
+i++
+) {
+
+
+const t =
+i/fs;
+
+
+const phase =
+(t%period)/period;
+
+
+/*
+P wave
+*/
+
+const P =
+0.12*
+gaussian(
+phase,
+0.18,
+0.025
+);
+
+
+/*
+Q wave
+*/
+
+const Q =
+-0.16*
+gaussian(
+phase,
+0.32,
+0.012
+);
+
+
+/*
+R wave
+*/
+
+const R =
+1.20*
+gaussian(
+phase,
+0.35,
+0.010
+);
+
+
+/*
+S wave
+*/
+
+const S =
+-0.30*
+gaussian(
+phase,
+0.38,
+0.014
+);
+
+
+/*
+T wave
+*/
+
+const T =
+0.35*
+gaussian(
+phase,
+0.60,
+0.045
+);
+
+
+/*
+Baseline
+*/
+
+const baseline =
+0.02*
+Math.sin(
+2*Math.PI*
+0.5*
+t
+);
+
+
+/*
+Bruit
+*/
+
+const randomNoise =
+noise*
+(
+Math.random()*2-1
+);
+
+
+/*
+Signal final
+*/
+
+const signal =
+amplitude*
+(
+P+Q+R+S+T
+)
++
+baseline
++
+randomNoise;
+
+
+ecgTime.push(t);
+
+ecgSignal.push(signal);
+
+}
+
+
+drawECG();
+
+
+document.getElementById(
+"ecgInfo"
+).innerHTML =
+
+"<strong>Signal généré :</strong><br><br>"
+
++
+
+"Fréquence cardiaque : "
++
+bpm
++
+" BPM<br>"
+
++
+
+"Durée : "
++
+duration
++
+" s<br>"
+
++
+
+"Fréquence d'échantillonnage : "
++
+fs
++
+" Hz<br>"
+
++
+
+"Nombre d'échantillons : "
++
+totalSamples;
+
+}
+
+
+/* =====================================
+   DESSIN
+===================================== */
+
+function drawECG() {
+
+
+const canvas =
+document.getElementById(
+"ecgCanvas"
+);
+
+
+const ctx =
+canvas.getContext(
+"2d"
+);
+
+
+ctx.clearRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+
+if(
+ecgSignal.length===0
+) {
+
+return;
+
+}
+
+
+const min =
+Math.min(
+...ecgSignal
+);
+
+
+const max =
+Math.max(
+...ecgSignal
+);
+
+
+const range =
+max-min || 1;
+
+
+const marginX=50;
+
+const marginY=40;
+
+
+ctx.beginPath();
+
+
+for(
+let i=0;
+i<ecgSignal.length;
+i++
+) {
+
+
+const x =
+
+marginX
++
+i/
+(ecgSignal.length-1)
+*
+(
+canvas.width-
+2*marginX
+);
+
+
+const y =
+
+canvas.height-
+marginY
+-
+(
+ecgSignal[i]-min
+)/
+range
+*
+(
+canvas.height-
+2*marginY
+);
+
+
+if(i===0) {
+
+ctx.moveTo(
+x,
+y
+);
+
+}
+
+else {
+
+ctx.lineTo(
+x,
+y
+);
+
+}
+
+}
+
+
+ctx.stroke();
+
+
+/*
+Axes
+*/
+
+ctx.beginPath();
+
+ctx.moveTo(
+marginX,
+marginY
+);
+
+ctx.lineTo(
+marginX,
+canvas.height-marginY
+);
+
+ctx.lineTo(
+canvas.width-marginX,
+canvas.height-marginY
+);
+
+ctx.stroke();
+
+
+ctx.font =
+"16px Arial";
+
+
+ctx.fillText(
+"Amplitude",
+10,
+30
+);
+
+
+ctx.fillText(
+"Temps (s)",
+canvas.width-100,
+canvas.height-15
+);
+
+
+}
+
+
+/* =====================================
+   EXPORT CSV
+===================================== */
+
+function downloadECG() {
+
+
+if(
+ecgSignal.length===0
+) {
+
+alert(
+"Générez d'abord un signal ECG."
+);
+
+return;
+
+}
+
+
+let csv =
+"Temps,ECG\n";
+
+
+for(
+let i=0;
+i<ecgSignal.length;
+i++
+) {
+
+csv +=
+
+ecgTime[i].toFixed(4)
++
+","
++
+ecgSignal[i].toFixed(6)
++
+"\n";
+
+}
+
+
+const blob =
+new Blob(
+[csv],
+{
+type:"text/csv"
+}
+);
+
+
+const url =
+URL.createObjectURL(
+blob
+);
+
+
+const link =
+document.createElement(
+"a"
+);
+
+
+link.href=url;
+
+link.download=
+"signal_ECG_VSMN.csv";
+
+
+link.click();
+
+
+URL.revokeObjectURL(url);
+
+}
+
+
+/* =====================================
+   GENERATION AUTOMATIQUE
+===================================== */
+
+generateECG();
+
+</script>
+
+
+</body>
+
+</html>
