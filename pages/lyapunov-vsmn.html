@@ -1,1 +1,951 @@
+<!DOCTYPE html>
+<html lang="fr">
 
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Exposant de Lyapunov - VSMN</title>
+
+<link rel="stylesheet"
+href="../css/style.css">
+
+<style>
+
+.box-grid {
+    display: grid;
+    grid-template-columns:
+    repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.box {
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.box input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    box-sizing: border-box;
+}
+
+.result {
+    padding: 25px;
+    margin-top: 20px;
+    border-radius: 12px;
+}
+
+.lambda {
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+    padding: 25px;
+}
+
+canvas {
+    width: 100%;
+    max-width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+.formula {
+    text-align: center;
+    font-size: 24px;
+    padding: 20px;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>🌀 Exposant de Lyapunov</h1>
+
+<p>
+Étude de la sensibilité aux conditions initiales
+du modèle VSMN
+</p>
+
+</header>
+
+
+<nav>
+
+<a href="../index.html">
+Accueil
+</a>
+
+<a href="vsmn-model.html">
+Modèle VSMN
+</a>
+
+<a href="parametres-vsmn.html">
+Paramètres
+</a>
+
+<a href="attracteur-vsmn.html">
+Attracteur
+</a>
+
+<a href="jacobienne-vsmn.html">
+Jacobienne
+</a>
+
+<a href="lyapunov-vsmn.html">
+Lyapunov
+</a>
+
+</nav>
+
+
+<main class="container">
+
+
+<section class="card">
+
+<h2>
+🧠 Principe du calcul
+</h2>
+
+<p>
+Pour étudier la sensibilité aux conditions
+initiales, on considère deux trajectoires
+très proches.
+</p>
+
+<div class="formula">
+
+d(t) = ‖X₂(t) − X₁(t)‖
+
+</div>
+
+<p>
+On étudie ensuite l'évolution logarithmique
+de cette distance :
+</p>
+
+<div class="formula">
+
+ln(d(t) / d₀) ≈ λt
+
+</div>
+
+<p>
+La pente de cette évolution fournit une
+estimation de l'exposant de Lyapunov.
+</p>
+
+</section>
+
+
+<section class="card">
+
+<h2>
+⚙️ Paramètres de simulation
+</h2>
+
+<div class="box-grid">
+
+
+<div class="box">
+
+<label>
+<strong>u₀</strong>
+</label>
+
+<input
+id="u0"
+type="number"
+value="0.1"
+step="0.000001">
+
+</div>
+
+
+<div class="box">
+
+<label>
+<strong>v₀</strong>
+</label>
+
+<input
+id="v0"
+type="number"
+value="0.1"
+step="0.000001">
+
+</div>
+
+
+<div class="box">
+
+<label>
+<strong>δ — perturbation</strong>
+</label>
+
+<input
+id="delta"
+type="number"
+value="0.000001"
+step="0.000001">
+
+</div>
+
+
+<div class="box">
+
+<label>
+<strong>Durée</strong>
+</label>
+
+<input
+id="duration"
+type="number"
+value="20"
+step="1">
+
+</div>
+
+
+<div class="box">
+
+<label>
+<strong>Pas Δt</strong>
+</label>
+
+<input
+id="dt"
+type="number"
+value="0.01"
+step="0.001">
+
+</div>
+
+
+</div>
+
+
+<br>
+
+
+<button
+class="button"
+onclick="calculateLyapunov()">
+
+▶ CALCULER L'EXPOSANT DE LYAPUNOV
+
+</button>
+
+</section>
+
+
+<section class="card">
+
+<h2>
+📏 1. Distance entre les trajectoires
+</h2>
+
+<p>
+
+Les deux trajectoires commencent avec
+une très petite différence δ.
+
+</p>
+
+<canvas
+id="distanceCanvas"
+width="1200"
+height="450">
+</canvas>
+
+</section>
+
+
+<section class="card">
+
+<h2>
+📈 2. Évolution logarithmique
+</h2>
+
+<p>
+
+On représente :
+
+\[
+\ln\left(\frac{d(t)}{d_0}\right)
+\]
+
+</p>
+
+<canvas
+id="logCanvas"
+width="1200"
+height="450">
+</canvas>
+
+</section>
+
+
+<section class="card">
+
+<h2>
+🔢 3. Résultat
+</h2>
+
+<div
+id="lambda"
+class="lambda">
+
+λ = --
+
+</div>
+
+<div
+id="interpretation"
+class="result">
+
+Cliquez sur le bouton
+« Calculer l'exposant de Lyapunov ».
+
+</div>
+
+</section>
+
+
+<section class="card">
+
+<h2>
+🎓 Interprétation scientifique
+</h2>
+
+<ul>
+
+<li>
+<strong>λ > 0 :</strong>
+sensibilité aux conditions initiales.
+</li>
+
+<li>
+<strong>λ ≈ 0 :</strong>
+comportement critique ou neutre.
+</li>
+
+<li>
+<strong>λ < 0 :</strong>
+convergence des trajectoires.
+</li>
+
+</ul>
+
+<p>
+
+Un exposant de Lyapunov maximal positif
+constitue un indicateur important d'un
+comportement chaotique.
+
+</p>
+
+</section>
+
+
+</main>
+
+
+<footer>
+
+<p>
+VSMN Neuro Education
+</p>
+
+</footer>
+
+
+<script src="../js/vsmn.js"></script>
+
+
+<script>
+
+
+/*
+==================================================
+SIMULATION
+==================================================
+*/
+
+function simulate(
+    u0,
+    v0,
+    dt,
+    duration
+) {
+
+    const steps =
+        Math.floor(duration / dt);
+
+    let u = u0;
+    let v = v0;
+
+    const U = [];
+    const V = [];
+
+    for (
+        let i = 0;
+        i < steps;
+        i++
+    ) {
+
+        U.push(u);
+        V.push(v);
+
+        /*
+        Utilisation du modèle centralisé
+        */
+
+        const next =
+            vsmnStep(
+                u,
+                v,
+                dt
+            );
+
+        u = next.u;
+        v = next.v;
+    }
+
+    return {
+        U: U,
+        V: V
+    };
+}
+
+
+/*
+==================================================
+CALCUL DE LYAPUNOV
+==================================================
+*/
+
+function calculateLyapunov() {
+
+
+    const u0 =
+        Number(
+            document.getElementById("u0").value
+        );
+
+    const v0 =
+        Number(
+            document.getElementById("v0").value
+        );
+
+    const delta =
+        Number(
+            document.getElementById("delta").value
+        );
+
+    const duration =
+        Number(
+            document.getElementById("duration").value
+        );
+
+    const dt =
+        Number(
+            document.getElementById("dt").value
+        );
+
+
+    /*
+    Trajectoire 1
+    */
+
+    const trajectory1 =
+        simulate(
+            u0,
+            v0,
+            dt,
+            duration
+        );
+
+
+    /*
+    Trajectoire 2
+    */
+
+    const trajectory2 =
+        simulate(
+            u0 + delta,
+            v0,
+            dt,
+            duration
+        );
+
+
+    const distance = [];
+    const logarithm = [];
+    const time = [];
+
+
+    const d0 =
+        Math.sqrt(
+
+            Math.pow(
+                trajectory2.U[0]
+                -
+                trajectory1.U[0],
+                2
+            )
+
+            +
+
+            Math.pow(
+                trajectory2.V[0]
+                -
+                trajectory1.V[0],
+                2
+            )
+
+        );
+
+
+    /*
+    Calcul de la distance
+    */
+
+    for (
+        let i = 0;
+        i < trajectory1.U.length;
+        i++
+    ) {
+
+        const d =
+            Math.sqrt(
+
+                Math.pow(
+                    trajectory2.U[i]
+                    -
+                    trajectory1.U[i],
+                    2
+                )
+
+                +
+
+                Math.pow(
+                    trajectory2.V[i]
+                    -
+                    trajectory1.V[i],
+                    2
+                )
+
+            );
+
+
+        const safeDistance =
+            Math.max(d, 1e-15);
+
+
+        distance.push(
+            safeDistance
+        );
+
+
+        logarithm.push(
+
+            Math.log(
+                safeDistance / d0
+            )
+
+        );
+
+
+        time.push(
+            i * dt
+        );
+
+    }
+
+
+    /*
+    Régression linéaire
+    */
+
+    const start = 1;
+
+    const end =
+        Math.floor(
+            time.length * 0.4
+        );
+
+
+    let sumT = 0;
+    let sumL = 0;
+    let sumTT = 0;
+    let sumTL = 0;
+    let N = 0;
+
+
+    for (
+        let i = start;
+        i < end;
+        i++
+    ) {
+
+        sumT += time[i];
+
+        sumL += logarithm[i];
+
+        sumTT +=
+            time[i] * time[i];
+
+        sumTL +=
+            time[i] *
+            logarithm[i];
+
+        N++;
+
+    }
+
+
+    const denominator =
+        N * sumTT
+        -
+        sumT * sumT;
+
+
+    let lambda = 0;
+
+
+    if (denominator !== 0) {
+
+        lambda =
+
+            (
+                N * sumTL
+                -
+                sumT * sumL
+            )
+            /
+            denominator;
+
+    }
+
+
+    /*
+    Affichage des graphiques
+    */
+
+    drawChart(
+        "distanceCanvas",
+        time,
+        distance,
+        "Distance entre les trajectoires"
+    );
+
+
+    drawChart(
+        "logCanvas",
+        time,
+        logarithm,
+        "ln(d(t) / d₀)"
+    );
+
+
+    /*
+    Affichage de lambda
+    */
+
+    document.getElementById(
+        "lambda"
+    ).innerHTML =
+
+        "λ ≈ "
+        +
+        lambda.toFixed(6);
+
+
+    /*
+    Interprétation
+    */
+
+    let text;
+
+
+    if (lambda > 0) {
+
+        text =
+
+        `
+        <strong>λ > 0</strong>
+
+        <br><br>
+
+        Les trajectoires présentent une
+        divergence dans la région étudiée.
+
+        <br><br>
+
+        Cela indique une sensibilité aux
+        conditions initiales et constitue
+        un indicateur important d'un
+        comportement chaotique.
+        `;
+
+    }
+
+    else if (Math.abs(lambda) < 0.0001) {
+
+        text =
+
+        `
+        <strong>λ ≈ 0</strong>
+
+        <br><br>
+
+        L'évolution étudiée est proche
+        du cas neutre.
+        `;
+
+    }
+
+    else {
+
+        text =
+
+        `
+        <strong>λ < 0</strong>
+
+        <br><br>
+
+        Les trajectoires ont tendance
+        à converger dans la région étudiée.
+        `;
+
+    }
+
+
+    document.getElementById(
+        "interpretation"
+    ).innerHTML = text;
+
+}
+
+
+/*
+==================================================
+DESSIN DU GRAPHIQUE
+==================================================
+*/
+
+function drawChart(
+    canvasId,
+    X,
+    Y,
+    title
+) {
+
+
+    const canvas =
+        document.getElementById(
+            canvasId
+        );
+
+
+    const ctx =
+        canvas.getContext("2d");
+
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    const min =
+        Math.min(...Y);
+
+    const max =
+        Math.max(...Y);
+
+    const range =
+        max - min || 1;
+
+
+    const margin = 55;
+
+
+    /*
+    Axe horizontal
+    */
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        margin,
+        canvas.height - margin
+    );
+
+    ctx.lineTo(
+        canvas.width - margin,
+        canvas.height - margin
+    );
+
+    ctx.stroke();
+
+
+    /*
+    Axe vertical
+    */
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        margin,
+        margin
+    );
+
+    ctx.lineTo(
+        margin,
+        canvas.height - margin
+    );
+
+    ctx.stroke();
+
+
+    /*
+    Courbe
+    */
+
+    ctx.beginPath();
+
+
+    for (
+        let i = 0;
+        i < Y.length;
+        i++
+    ) {
+
+
+        const x =
+
+            margin
+            +
+
+            i /
+            (Y.length - 1)
+            *
+
+            (
+                canvas.width
+                -
+                2 * margin
+            );
+
+
+        const y =
+
+            canvas.height
+            -
+            margin
+            -
+
+            (
+                Y[i] - min
+            )
+            /
+            range
+            *
+
+            (
+                canvas.height
+                -
+                2 * margin
+            );
+
+
+        if (i === 0) {
+
+            ctx.moveTo(
+                x,
+                y
+            );
+
+        }
+
+        else {
+
+            ctx.lineTo(
+                x,
+                y
+            );
+
+        }
+
+    }
+
+
+    ctx.stroke();
+
+
+    /*
+    Titres
+    */
+
+    ctx.font =
+        "18px Arial";
+
+
+    ctx.fillText(
+        title,
+        70,
+        30
+    );
+
+
+    ctx.fillText(
+        "Temps",
+        canvas.width - 100,
+        canvas.height - 15
+    );
+
+
+    ctx.save();
+
+    ctx.translate(
+        18,
+        canvas.height / 2
+    );
+
+    ctx.rotate(
+        -Math.PI / 2
+    );
+
+    ctx.fillText(
+        "Amplitude",
+        0,
+        0
+    );
+
+    ctx.restore();
+
+}
+
+</script>
+
+
+</body>
+
+</html>
