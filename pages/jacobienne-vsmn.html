@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Jacobienne VSMN</title>
+
+<link rel="stylesheet"
+href="../css/style.css">
+
+<style>
+
+.formula {
+    font-size:24px;
+    text-align:center;
+    padding:25px;
+}
+
+.grid {
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.box {
+    padding:20px;
+    border-radius:12px;
+}
+
+input {
+    width:100%;
+    padding:10px;
+    box-sizing:border-box;
+}
+
+.result {
+    padding:20px;
+    margin-top:20px;
+    border-radius:12px;
+}
+
+.matrix {
+    font-size:25px;
+    text-align:center;
+    padding:25px;
+}
+
+table {
+    border-collapse:collapse;
+    margin:20px auto;
+}
+
+td, th {
+    border:1px solid #aaa;
+    padding:12px 20px;
+    text-align:center;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>🧮 Matrice Jacobienne du VSMN</h1>
+
+<p>
+Analyse locale de la dynamique du modèle
+</p>
+
+</header>
+
+
+<nav>
+
+<a href="../index.html">
+Accueil
+</a>
+
+<a href="vsmn-model.html">
+Modèle VSMN
+</a>
+
+<a href="parametres-vsmn.html">
+Paramètres
+</a>
+
+<a href="attracteur-vsmn.html">
+Attracteur
+</a>
+
+<a href="jacobienne-vsmn.html">
+Jacobienne
+</a>
+
+<a href="chaos-lyapunov.html">
+Lyapunov
+</a>
+
+</nav>
+
+
+<main class="container">
+
+
+<section class="card">
+
+<h2>
+📐 1. Système différentiel
+</h2>
+
+<p>
+
+On considère le système dynamique :
+
+</p>
+
+<div class="formula">
+
+\[
+\dot u=F(u,v)
+\]
+
+\[
+\dot v=G(u,v)
+\]
+
+</div>
+
+<p>
+
+La matrice Jacobienne décrit comment les
+équations du système changent lorsqu'on
+modifie légèrement les variables d'état.
+
+</p>
+
+</section>
+
+
+<section class="card">
+
+<h2>
+🧮 2. Construction de la Jacobienne
+</h2>
+
+<div class="matrix">
+
+\[
+J(u,v)=
+\begin{pmatrix}
+\frac{\partial F}{\partial u}
+&
+\frac{\partial F}{\partial v}
+\\
+\\
+\frac{\partial G}{\partial u}
+&
+\frac{\partial G}{\partial v}
+\end{pmatrix}
+\]
+
+</div>
+
+<p>
+
+Chaque élément correspond à une dérivée
+partielle d'une équation par rapport à
+une variable d'état.
+
+</p>
+
+</section>
+
+
+<section class="card">
+
+<h2>
+⚙️ 3. Point d'étude
+</h2>
+
+<div class="grid">
+
+
+<div class="box">
+
+<label>
+u
+</label>
+
+<input
+id="u"
+type="number"
+value="0.1"
+step="0.001">
+
+</div>
+
+
+<div class="box">
+
+<label>
+v
+</label>
+
+<input
+id="v"
+type="number"
+value="0.1"
+step="0.001">
+
+</div>
+
+
+<div class="box">
+
+<label>
+ε
+</label>
+
+<input
+id="epsilon"
+type="number"
+value="0.000001"
+step="0.000001">
+
+</div>
+
+
+</div>
+
+
+<br>
+
+<button
+class="button"
+onclick="calculateJacobian()">
+
+🧮 CALCULER LA JACOBIENNE
+
+</button>
+
+</section>
+
+
+<section class="card">
+
+<h2>
+📊 4. Résultat
+</h2>
+
+<div
+id="jacobianResult"
+class="result">
+
+Lancez le calcul.
+
+</div>
+
+</section>
+
+
+<section class="card">
+
+<h2>
+🧠 5. Interprétation
+</h2>
+
+<div
+id="interpretation"
+class="result">
+
+La matrice Jacobienne sera expliquée
+après le calcul.
+
+</div>
+
+</section>
+
+
+<section class="card">
+
+<h2>
+🔗 6. Lien avec Lyapunov
+</h2>
+
+<p>
+
+La matrice Jacobienne constitue une étape
+essentielle pour étudier la divergence
+locale des trajectoires.
+
+</p>
+
+<div class="formula">
+
+\[
+J
+\rightarrow
+\text{dynamique locale}
+\rightarrow
+\text{divergence}
+\rightarrow
+\lambda
+\]
+
+</div>
+
+</section>
+
+
+</main>
+
+
+<footer>
+
+<p>
+VSMN Neuro Education
+</p>
+
+</footer>
+
+
+<script>
+
+
+/*
+=================================================
+FONCTION NON LINÉAIRE
+=================================================
+*/
+
+function f(x) {
+
+    return Math.exp(
+        -(x*x)/2
+    );
+
+}
+
+
+/*
+=================================================
+MODÈLE VSMN
+=================================================
+
+ATTENTION :
+
+La première équation visible dans votre
+article peut être transcrite directement.
+
+La fonction g(...) apparaissant dans
+la deuxième équation doit être définie
+exactement comme dans votre article/thèse.
+
+On ne l'invente pas ici.
+=================================================
+*/
+
+
+function F(u,v) {
+
+    const tau = 1;
+    const p = 0;
+    const beta = 1;
+    const lambda = 1;
+
+    return (
+
+        -(u+p)/tau
+
+        +
+
+        (u+p)
+        *v
+        *f(beta*v)
+        *f(lambda*(u+p))
+
+    );
+
+}
+
+
+/*
+La deuxième équation doit être complétée
+avec votre définition exacte de g().
+*/
+
+function G(u,v) {
+
+    /*
+    TEMPORAIRE :
+
+    Cette fonction doit être remplacée
+    par l'équation exacte de votre VSMN.
+    */
+
+    const alpha = 1;
+
+    return -alpha*v;
+
+}
+
+
+/*
+=================================================
+DÉRIVÉE NUMÉRIQUE
+=================================================
+*/
+
+function derivativeU(
+    equation,
+    u,
+    v,
+    epsilon
+) {
+
+    return (
+
+        equation(
+            u+epsilon,
+            v
+        )
+
+        -
+
+        equation(
+            u-epsilon,
+            v
+        )
+
+    )/(2*epsilon);
+
+}
+
+
+function derivativeV(
+    equation,
+    u,
+    v,
+    epsilon
+) {
+
+    return (
+
+        equation(
+            u,
+            v+epsilon
+        )
+
+        -
+
+        equation(
+            u,
+            v-epsilon
+        )
+
+    )/(2*epsilon);
+
+}
+
+
+/*
+=================================================
+CALCUL JACOBIEN
+=================================================
+*/
+
+function calculateJacobian() {
+
+
+    const u =
+        Number(
+            document.getElementById("u").value
+        );
+
+
+    const v =
+        Number(
+            document.getElementById("v").value
+        );
+
+
+    const epsilon =
+        Number(
+            document.getElementById("epsilon").value
+        );
+
+
+    const J11 =
+        derivativeU(
+            F,
+            u,
+            v,
+            epsilon
+        );
+
+
+    const J12 =
+        derivativeV(
+            F,
+            u,
+            v,
+            epsilon
+        );
+
+
+    const J21 =
+        derivativeU(
+            G,
+            u,
+            v,
+            epsilon
+        );
+
+
+    const J22 =
+        derivativeV(
+            G,
+            u,
+            v,
+            epsilon
+        );
+
+
+    document.getElementById(
+        "jacobianResult"
+    ).innerHTML =
+
+    `
+    <div class="matrix">
+
+    J =
+    [
+    ${J11.toFixed(6)}
+    &nbsp;&nbsp;
+    ${J12.toFixed(6)}
+    <br><br>
+    ${J21.toFixed(6)}
+    &nbsp;&nbsp;
+    ${J22.toFixed(6)}
+    ]
+
+    </div>
+
+    <table>
+
+    <tr>
+    <th></th>
+    <th>u</th>
+    <th>v</th>
+    </tr>
+
+    <tr>
+    <th>F</th>
+    <td>${J11.toFixed(6)}</td>
+    <td>${J12.toFixed(6)}</td>
+    </tr>
+
+    <tr>
+    <th>G</th>
+    <td>${J21.toFixed(6)}</td>
+    <td>${J22.toFixed(6)}</td>
+    </tr>
+
+    </table>
+    `;
+
+
+    document.getElementById(
+        "interpretation"
+    ).innerHTML =
+
+    `
+    <p>
+    La matrice Jacobienne décrit la variation
+    locale du système autour du point
+    <strong>(u,v)</strong>.
+    </p>
+
+    <p>
+    Les quatre termes représentent les
+    sensibilités :
+    </p>
+
+    <ul>
+
+    <li>
+    ∂F/∂u : influence de u sur F
+    </li>
+
+    <li>
+    ∂F/∂v : influence de v sur F
+    </li>
+
+    <li>
+    ∂G/∂u : influence de u sur G
+    </li>
+
+    <li>
+    ∂G/∂v : influence de v sur G
+    </li>
+
+    </ul>
+
+    <p>
+    Cette matrice sera ensuite utilisée
+    pour l'étude de la stabilité et
+    le calcul des exposants de Lyapunov.
+    </p>
+    `;
+
+}
+
+</script>
+
+
+</body>
+
+</html>
