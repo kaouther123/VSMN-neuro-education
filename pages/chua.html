@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Circuit de Chua - VSMN Neuro Education</title>
+
+    <link rel="stylesheet"
+          href="../css/style.css">
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>⚡ Circuit de Chua</h1>
+
+    <p>
+        Comprendre le rôle de la non-linéarité
+        dans la génération du chaos
+    </p>
+
+</header>
+
+
+<nav>
+
+    <a href="../index.html">
+        🏠 Accueil
+    </a>
+
+    <a href="neurone.html">
+        🧠 Neurone
+    </a>
+
+    <a href="vsmn.html">
+        📐 VSMN
+    </a>
+
+    <a href="chaos.html">
+        🌀 Chaos
+    </a>
+
+    <a href="chaos-lyapunov.html">
+        📊 Analyse du chaos
+    </a>
+
+    <a href="chua.html">
+        ⚡ Chua
+    </a>
+
+    <a href="simulation.html">
+        🧪 Simulation
+    </a>
+
+    <a href="signaux-biologiques.html">
+        ❤️🧠 ECG / EEG
+    </a>
+
+    <a href="applications.html">
+        🚀 Applications
+    </a>
+
+    <a href="quiz.html">
+        🎓 Quiz
+    </a>
+
+</nav>
+
+
+<main class="container">
+
+
+    <!-- INTRODUCTION -->
+
+    <section class="card">
+
+        <h2>
+            ⚡ Qu'est-ce que le circuit de Chua ?
+        </h2>
+
+        <p>
+
+            Le circuit de Chua est un circuit électronique
+            non linéaire capable de générer des comportements
+            chaotiques.
+
+        </p>
+
+        <p>
+
+            Il constitue un exemple classique permettant
+            d'étudier expérimentalement le lien entre
+            non-linéarité, dynamique complexe et chaos.
+
+        </p>
+
+    </section>
+
+
+    <!-- STRUCTURE -->
+
+    <section class="card">
+
+        <h2>
+            🔌 Structure du circuit
+        </h2>
+
+        <p>
+            Le circuit de Chua est constitué principalement
+            de composants électriques associés à un élément
+            non linéaire appelé diode de Chua.
+        </p>
+
+        <div class="flow">
+
+            <div class="flow-box">
+
+                🔋
+
+                <strong>
+                    Sources
+                </strong>
+
+                <small>
+                    Alimentation du circuit
+                </small>
+
+            </div>
+
+
+            <div class="arrow">
+                →
+            </div>
+
+
+            <div class="flow-box">
+
+                ⚡
+
+                <strong>
+                    Éléments linéaires
+                </strong>
+
+                <small>
+                    R, L, C
+                </small>
+
+            </div>
+
+
+            <div class="arrow">
+                →
+            </div>
+
+
+            <div class="flow-box">
+
+                〽️
+
+                <strong>
+                    Non-linéarité
+                </strong>
+
+                <small>
+                    Diode de Chua
+                </small>
+
+            </div>
+
+
+            <div class="arrow">
+                →
+            </div>
+
+
+            <div class="flow-box">
+
+                🌀
+
+                <strong>
+                    Chaos
+                </strong>
+
+                <small>
+                    Dynamique complexe
+                </small>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- NON LINEARITE -->
+
+    <section class="card">
+
+        <h2>
+            〽️ Rôle de la non-linéarité
+        </h2>
+
+        <p>
+
+            La non-linéarité est un élément essentiel
+            du circuit de Chua.
+
+        </p>
+
+        <p>
+
+            Elle permet au système de produire des
+            comportements qui ne peuvent pas être obtenus
+            avec un circuit purement linéaire.
+
+        </p>
+
+        <div class="flow">
+
+            <div class="flow-box">
+
+                ➡️
+
+                <strong>
+                    Système linéaire
+                </strong>
+
+                <small>
+                    Dynamique simple
+                </small>
+
+            </div>
+
+            <div class="arrow">
+                →
+            </div>
+
+            <div class="flow-box">
+
+                〽️
+
+                <strong>
+                    Non-linéarité
+                </strong>
+
+                <small>
+                    Interaction complexe
+                </small>
+
+            </div>
+
+            <div class="arrow">
+                →
+            </div>
+
+            <div class="flow-box">
+
+
+
+                <strong>
+                    Chaos
+                </strong>
+
+                <small>
+                    Sensibilité aux conditions initiales
+                </small>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CHAOS -->
+
+    <section class="card">
+
+        <h2>
+             Chua et chaos
+        </h2>
+
+        <p>
+
+            Le circuit de Chua est un système dynamique
+            déterministe qui peut présenter un comportement
+            chaotique.
+
+        </p>
+
+        <p>
+            Le chaos peut notamment être étudié à travers :
+        </p>
+
+        <ol>
+
+            <li>
+                La sensibilité aux conditions initiales
+            </li>
+
+            <li>
+                Les trajectoires dans l'espace des phases
+            </li>
+
+            <li>
+                Les attracteurs chaotiques
+            </li>
+
+            <li>
+                L'exposant de Lyapunov
+            </li>
+
+        </ol>
+
+    </section>
+
+
+    <!-- LIEN AVEC VSMN -->
+
+    <section class="card">
+
+        <h2>
+             Lien avec le modèle VSMN
+        </h2>
+
+        <p>
+
+            Le circuit de Chua permet d'illustrer
+            expérimentalement comment une non-linéarité
+            peut conduire à une dynamique complexe.
+
+        </p>
+
+        <p>
+
+            Dans notre approche, cette notion de
+            non-linéarité et de dynamique chaotique est
+            également étudiée dans le modèle neuronal VSMN.
+
+        </p>
+
+
+        <div class="flow">
+
+            <div class="flow-box">
+
+                
+
+                <strong>
+                    VSMN
+                </strong>
+
+                <small>
+                    Modèle neuronal
+                </small>
+
+            </div>
+
+            <div class="arrow">
+                ↔
+            </div>
+
+            <div class="flow-box">
+
+                
+
+                <strong>
+                    Non-linéarité
+                </strong>
+
+                <small>
+                    Dynamique complexe
+                </small>
+
+            </div>
+
+            <div class="arrow">
+                ↔
+            </div>
+
+            <div class="flow-box">
+
+                ⚡
+
+                <strong>
+                    Chua
+                </strong>
+
+                <small>
+                    Exemple électronique
+                </small>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- RESUME -->
+
+    <section class="card">
+
+        <h2>
+           À retenir
+        </h2>
+
+        <ul>
+
+            <li>
+                Le circuit de Chua est un système électronique
+                non linéaire.
+            </li>
+
+            <li>
+                Il peut générer des comportements chaotiques.
+            </li>
+
+            <li>
+                La non-linéarité joue un rôle essentiel
+                dans cette dynamique.
+            </li>
+
+            <li>
+                Le chaos peut être étudié avec les attracteurs
+                et les exposants de Lyapunov.
+            </li>
+
+            <li>
+                Chua fournit un exemple physique permettant
+                d'illustrer les phénomènes étudiés dans
+                les systèmes dynamiques et le modèle VSMN.
+            </li>
+
+        </ul>
+
+    </section>
+
+
+    <!-- RETOUR -->
+
+    <section class="card">
+
+        <a href="../index.html"
+           class="button">
+
+            Retour à l'accueil
+
+        </a>
+
+    </section>
+
+
+</main>
+
+
+<footer>
+
+    <p>
+        VSMN Neuro Education
+    </p>
+
+    <p>
+        Plateforme éducative interactive
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>
