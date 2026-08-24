@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Expérience complète VSMN</title>
+
+<link rel="stylesheet"
+href="../css/style.css">
+
+<style>
+
+.steps {
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit,minmax(200px,1fr));
+    gap:20px;
+    margin-top:30px;
+}
+
+.step {
+    padding:25px;
+    border-radius:15px;
+    text-align:center;
+}
+
+.step h3 {
+    font-size:22px;
+}
+
+.arrow {
+    text-align:center;
+    font-size:30px;
+}
+
+.status {
+    padding:20px;
+    margin-top:20px;
+    border-radius:12px;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>🧠 Expérience complète VSMN</h1>
+
+<p>
+De la modélisation neuronale à l'analyse
+du comportement chaotique
+</p>
+
+</header>
+
+
+<nav>
+
+<a href="../index.html">
+Accueil
+</a>
+
+<a href="vsmn-model.html">
+VSMN
+</a>
+
+<a href="parametres-vsmn.html">
+Paramètres
+</a>
+
+<a href="attracteur-vsmn.html">
+Attracteur
+</a>
+
+<a href="jacobienne-vsmn.html">
+Jacobienne
+</a>
+
+<a href="lyapunov-vsmn.html">
+Lyapunov
+</a>
+
+</nav>
+
+
+<main class="container">
+
+
+<section class="card">
+
+<h2>
+🎯 Objectif de l'expérience
+</h2>
+
+<p>
+
+Cette expérience permet de suivre
+progressivement la dynamique du modèle
+VSMN et d'utiliser plusieurs outils
+d'analyse pour caractériser son comportement.
+
+</p>
+
+</section>
+
+
+<section class="card">
+
+<h2>
+🔬 Parcours expérimental
+</h2>
+
+
+<div class="steps">
+
+
+<div class="step">
+
+<h3>
+1️⃣
+</h3>
+
+<h3>
+Modèle VSMN
+</h3>
+
+<p>
+Équations différentielles
+du neurone.
+</p>
+
+<button
+class="button"
+onclick="location.href='vsmn-model.html'">
+
+Ouvrir
+
+</button>
+
+</div>
+
+
+<div class="step">
+
+<h3>
+2️⃣
+</h3>
+
+<h3>
+Paramètres
+</h3>
+
+<p>
+Étudier l'influence
+de n₁ et n₂.
+</p>
+
+<button
+class="button"
+onclick="location.href='parametres-vsmn.html'">
+
+Ouvrir
+
+</button>
+
+</div>
+
+
+<div class="step">
+
+<h3>
+3️⃣
+</h3>
+
+<h3>
+Attracteur
+</h3>
+
+<p>
+Visualiser la dynamique
+dans l'espace des phases.
+</p>
+
+<button
+class="button"
+onclick="location.href='attracteur-vsmn.html'">
+
+Ouvrir
+
+</button>
+
+</div>
+
+
+<div class="step">
+
+<h3>
+4️⃣
+</h3>
+
+<h3>
+Jacobienne
+</h3>
+
+<p>
+Analyser la dynamique
+locale du système.
+</p>
+
+<button
+class="button"
+onclick="location.href='jacobienne-vsmn.html'">
+
+Ouvrir
+
+</button>
+
+</div>
+
+
+<div class="step">
+
+<h3>
+5️⃣
+</h3>
+
+<h3>
+Lyapunov
+</h3>
+
+<p>
+Mesurer la sensibilité
+aux conditions initiales.
+</p>
+
+<button
+class="button"
+onclick="location.href='lyapunov-vsmn.html'">
+
+Ouvrir
+
+</button>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<section class="card">
+
+<h2>
+🌀 Validation du comportement chaotique
+</h2>
+
+<div class="status">
+
+<p>
+
+<strong>Critère 1 :</strong>
+Sensibilité aux conditions initiales
+
+</p>
+
+<p>
+
+<strong>Critère 2 :</strong>
+Attracteur complexe
+
+</p>
+
+<p>
+
+<strong>Critère 3 :</strong>
+Exposant de Lyapunov maximal positif
+
+</p>
+
+<p>
+
+<strong>Critère 4 :</strong>
+Analyse complémentaire par bifurcation
+ou portrait de phase
+
+</p>
+
+</div>
+
+</section>
+
+
+<section class="card">
+
+<h2>
+🧠 Application aux signaux biologiques
+</h2>
+
+<p>
+
+Une fois la dynamique du modèle étudiée,
+les signaux générés peuvent être utilisés
+pour illustrer des comportements de type
+EEG et ECG.
+
+</p>
+
+
+<button
+class="button"
+onclick="location.href='eeg.html'">
+
+🧠 Explorer EEG
+
+</button>
+
+
+<button
+class="button"
+onclick="location.href='ecg.html'">
+
+❤️ Explorer ECG
+
+</button>
+
+</section>
+
+
+<section class="card">
+
+<h2>
+🎓 Message scientifique
+</h2>
+
+<p>
+
+Le modèle VSMN constitue un laboratoire
+contrôlé permettant d'étudier la dynamique
+neuronale, les non-linéarités et les
+comportements complexes.
+
+</p>
+
+</section>
+
+
+</main>
+
+
+<footer>
+
+<p>
+VSMN Neuro Education
+</p>
+
+</footer>
+
+
+</body>
+
+</html>
