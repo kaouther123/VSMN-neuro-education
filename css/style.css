@@ -746,13 +746,173 @@ nav a:hover {
 .main-header .author span {
     font-size: 16px;
 }
-
-
 /* =====================================================
-   HEADER
+   VERSION FINALE DU HEADER
 ===================================================== */
 
 .main-header {
-    min-height: 300px;
-    padding: 30px 40px;
+    position: relative;
+    min-height: 310px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px 20px;
+
+    text-align: center;
+
+    color: white;
+
+    background:
+        radial-gradient(circle at 15% 50%,
+            rgba(0, 150, 255, 0.25),
+            transparent 25%),
+
+        radial-gradient(circle at 85% 40%,
+            rgba(0, 180, 255, 0.20),
+            transparent 25%),
+
+        linear-gradient(135deg,
+            #082f5f,
+            #104a82,
+            #174679);
+
+    overflow: hidden;
 }
+
+
+/* contenu central */
+
+.header-content {
+    position: relative;
+
+    z-index: 5;
+
+    width: 100%;
+
+    max-width: 900px;
+
+    margin: auto;
+}
+
+
+/* =====================================================
+   CERVEAU À GAUCHE
+===================================================== */
+
+.header-decoration {
+    position: absolute;
+
+    z-index: 2;
+
+    pointer-events: none;
+}
+
+.header-decoration img {
+    display: block;
+
+    width: 100%;
+
+    height: auto;
+}
+
+.brain-decoration {
+    left: 12px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 300px;
+
+    opacity: 0.95;
+}
+
+
+/* =====================================================
+   NEURONES À DROITE
+===================================================== */
+
+.neurons-decoration {
+    right: 12px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 300px;
+
+    opacity: 0.95;
+}
+
+
+/* =====================================================
+   TITRE
+===================================================== */
+
+.main-header h1 {
+    margin: 0 0 18px;
+
+    font-size: 44px;
+
+    line-height: 1.2;
+
+    font-weight: 700;
+
+    color: white;
+
+    text-shadow:
+        0 3px 12px rgba(0,0,0,0.30);
+}
+
+
+/* =====================================================
+   DESCRIPTION
+===================================================== */
+
+.main-header .subtitle {
+    max-width: 850px;
+
+    margin: 0 auto 20px;
+
+    font-size: 17px;
+
+    line-height: 1.6;
+
+    color: #f4f8ff;
+}
+
+
+/* =====================================================
+   AUTEUR
+===================================================== */
+
+.main-header .author {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+
+    margin-top: 15px;
+
+    color: white;
+}
+
+
+.main-header .author strong {
+    font-size: 20px;
+
+    font-weight: 700;
+}
+
+
+.main-header .author span {
+    font-size: 15px;
+
+    line-height: 1.4;
+
+    color: #f2f6ff;
+}
+
