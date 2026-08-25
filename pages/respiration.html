@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>VSMN - Signal Respiratoire</title>
+
+    <link rel="stylesheet"
+          href="../css/style.css">
+
+    <style>
+
+        /* =====================================================
+           PAGE RESPIRATION
+        ===================================================== */
+
+        .respiration-page {
+            width: 92%;
+            max-width: 1200px;
+            margin: 35px auto;
+        }
+
+        .respiration-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .respiration-title h1 {
+            color: #123f73;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .respiration-title p {
+            font-size: 17px;
+            color: #555;
+        }
+
+
+        /* =====================================================
+           PARAMETRES
+        ===================================================== */
+
+        .parameters {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(220px, 1fr));
+
+            gap: 20px;
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 14px;
+
+            box-shadow:
+                0 5px 18px rgba(0,0,0,0.08);
+
+            margin-bottom: 25px;
+        }
+
+        .parameter {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 8px;
+        }
+
+        .parameter label {
+
+            font-weight: bold;
+
+            color: #123f73;
+        }
+
+        .parameter input {
+
+            width: 100%;
+
+            padding: 9px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 7px;
+
+            font-size: 15px;
+        }
+
+
+        /* =====================================================
+           BOUTON
+        ===================================================== */
+
+        .simulation-button {
+
+            text-align: center;
+
+            margin: 20px 0 30px;
+        }
+
+        .simulation-button button {
+
+            background: #173f73;
+
+            color: white;
+
+            border: none;
+
+            padding: 14px 30px;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.25s;
+        }
+
+        .simulation-button button:hover {
+
+            background: #0f2b50;
+
+            transform: translateY(-2px);
+        }
+
+
+        /* =====================================================
+           GRAPHIQUE
+        ===================================================== */
+
+        .graph-card {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 14px;
+
+            box-shadow:
+                0 5px 18px rgba(0,0,0,0.08);
+
+            margin-bottom: 25px;
+        }
+
+        .graph-card h2 {
+
+            color: #123f73;
+
+            margin-top: 0;
+
+            font-size: 23px;
+        }
+
+        #respirationCanvas {
+
+            width: 100%;
+
+            height: 400px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 8px;
+
+            background: #fafcff;
+        }
+
+
+        /* =====================================================
+           RESULTATS
+        ===================================================== */
+
+        .results {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(180px, 1fr));
+
+            gap: 15px;
+
+            margin-top: 20px;
+        }
+
+        .result-box {
+
+            background: #f4f7fb;
+
+            padding: 18px;
+
+            border-radius: 10px;
+
+            text-align: center;
+        }
+
+        .result-box strong {
+
+            display: block;
+
+            font-size: 22px;
+
+            color: #173f73;
+
+            margin-bottom: 5px;
+        }
+
+        .result-box span {
+
+            font-size: 14px;
+
+            color: #555;
+        }
+
+
+        /* =====================================================
+           EXPLICATION
+        ===================================================== */
+
+        .explanation {
+
+            background: white;
+
+            padding: 28px;
+
+            border-radius: 14px;
+
+            box-shadow:
+                0 5px 18px rgba(0,0,0,0.08);
+
+            margin-bottom: 30px;
+        }
+
+        .explanation h2 {
+
+            color: #123f73;
+
+            margin-top: 0;
+        }
+
+        .explanation p {
+
+            line-height: 1.7;
+
+            font-size: 16px;
+        }
+
+        .equation {
+
+            background: #f4f7fb;
+
+            padding: 18px;
+
+            border-radius: 8px;
+
+            text-align: center;
+
+            font-size: 19px;
+
+            color: #173f73;
+
+            margin: 15px 0;
+        }
+
+
+        @media (max-width: 700px) {
+
+            .respiration-page {
+                width: 95%;
+            }
+
+            .respiration-title h1 {
+                font-size: 26px;
+            }
+
+            #respirationCanvas {
+                height: 300px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="main-header">
+
+    <div class="header-content">
+
+        <h1>VSMN Neuro Education</h1>
+
+        <p class="subtitle">
+            Modélisation neuronale et systèmes dynamiques
+            appliqués aux signaux physiologiques
+        </p>
+
+        <div class="author">
+
+            <strong>Kaouther SELMI</strong>
+
+            <span>
+                Docteure en électronique
+            </span>
+
+            <span>
+                Université de Monastir – Tunisie
+            </span>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<nav>
+
+    <a href="../index.html">
+        Accueil
+    </a>
+
+    <a href="neurone.html">
+        Neurone
+    </a>
+
+    <a href="vsmn.html">
+        VSMN
+    </a>
+
+    <a href="chaos.html">
+        Chaos
+    </a>
+
+    <a href="chua.html">
+        Chua
+    </a>
+
+    <a href="respiration.html">
+        Respiration
+    </a>
+
+</nav>
+
+
+<!-- =====================================================
+     CONTENU
+===================================================== -->
+
+<main class="respiration-page">
+
+
+    <section class="respiration-title">
+
+        <h1>
+            🫁 Simulation VSMN du signal respiratoire
+        </h1>
+
+        <p>
+            Génération interactive d'un signal respiratoire
+            à partir d'une dynamique neuronale non linéaire.
+        </p>
+
+    </section>
+
+
+    <!-- =================================================
+         PARAMETRES
+    ================================================== -->
+
+    <section class="parameters">
+
+        <div class="parameter">
+
+            <label for="frequency">
+                Fréquence respiratoire (resp/min)
+            </label>
+
+            <input
+                type="number"
+                id="frequency"
+                value="12"
+                min="4"
+                max="40"
+                step="1">
+
+        </div>
+
+
+        <div class="parameter">
+
+            <label for="amplitude">
+                Amplitude
+            </label>
+
+            <input
+                type="number"
+                id="amplitude"
+                value="1"
+                min="0.1"
+                max="3"
+                step="0.1">
+
+        </div>
+
+
+        <div class="parameter">
+
+            <label for="nonlinearity">
+                Non-linéarité VSMN
+            </label>
+
+            <input
+                type="number"
+                id="nonlinearity"
+                value="0.35"
+                min="0"
+                max="1"
+                step="0.05">
+
+        </div>
+
+
+        <div class="parameter">
+
+            <label for="coupling">
+                Couplage VSMN
+            </label>
+
+            <input
+                type="number"
+                id="coupling"
+                value="0.8"
+                min="0"
+                max="2"
+                step="0.1">
+
+        </div>
+
+
+        <div class="parameter">
+
+            <label for="duration">
+                Durée (secondes)
+            </label>
+
+            <input
+                type="number"
+                id="duration"
+                value="30"
+                min="5"
+                max="120"
+                step="5">
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         BOUTON
+    ================================================== -->
+
+    <div class="simulation-button">
+
+        <button onclick="simulateRespiration()">
+
+            ▶ Lancer la simulation VSMN
+
+        </button>
+
+    </div>
+
+
+    <!-- =================================================
+         GRAPHIQUE
+    ================================================== -->
+
+    <section class="graph-card">
+
+        <h2>
+            Signal respiratoire simulé
+        </h2>
+
+        <canvas id="respirationCanvas">
+        </canvas>
+
+
+        <div class="results">
+
+            <div class="result-box">
+
+                <strong id="resultFrequency">
+                    12
+                </strong>
+
+                <span>
+                    respirations/min
+                </span>
+
+            </div>
+
+
+            <div class="result-box">
+
+                <strong id="resultAmplitude">
+                    1.00
+                </strong>
+
+                <span>
+                    amplitude
+                </span>
+
+            </div>
+
+
+            <div class="result-box">
+
+                <strong id="resultDuration">
+                    30
+                </strong>
+
+                <span>
+                    secondes
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         EXPLICATION
+    ================================================== -->
+
+    <section class="explanation">
+
+        <h2>
+            🧠 Principe de la simulation
+        </h2>
+
+        <p>
+
+            Le modèle VSMN est utilisé ici comme générateur
+            d'une dynamique neuronale non linéaire. Sa sortie
+            est ensuite adaptée afin de représenter les
+            variations périodiques associées à la respiration.
+
+        </p>
+
+        <div class="equation">
+
+            x(t+1) = x(t) + Δt ·
+            [−x(t) + C·tanh(x(t))
+            + N·sin(ωt)]
+
+        </div>
+
+        <p>
+
+            La fréquence respiratoire contrôle la fréquence
+            fondamentale du signal. Le paramètre de
+            non-linéarité permet de modifier la dynamique
+            produite par le modèle VSMN, tandis que le
+            couplage contrôle l'influence de la dynamique
+            neuronale sur le signal respiratoire.
+
+        </p>
+
+        <p>
+
+            <strong>Important :</strong>
+            ce signal est une simulation pédagogique et
+            ne constitue pas un modèle clinique ou un signal
+            médical diagnostique.
+
+        </p>
+
+    </section>
+
+
+</main>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+function simulateRespiration() {
+
+    /* -----------------------------------------------
+       Lecture des paramètres
+    ------------------------------------------------ */
+
+    const frequency =
+        parseFloat(
+            document.getElementById("frequency").value
+        );
+
+    const amplitude =
+        parseFloat(
+            document.getElementById("amplitude").value
+        );
+
+    const nonlinearity =
+        parseFloat(
+            document.getElementById("nonlinearity").value
+        );
+
+    const coupling =
+        parseFloat(
+            document.getElementById("coupling").value
+        );
+
+    const duration =
+        parseFloat(
+            document.getElementById("duration").value
+        );
+
+
+    /* -----------------------------------------------
+       Canvas
+    ------------------------------------------------ */
+
+    const canvas =
+        document.getElementById(
+            "respirationCanvas"
+        );
+
+    const ctx =
+        canvas.getContext("2d");
+
+
+    const rect =
+        canvas.getBoundingClientRect();
+
+    canvas.width = rect.width;
+    canvas.height = rect.height;
+
+
+    const width = canvas.width;
+    const height = canvas.height;
+
+
+    /* -----------------------------------------------
+       Paramètres temporels
+    ------------------------------------------------ */
+
+    const dt = 0.01;
+
+    const steps =
+        Math.floor(duration / dt);
+
+
+    const respiratoryFrequency =
+        frequency / 60;
+
+
+    /* -----------------------------------------------
+       VSMN
+    ------------------------------------------------ */
+
+    let x = 0.1;
+
+    let y = 0;
+
+    const signal = [];
+
+
+    for (let i = 0; i < steps; i++) {
+
+        const t = i * dt;
+
+
+        /*
+         * Dynamique VSMN simplifiée
+         */
+
+        const omega =
+            2 * Math.PI *
+            respiratoryFrequency;
+
+
+        const input =
+            Math.sin(omega * t);
+
+
+        const nonlinear =
+            Math.tanh(x);
+
+
+        const dx =
+            -x
+            + coupling * nonlinear
+            + nonlinearity * input;
+
+
+        x =
+            x + dt * dx;
+
+
+        /*
+         * Transformation respiratoire
+         *
+         * La composante sinusoïdale
+         * donne le cycle inspiration/
+         * expiration tandis que x(t)
+         * introduit la dynamique VSMN.
+         */
+
+        const respiration =
+            amplitude *
+            (
+                0.75 * Math.sin(omega * t)
+                +
+                0.25 * x
+            );
+
+
+        signal.push({
+            t: t,
+            y: respiration
+        });
+
+    }
+
+
+    /* -----------------------------------------------
+       Recherche min / max
+    ------------------------------------------------ */
+
+    let minY = Infinity;
+    let maxY = -Infinity;
+
+
+    signal.forEach(point => {
+
+        if (point.y < minY)
+            minY = point.y;
+
+        if (point.y > maxY)
+            maxY = point.y;
+
+    });
+
+
+    const margin = 45;
+
+
+    /* -----------------------------------------------
+       Fond
+    ------------------------------------------------ */
+
+    ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+
+    ctx.fillStyle = "#fafcff";
+
+    ctx.fillRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+
+    /* -----------------------------------------------
+       Grille horizontale
+    ------------------------------------------------ */
+
+    ctx.strokeStyle = "#dce5ef";
+
+    ctx.lineWidth = 1;
+
+
+    for (let i = 0; i <= 5; i++) {
+
+        const gy =
+            margin +
+            i *
+            (height - 2 * margin) /
+            5;
+
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            margin,
+            gy
+        );
+
+        ctx.lineTo(
+            width - margin,
+            gy
+        );
+
+        ctx.stroke();
+
+    }
+
+
+    /* -----------------------------------------------
+       Axe horizontal
+    ------------------------------------------------ */
+
+    const zeroY =
+        height -
+        margin -
+        (
+            (0 - minY) /
+            (maxY - minY)
+        ) *
+        (height - 2 * margin);
+
+
+    ctx.strokeStyle = "#8b9bad";
+
+    ctx.lineWidth = 1.5;
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        margin,
+        zeroY
+    );
+
+    ctx.lineTo(
+        width - margin,
+        zeroY
+    );
+
+    ctx.stroke();
+
+
+    /* -----------------------------------------------
+       Signal
+    ------------------------------------------------ */
+
+    ctx.strokeStyle = "#173f73";
+
+    ctx.lineWidth = 2.5;
+
+    ctx.beginPath();
+
+
+    signal.forEach((point, index) => {
+
+        const px =
+            margin +
+            (
+                point.t / duration
+            ) *
+            (width - 2 * margin);
+
+
+        const py =
+            height -
+            margin -
+            (
+                (point.y - minY) /
+                (maxY - minY)
+            ) *
+            (height - 2 * margin);
+
+
+        if (index === 0) {
+
+            ctx.moveTo(
+                px,
+                py
+            );
+
+        } else {
+
+            ctx.lineTo(
+                px,
+                py
+            );
+
+        }
+
+    });
+
+
+    ctx.stroke();
+
+
+    /* -----------------------------------------------
+       Axe du temps
+    ------------------------------------------------ */
+
+    ctx.fillStyle = "#333";
+
+    ctx.font = "13px Arial";
+
+    ctx.fillText(
+        "Temps (s)",
+        width - 85,
+        height - 12
+    );
+
+
+    ctx.fillText(
+        "Amplitude",
+        10,
+        20
+    );
+
+
+    /* -----------------------------------------------
+       Mise à jour résultats
+    ------------------------------------------------ */
+
+    document.getElementById(
+        "resultFrequency"
+    ).textContent = frequency;
+
+    document.getElementById(
+        "resultAmplitude"
+    ).textContent =
+        amplitude.toFixed(2);
+
+    document.getElementById(
+        "resultDuration"
+    ).textContent = duration;
+
+}
+
+
+/* =====================================================
+   SIMULATION AUTOMATIQUE AU CHARGEMENT
+===================================================== */
+
+window.addEventListener(
+    "load",
+    simulateRespiration
+);
+
+</script>
+
+
+</body>
+
+</html>
