@@ -915,4 +915,165 @@ nav a:hover {
 
     color: #f2f6ff;
 }
+/* =====================================================
+   HEADER FINAL — GRANDE VERSION
+===================================================== */
+
+.main-header {
+    position: relative;
+    min-height: 320px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 25px 20px;
+
+    text-align: center;
+    color: white;
+
+    background: #174679;
+
+    overflow: hidden;
+}
+
+
+/* CONTENU CENTRAL */
+
+.header-content {
+    position: relative;
+    z-index: 5;
+
+    width: 100%;
+    max-width: 900px;
+
+    margin: auto;
+}
+
+
+/* =====================================================
+   CERVEAU À GAUCHE
+===================================================== */
+
+.header-decoration {
+    position: absolute;
+    z-index: 2;
+
+    pointer-events: none;
+}
+
+.header-decoration img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.brain-decoration {
+    left: 12px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 330px;
+}
+
+
+/* =====================================================
+   RÉSEAU NEURONAL À DROITE
+===================================================== */
+
+.neurons-decoration {
+    right: 12px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 330px;
+}
+
+
+/* =====================================================
+   TITRE
+===================================================== */
+
+.main-header h1 {
+    margin: 0 0 18px 0;
+
+    font-size: 46px;
+    line-height: 1.2;
+
+    font-weight: 700;
+
+    color: white;
+
+    text-shadow:
+        0 3px 10px rgba(0, 0, 0, 0.30);
+}
+
+
+/* =====================================================
+   DESCRIPTION
+===================================================== */
+
+.main-header .subtitle {
+    max-width: 850px;
+
+    margin: 0 auto 22px auto;
+
+    font-size: 18px;
+    line-height: 1.6;
+
+    color: white;
+}
+
+
+/* =====================================================
+   AUTEUR
+===================================================== */
+
+.main-header .author {
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+
+    margin-top: 15px;
+
+    color: white;
+}
+
+.main-header .author strong {
+    font-size: 21px;
+    font-weight: 700;
+}
+
+.main-header .author span {
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+
+/* =====================================================
+   SUR PETIT ÉCRAN
+===================================================== */
+
+@media (max-width: 900px) {
+
+    .brain-decoration {
+        left: -30px;
+        width: 220px;
+        opacity: 0.45;
+    }
+
+    .neurons-decoration {
+        right: -30px;
+        width: 220px;
+        opacity: 0.45;
+    }
+
+    .main-header h1 {
+        font-size: 36px;
+    }
+
+}
 
