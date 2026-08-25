@@ -53,15 +53,37 @@ nav a:hover {
 }
 
 .card {
-    background: white;
-    border-radius: 15px;
-    padding: 30px;
+
+    padding: 28px;
+
     margin-bottom: 25px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+
+    border-radius: 14px;
+
+    background: white;
+
+    box-shadow:
+        0 5px 18px rgba(0,0,0,0.08);
 }
 
+
 .card h2 {
-    color: #173f73;
+
+    font-size: 23px;
+
+    margin-bottom: 20px;
+
+    color: #123f73;
+}
+
+
+.card p,
+.card li {
+
+    font-size: 16px;
+
+    line-height: 1.7;
+
 }
 
 .button {
