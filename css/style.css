@@ -261,4 +261,153 @@ footer {
 
 }
 
+/* =========================================
+   HEADER PRINCIPAL
+========================================= */
 
+.main-header {
+    position: relative;
+    min-height: 300px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    color: white;
+
+    background:
+        radial-gradient(circle at 15% 50%,
+            rgba(0, 150, 255, 0.25),
+            transparent 25%),
+
+        radial-gradient(circle at 85% 30%,
+            rgba(0, 180, 255, 0.20),
+            transparent 25%),
+
+        linear-gradient(135deg,
+            #062957,
+            #0b3d78,
+            #164d88);
+
+    overflow: hidden;
+
+    padding: 35px 20px;
+}
+
+
+/* effet lumineux à gauche */
+
+.main-header::before {
+    content: "";
+    position: absolute;
+
+    width: 260px;
+    height: 260px;
+
+    left: 40px;
+    top: 20px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(circle,
+            rgba(0, 174, 255, 0.25),
+            transparent 70%);
+
+    filter: blur(10px);
+}
+
+
+/* effet lumineux à droite */
+
+.main-header::after {
+    content: "";
+    position: absolute;
+
+    width: 300px;
+    height: 300px;
+
+    right: 30px;
+    top: -30px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(circle,
+            rgba(100, 180, 255, 0.18),
+            transparent 70%);
+
+    filter: blur(15px);
+}
+
+
+/* contenu */
+
+.header-content {
+    position: relative;
+    z-index: 2;
+
+    max-width: 1100px;
+    width: 100%;
+
+    margin: auto;
+}
+
+
+/* titre */
+
+.main-header h1 {
+    margin: 0 0 15px 0;
+
+    font-size: 42px;
+    font-weight: 700;
+
+    letter-spacing: 0.5px;
+
+    text-shadow:
+        0 3px 10px rgba(0, 0, 0, 0.25);
+}
+
+
+/* sous-titre */
+
+.main-header .subtitle {
+    max-width: 850px;
+
+    margin: 0 auto 20px auto;
+
+    font-size: 18px;
+    line-height: 1.6;
+
+    color: #f2f7ff;
+}
+
+
+/* auteur */
+
+.author {
+    margin-top: 18px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+
+    font-size: 16px;
+
+    color: #ffffff;
+}
+
+
+.author strong {
+    font-size: 19px;
+    font-weight: 700;
+}
+
+
+.author span {
+    font-size: 15px;
+    opacity: 0.95;
+}
