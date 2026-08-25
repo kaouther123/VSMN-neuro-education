@@ -678,3 +678,81 @@ nav a:hover {
         font-size: 13px;
     }
 }
+
+
+/* =====================================================
+   IMAGES DU HEADER
+===================================================== */
+
+.header-decoration {
+    position: absolute;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.header-decoration img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+
+/* CERVEAU - GAUCHE */
+
+.brain-decoration {
+    left: 25px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 220px;
+
+    opacity: 0.90;
+}
+
+
+/* RÉSEAU DE NEURONES - DROITE */
+
+.neurons-decoration {
+    right: 25px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 220px;
+
+    opacity: 0.90;
+}
+
+
+/* =====================================================
+   TITRE ET INFORMATIONS
+===================================================== */
+
+.main-header h1 {
+    font-size: 46px;
+    margin: 0 0 18px 0;
+}
+
+.main-header .subtitle {
+    max-width: 800px;
+    font-size: 18px;
+    line-height: 1.6;
+    margin: 0 auto 25px auto;
+}
+
+.main-header .author strong {
+    font-size: 22px;
+}
+
+.main-header .author span {
+    font-size: 16px;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.main-header {
+    min-height: 300px;
+    padding: 30px 40px;
+}
