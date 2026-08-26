@@ -3,16 +3,32 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-<title>Simulateur VSMN</title>
+    <title>Simulateur VSMN</title>
 
-<link rel="stylesheet"
-      href="../css/style.css">
+    <link rel="stylesheet"
+          href="../css/style.css">
 
+    <!-- ============================= -->
+    <!-- MathJax : affichage des formules -->
+    <!-- ============================= -->
+
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']]
+            }
+        };
+    </script>
+
+    <script async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
 
 </head>
 
@@ -21,30 +37,34 @@
 
 <header>
 
-<h1> Simulateur VSMN</h1>
+    <h1>Simulateur VSMN</h1>
 
-<p>
-Variable Structure Model of Neurons
-</p>
+    <p>
+        Variable Structure Model of Neurons
+    </p>
 
 </header>
 
 
+<!-- ============================= -->
+<!-- Navigation -->
+<!-- ============================= -->
+
 <nav>
 
-<a href="../index.html">Accueil</a>
+    <a href="../index.html">Accueil</a>
 
-<a href="neurone.html">Neurone</a>
+    <a href="neurone.html">Neurone</a>
 
-<a href="vsmn.html">VSMN</a>
+    <a href="vsmn.html">VSMN</a>
 
-<a href="chaos.html">Chaos</a>
+    <a href="chaos.html">Chaos</a>
 
-<a href="ecg.html">ECG</a>
+    <a href="ecg.html">ECG</a>
 
-<a href="eeg.html">EEG</a>
+    <a href="eeg.html">EEG</a>
 
-<a href="quiz.html">Quiz</a>
+    <a href="quiz.html">Quiz</a>
 
 </nav>
 
@@ -52,273 +72,393 @@ Variable Structure Model of Neurons
 <main class="container">
 
 
-<section class="card">
+    <!-- ============================= -->
+    <!-- Modèle mathématique -->
+    <!-- ============================= -->
 
-<h2>Modèle mathématique</h2>
+    <section class="card">
 
-<p>
-Le VSMN est décrit par le système d'équations différentielles suivant :
-</p>
+        <h2>Modèle mathématique</h2>
 
-<p>
-\[
-\dot{u} = -\lambda u + \frac{\alpha u^3}{3} + v
-+ \rho f(u)\left(\lambda u + \rho f(u)\right)
-\]
-</p>
+        <p>
+            Le VSMN est décrit par le système d'équations
+            différentielles suivant :
+        </p>
 
-<p>
-\[
-\dot{v} = -\lambda v + (u+\gamma)\alpha f^2(\lambda(u+v))
-\]
-</p>
+        <div class="equation">
 
-<p>avec :</p>
+            \[
+            \dot{u}
+            =
+            -\lambda u
+            +
+            \frac{\alpha u^3}{3}
+            +
+            v
+            +
+            \rho f(u)
+            \left(
+            \lambda u + \rho f(u)
+            \right)
+            \]
 
-<p>
-\[
-f(t)=e^{-t^2/2}
-\]
-</p>
-</section>
+        </div>
 
 
-<section class="card">
+        <div class="equation">
 
-<h2>⚙️ Paramètres</h2>
+            \[
+            \dot{v}
+            =
+            -\lambda v
+            +
+            (u+\gamma)
+            \alpha
+            f^2
+            \left(
+            \lambda(u+v)
+            \right)
+            \]
 
+        </div>
 
-<label>
-α :
-<input type="number"
-       id="alpha"
-       value="1"
-       step="0.1">
-</label>
 
-<br><br>
+        <p>avec :</p>
 
 
-<label>
-τ :
-<input type="number"
-       id="tau"
-       value="1"
-       step="0.1">
-</label>
+        <div class="equation">
 
-<br><br>
+            \[
+            f(t)=e^{-t^2/2}
+            \]
 
+        </div>
 
-<label>
-p :
-<input type="number"
-       id="p"
-       value="0"
-       step="0.1">
-</label>
+    </section>
 
-<br><br>
 
 
-<label>
-q :
-<input type="number"
-       id="q"
-       value="0"
-       step="0.1">
-</label>
+    <!-- ============================= -->
+    <!-- Paramètres -->
+    <!-- ============================= -->
 
-<br><br>
+    <section class="card">
 
+        <h2>⚙️ Paramètres</h2>
 
-<label>
-n :
-<input type="number"
-       id="n"
-       value="1"
-       step="1">
-</label>
 
-<br><br>
+        <label>
+            α :
+            <input
+                type="number"
+                id="alpha"
+                value="1"
+                step="0.1">
+        </label>
 
+        <br><br>
 
-<label>
-λ :
-<input type="number"
-       id="lambda"
-       value="1"
-       step="0.1">
-</label>
 
-<br><br>
+        <label>
+            τ :
+            <input
+                type="number"
+                id="tau"
+                value="1"
+                step="0.1">
+        </label>
 
+        <br><br>
 
-<label>
-β :
-<input type="number"
-       id="beta"
-       value="1"
-       step="0.1">
-</label>
 
-<br><br>
+        <label>
+            p :
+            <input
+                type="number"
+                id="p"
+                value="0"
+                step="0.1">
+        </label>
 
+        <br><br>
 
-<label>
-k :
-<select id="k">
 
-<option value="1">+1</option>
+        <label>
+            q :
+            <input
+                type="number"
+                id="q"
+                value="0"
+                step="0.1">
+        </label>
 
-<option value="-1">-1</option>
+        <br><br>
 
-</select>
-</label>
 
-<br><br>
+        <label>
+            n :
+            <input
+                type="number"
+                id="n"
+                value="1"
+                step="1">
+        </label>
 
+        <br><br>
 
-<h3>Conditions initiales</h3>
 
+        <label>
+            λ :
+            <input
+                type="number"
+                id="lambda"
+                value="1"
+                step="0.1">
+        </label>
 
-<label>
-u₀ :
-<input type="number"
-       id="u0"
-       value="0.1"
-       step="0.01">
-</label>
+        <br><br>
 
-<br><br>
 
+        <label>
+            β :
+            <input
+                type="number"
+                id="beta"
+                value="1"
+                step="0.1">
+        </label>
 
-<label>
-v₀ :
-<input type="number"
-       id="v0"
-       value="0.1"
-       step="0.01">
-</label>
+        <br><br>
 
-<br><br>
 
+        <label>
+            k :
 
-<label>
-Pas temporel Δt :
-<input type="number"
-       id="dt"
-       value="0.01"
-       step="0.001">
-</label>
+            <select id="k">
 
-<br><br>
+                <option value="1">+1</option>
 
+                <option value="-1">-1</option>
 
-<label>
-Nombre de pas :
-<input type="number"
-       id="steps"
-       value="5000"
-       step="100">
-</label>
+            </select>
 
-<br><br>
+        </label>
 
+        <br><br>
 
-<button class="button"
-        onclick="runSimulation()">
 
-▶ SIMULER
 
-</button>
+        <!-- ============================= -->
+        <!-- Conditions initiales -->
+        <!-- ============================= -->
 
-</section>
+        <h3>Conditions initiales</h3>
 
 
-<section class="card">
+        <label>
+            u₀ :
+            <input
+                type="number"
+                id="u0"
+                value="0.1"
+                step="0.01">
+        </label>
 
-<h2>Évolution temporelle</h2>
+        <br><br>
 
-<canvas id="timeChart"
-        width="1000"
-        height="450">
-</canvas>
 
-</section>
+        <label>
+            v₀ :
+            <input
+                type="number"
+                id="v0"
+                value="0.1"
+                step="0.01">
+        </label>
 
+        <br><br>
 
-<section class="card">
 
-<h2> Portrait de phase</h2>
+        <label>
+            Pas temporel Δt :
 
-<canvas id="phaseChart"
-        width="1000"
-        height="450">
-</canvas>
+            <input
+                type="number"
+                id="dt"
+                value="0.01"
+                step="0.001">
 
-</section>
+        </label>
+
+        <br><br>
+
+
+        <label>
+            Nombre de pas :
+
+            <input
+                type="number"
+                id="steps"
+                value="5000"
+                step="100">
+
+        </label>
+
+        <br><br>
+
+
+        <button
+            class="button"
+            onclick="runSimulation()">
+
+            ▶ SIMULER
+
+        </button>
+
+    </section>
+
+
+
+    <!-- ============================= -->
+    <!-- Évolution temporelle -->
+    <!-- ============================= -->
+
+    <section class="card">
+
+        <h2>Évolution temporelle</h2>
+
+        <canvas
+            id="timeChart"
+            width="1000"
+            height="450">
+        </canvas>
+
+    </section>
+
+
+
+    <!-- ============================= -->
+    <!-- Portrait de phase -->
+    <!-- ============================= -->
+
+    <section class="card">
+
+        <h2>Portrait de phase</h2>
+
+        <canvas
+            id="phaseChart"
+            width="1000"
+            height="450">
+        </canvas>
+
+    </section>
 
 
 </main>
 
 
+
+<!-- ============================= -->
+<!-- Footer -->
+<!-- ============================= -->
+
 <footer>
 
-<p>
-VSMN Neuro Education
-</p>
+    <p>
+        VSMN Neuro Education
+    </p>
 
 </footer>
 
 
+
+<!-- ============================= -->
+<!-- JavaScript VSMN -->
+<!-- ============================= -->
+
 <script src="../js/vsmn.js"></script>
 
 
+
 <script>
+
+/* ==========================================
+   Récupération des paramètres
+   ========================================== */
 
 function getParameters() {
 
     return {
 
         alpha:
-        Number(document.getElementById("alpha").value),
+        Number(
+            document.getElementById("alpha").value
+        ),
 
         tau:
-        Number(document.getElementById("tau").value),
+        Number(
+            document.getElementById("tau").value
+        ),
 
         p:
-        Number(document.getElementById("p").value),
+        Number(
+            document.getElementById("p").value
+        ),
 
         q:
-        Number(document.getElementById("q").value),
+        Number(
+            document.getElementById("q").value
+        ),
 
         n:
-        Number(document.getElementById("n").value),
+        Number(
+            document.getElementById("n").value
+        ),
 
         lambda:
-        Number(document.getElementById("lambda").value),
+        Number(
+            document.getElementById("lambda").value
+        ),
 
         beta:
-        Number(document.getElementById("beta").value),
+        Number(
+            document.getElementById("beta").value
+        ),
 
         k:
-        Number(document.getElementById("k").value),
+        Number(
+            document.getElementById("k").value
+        ),
 
         u0:
-        Number(document.getElementById("u0").value),
+        Number(
+            document.getElementById("u0").value
+        ),
 
         v0:
-        Number(document.getElementById("v0").value),
+        Number(
+            document.getElementById("v0").value
+        ),
 
         dt:
-        Number(document.getElementById("dt").value),
+        Number(
+            document.getElementById("dt").value
+        ),
 
         steps:
-        Number(document.getElementById("steps").value)
+        Number(
+            document.getElementById("steps").value
+        )
+
     };
+
 }
 
+
+
+/* ==========================================
+   Lancement de la simulation
+   ========================================== */
 
 function runSimulation() {
 
@@ -326,18 +466,26 @@ function runSimulation() {
 
     const result = simulateVSMN(P);
 
+
     drawTimeChart(
         result.time,
         result.U,
         result.V
     );
 
+
     drawPhaseChart(
         result.U,
         result.V
     );
+
 }
 
+
+
+/* ==========================================
+   Graphique temporel
+   ========================================== */
 
 function drawTimeChart(time, U, V) {
 
@@ -347,16 +495,21 @@ function drawTimeChart(time, U, V) {
     const ctx =
         canvas.getContext("2d");
 
+
     ctx.clearRect(
-        0, 0,
+        0,
+        0,
         canvas.width,
         canvas.height
     );
 
+
     const margin = 50;
+
 
     const width =
         canvas.width - 2 * margin;
+
 
     const height =
         canvas.height - 2 * margin;
@@ -365,106 +518,159 @@ function drawTimeChart(time, U, V) {
     const allValues =
         U.concat(V);
 
+
     const min =
         Math.min(...allValues);
+
 
     const max =
         Math.max(...allValues);
 
 
+
     function X(i) {
 
         return margin +
-            i / (time.length - 1)
-            * width;
+            i /
+            (time.length - 1)
+            *
+            width;
 
     }
+
 
 
     function Y(value) {
 
         return margin +
-            (max - value)
-            / (max - min || 1)
-            * height;
+            (max - value) /
+            (max - min || 1)
+            *
+            height;
 
     }
 
 
-    // axes
+
+    /* =========================
+       Axes
+       ========================= */
 
     ctx.beginPath();
 
-    ctx.moveTo(margin, margin);
+
+    ctx.moveTo(
+        margin,
+        margin
+    );
+
 
     ctx.lineTo(
         margin,
         canvas.height - margin
     );
 
+
     ctx.lineTo(
         canvas.width - margin,
         canvas.height - margin
     );
 
+
     ctx.stroke();
 
 
-    // U
+
+    /* =========================
+       Courbe U
+       ========================= */
 
     ctx.beginPath();
 
-    for (let i = 0; i < U.length; i++) {
 
-        if (i === 0)
+    for (
+        let i = 0;
+        i < U.length;
+        i++
+    ) {
+
+        if (i === 0) {
 
             ctx.moveTo(
                 X(i),
                 Y(U[i])
             );
 
-        else
+        }
+
+        else {
 
             ctx.lineTo(
                 X(i),
                 Y(U[i])
             );
+
+        }
+
     }
+
 
     ctx.stroke();
 
 
-    // V
+
+    /* =========================
+       Courbe V
+       ========================= */
 
     ctx.beginPath();
 
-    for (let i = 0; i < V.length; i++) {
 
-        if (i === 0)
+    for (
+        let i = 0;
+        i < V.length;
+        i++
+    ) {
+
+        if (i === 0) {
 
             ctx.moveTo(
                 X(i),
                 Y(V[i])
             );
 
-        else
+        }
+
+        else {
 
             ctx.lineTo(
                 X(i),
                 Y(V[i])
             );
+
+        }
+
     }
+
 
     ctx.stroke();
 
 
-    ctx.font = "16px Arial";
+
+    /* =========================
+       Labels
+       ========================= */
+
+    ctx.font =
+        "16px Arial";
+
 
     ctx.fillText(
         "Temps",
         canvas.width - 100,
         canvas.height - 15
     );
+
 
     ctx.fillText(
         "u(t), v(t)",
@@ -475,13 +681,20 @@ function drawTimeChart(time, U, V) {
 }
 
 
+
+/* ==========================================
+   Portrait de phase
+   ========================================== */
+
 function drawPhaseChart(U, V) {
 
     const canvas =
         document.getElementById("phaseChart");
 
+
     const ctx =
         canvas.getContext("2d");
+
 
     ctx.clearRect(
         0,
@@ -493,65 +706,88 @@ function drawPhaseChart(U, V) {
 
     const margin = 50;
 
+
     const width =
         canvas.width - 2 * margin;
+
 
     const height =
         canvas.height - 2 * margin;
 
 
+
     const minU =
         Math.min(...U);
+
 
     const maxU =
         Math.max(...U);
 
+
     const minV =
         Math.min(...V);
+
 
     const maxV =
         Math.max(...V);
 
 
+
     function X(u) {
 
         return margin +
-            (u - minU)
-            / (maxU - minU || 1)
-            * width;
+            (u - minU) /
+            (maxU - minU || 1)
+            *
+            width;
 
     }
+
 
 
     function Y(v) {
 
         return canvas.height -
             margin -
-            (v - minV)
-            / (maxV - minV || 1)
-            * height;
+            (v - minV) /
+            (maxV - minV || 1)
+            *
+            height;
 
     }
 
 
+
+    /* =========================
+       Trajectoire
+       ========================= */
+
     ctx.beginPath();
 
 
-    for (let i = 0; i < U.length; i++) {
+    for (
+        let i = 0;
+        i < U.length;
+        i++
+    ) {
 
-        if (i === 0)
+        if (i === 0) {
 
             ctx.moveTo(
                 X(U[i]),
                 Y(V[i])
             );
 
-        else
+        }
+
+        else {
 
             ctx.lineTo(
                 X(U[i]),
                 Y(V[i])
             );
+
+        }
 
     }
 
@@ -559,7 +795,13 @@ function drawPhaseChart(U, V) {
     ctx.stroke();
 
 
-    ctx.font = "16px Arial";
+
+    /* =========================
+       Labels
+       ========================= */
+
+    ctx.font =
+        "16px Arial";
 
 
     ctx.fillText(
