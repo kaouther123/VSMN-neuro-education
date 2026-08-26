@@ -12,7 +12,18 @@
 
 <link rel="stylesheet"
       href="../css/style.css">
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['\\(', '\\)']],
+    displayMath: [['\\[', '\\]']]
+  }
+};
+</script>
 
+<script async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
 </head>
 
 
@@ -53,41 +64,32 @@ Variable Structure Model of Neurons
 
 <section class="card">
 
-<h2> Modèle mathématique</h2>
+<h2>Modèle mathématique</h2>
 
 <p>
-Le VSMN est décrit par le système d'équations
-différentielles suivant :
+Le VSMN est décrit par le système d'équations différentielles suivant :
 </p>
 
 <p>
 \[
-\dot u =
--\frac{u+p}{\tau}
-+(u+p)v f(\beta)
-f(\lambda(u+p))
+\dot{u} = -\lambda u + \frac{\alpha u^3}{3} + v
++ \rho f(u)\left(\lambda u + \rho f(u)\right)
 \]
 </p>
 
 <p>
 \[
-\dot v =
--\alpha v+
-k(u+q)^n\alpha
-f^2(\lambda(u+p))
+\dot{v} = -\lambda v + (u+\gamma)\alpha f^2(\lambda(u+v))
 \]
 </p>
 
-<p>
-avec :
-</p>
+<p>avec :</p>
 
 <p>
 \[
 f(t)=e^{-t^2/2}
 \]
 </p>
-
 </section>
 
 
