@@ -1060,21 +1060,20 @@ nav a:hover {
 @media (max-width: 900px) {
 
 .brain-decoration {
-    left: 25px;
-    top: 50%;
+    left: 60px;        /* augmenté : rapproche du centre (était 25px) */
+    top: 35%;           /* remonté : plus proche du titre (était 50%) */
     transform: translateY(-50%);
-    width: 450px;
+    width: 520px;       /* agrandi (était 450px) */
     opacity: 0.9;
 }
 
 .neurons-decoration {
-    right: 25px;
-    top: 50%;
+    right: 60px;        /* augmenté : rapproche du centre (était 25px) */
+    top: 35%;           /* remonté : plus proche du titre (était 50%) */
     transform: translateY(-50%);
-    width: 450px;
+    width: 520px;       /* agrandi (était 450px) */
     opacity: 0.9;
 }
-
     .main-header h1 {
         font-size: 36px;
     }
