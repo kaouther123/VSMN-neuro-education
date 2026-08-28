@@ -1062,7 +1062,7 @@ nav a:hover {
 .brain-decoration {
     left: 250px;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(-30%);
     width: 520px;
     opacity: 0.9;
 }
@@ -1070,7 +1070,7 @@ nav a:hover {
 .neurons-decoration {
     right: 250px;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(-30%);
     width: 520px;
     opacity: 0.9;
 }
