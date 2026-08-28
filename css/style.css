@@ -1059,17 +1059,13 @@ nav a:hover {
 
 @media (max-width: 900px) {
 
-    .brain-decoration {
-        left: -30px;
-        width: 350px;
-        opacity: 0.45;
-    }
+  .brain-decoration {
+    width: 450px;
+}
 
-    .neurons-decoration {
-        right: -30px;
-        width: 350px;
-        opacity: 0.45;
-    }
+.neurons-decoration {
+    width: 450px;
+}
 
     .main-header h1 {
         font-size: 36px;
