@@ -1061,13 +1061,13 @@ nav a:hover {
 
     .brain-decoration {
         left: -30px;
-        width: 220px;
+        width: 350px;
         opacity: 0.45;
     }
 
     .neurons-decoration {
         right: -30px;
-        width: 220px;
+        width: 350px;
         opacity: 0.45;
     }
 
