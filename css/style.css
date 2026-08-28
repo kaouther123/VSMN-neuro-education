@@ -1063,7 +1063,7 @@ nav a:hover {
     left: 25px;
     top: 50%;
     transform: translateY(-50%);
-    width: 220px;
+    width: 450px;
     opacity: 0.9;
 }
 
@@ -1071,7 +1071,7 @@ nav a:hover {
     right: 25px;
     top: 50%;
     transform: translateY(-50%);
-    width: 220px;
+    width: 450px;
     opacity: 0.9;
 }
 
