@@ -1061,7 +1061,7 @@ nav a:hover {
 
 .brain-decoration {
     left: 60px;        /* augmenté : rapproche du centre (était 25px) */
-    top: 25%;           /* remonté : plus proche du titre (était 50%) */
+    top: 40%;           /* remonté : plus proche du titre (était 50%) */
     transform: translateY(-50%);
     width: 520px;       /* agrandi (était 450px) */
     opacity: 0.9;
@@ -1069,7 +1069,7 @@ nav a:hover {
 
 .neurons-decoration {
     right: 60px;        /* augmenté : rapproche du centre (était 25px) */
-    top: 25%;           /* remonté : plus proche du titre (était 50%) */
+    top: 40%;           /* remonté : plus proche du titre (était 50%) */
     transform: translateY(-50%);
     width: 520px;       /* agrandi (était 450px) */
     opacity: 0.9;
