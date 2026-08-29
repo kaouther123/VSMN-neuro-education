@@ -1059,21 +1059,22 @@ nav a:hover {
 
 @media (max-width: 900px) {
 
-.brain-decoration {
-    left: 250px;
-    top: 50%;
-    transform: translateY(-30%);
-    width: 520px;
-    opacity: 0.9;
-}
+    .brain-decoration {
+        left: 180px;          /* rapproche le cerveau du centre */
+        top: 45%;             /* rapproche du titre */
+        transform: translateY(-35%);
+        width: 620px;         /* figure plus grande */
+        opacity: 0.9;
+    }
 
-.neurons-decoration {
-    right: 250px;
-    top: 50%;
-    transform: translateY(-30%);
-    width: 520px;
-    opacity: 0.9;
-}
+    .neurons-decoration {
+        right: 180px;         /* rapproche les neurones du centre */
+        top: 45%;             /* rapproche du titre */
+        transform: translateY(-35%);
+        width: 620px;         /* figure plus grande */
+        opacity: 0.9;
+    }
+
     .main-header h1 {
         font-size: 36px;
     }
